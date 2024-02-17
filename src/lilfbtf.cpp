@@ -17,6 +17,8 @@
  */
 
 #include <lilfbtf/lilfbtf.h>
+#include <blt/std/allocator.h>
+#include <blt/std/simd.h>
 
 namespace lilfb
 {
