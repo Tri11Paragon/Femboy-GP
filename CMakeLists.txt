@@ -5,6 +5,8 @@ option(ENABLE_ADDRSAN "Enable the address sanitizer" OFF)
 option(ENABLE_UBSAN "Enable the ub sanitizer" OFF)
 option(ENABLE_TSAN "Enable the thread data race sanitizer" OFF)
 
+add_compile_options(-march=native)
+
 set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(libs/BLT)
