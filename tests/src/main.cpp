@@ -2,6 +2,8 @@
 #include <utility>
 #include <memory>
 #include <blt/std/logging.h>
+#include <blt/parse/argparse.h>
+#include <lilfbtf/tests.h>
 
 struct data {
     float f;
@@ -9,7 +11,7 @@ struct data {
     char c;
 };
 
-int main()
+int main(int argc, const char** argv)
 {
     size_t size = 32;
     size_t remaining_bytes = size;
@@ -35,5 +37,15 @@ int main()
     delete[](buffer);
     
     std::cout << "Hello, World!" << std::endl;
+    
+    blt::arg_parse parser;
+    
+    parser.addArgument(blt::arg_builder("--tests").setHelp("Run the tests").setAction(blt::arg_action_t::STORE_TRUE).build());
+    
+    auto args = parser.parse_args(argc, argv);
+    
+    if (args.contains("--tests"))
+        fb::execute_tests();
+    
     return 0;
 }
