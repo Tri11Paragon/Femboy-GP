@@ -26,17 +26,17 @@ namespace fb
     
     enum class symbolic_regress_function_t
     {
-        ADD, SUB, MUL, DIV, EXP, LOG, SIN, COS
+        ADD, SUB, MUL, DIV, EXP, LOG, SIN, COS, SIZE
     };
     
     class test_add_function_t : public function_base_t<test_add_function_t, symbolic_regress_function_t>
     {
         public:
-            test_add_function_t(): function_base_t<test_add_function_t, symbolic_regress_function_t>(symbolic_regress_function_t::ADD, 2)
+            constexpr test_add_function_t(): function_base_t<test_add_function_t, symbolic_regress_function_t>(symbolic_regress_function_t::ADD, 2)
             {}
             
             template<typename T>
-            inline static T call(T a, T b)
+            constexpr inline static T call(T a, T b)
             {
                 return a + b;
             }
@@ -45,11 +45,11 @@ namespace fb
     class test_sub_function_t : public function_base_t<test_sub_function_t, symbolic_regress_function_t>
     {
         public:
-            test_sub_function_t(): function_base_t<test_sub_function_t, symbolic_regress_function_t>(symbolic_regress_function_t::SUB, 2)
+            constexpr test_sub_function_t(): function_base_t<test_sub_function_t, symbolic_regress_function_t>(symbolic_regress_function_t::SUB, 2)
             {}
             
             template<typename T>
-            inline static T call(T a, T b)
+            constexpr inline static T call(T a, T b)
             {
                 return a - b;
             }
@@ -58,11 +58,11 @@ namespace fb
     class test_mul_function_t : public function_base_t<test_mul_function_t, symbolic_regress_function_t>
     {
         public:
-            test_mul_function_t(): function_base_t<test_mul_function_t, symbolic_regress_function_t>(symbolic_regress_function_t::MUL, 2)
+            constexpr test_mul_function_t(): function_base_t<test_mul_function_t, symbolic_regress_function_t>(symbolic_regress_function_t::MUL, 2)
             {}
             
             template<typename T>
-            inline static T call(T a, T b)
+            constexpr inline static T call(T a, T b)
             {
                 return a * b;
             }
@@ -71,11 +71,11 @@ namespace fb
     class test_div_function_t : public function_base_t<test_div_function_t, symbolic_regress_function_t>
     {
         public:
-            test_div_function_t(): function_base_t<test_div_function_t, symbolic_regress_function_t>(symbolic_regress_function_t::DIV, 2)
+            constexpr test_div_function_t(): function_base_t<test_div_function_t, symbolic_regress_function_t>(symbolic_regress_function_t::DIV, 2)
             {}
             
             template<typename T>
-            inline static T call(T a, T b)
+            constexpr inline static T call(T a, T b)
             {
                 if (b == 0)
                     return 0;
@@ -86,11 +86,11 @@ namespace fb
     class test_exp_function_t : public function_base_t<test_exp_function_t, symbolic_regress_function_t>
     {
         public:
-            test_exp_function_t(): function_base_t<test_exp_function_t, symbolic_regress_function_t>(symbolic_regress_function_t::EXP, 1)
+            constexpr test_exp_function_t(): function_base_t<test_exp_function_t, symbolic_regress_function_t>(symbolic_regress_function_t::EXP, 1)
             {}
             
             template<typename T>
-            inline static T call(T a)
+            constexpr inline static T call(T a)
             {
                 return std::exp(a);
             }
@@ -99,11 +99,11 @@ namespace fb
     class test_log_function_t : public function_base_t<test_log_function_t, symbolic_regress_function_t>
     {
         public:
-            test_log_function_t(): function_base_t<test_log_function_t, symbolic_regress_function_t>(symbolic_regress_function_t::LOG, 1)
+            constexpr test_log_function_t(): function_base_t<test_log_function_t, symbolic_regress_function_t>(symbolic_regress_function_t::LOG, 1)
             {}
             
             template<typename T>
-            inline static T call(T a)
+            constexpr inline static T call(T a)
             {
                 if (a == 0)
                     return 0;
@@ -114,11 +114,11 @@ namespace fb
     class test_sin_function_t : public function_base_t<test_sin_function_t, symbolic_regress_function_t>
     {
         public:
-            test_sin_function_t(): function_base_t<test_sin_function_t, symbolic_regress_function_t>(symbolic_regress_function_t::SIN, 1)
+            constexpr test_sin_function_t(): function_base_t<test_sin_function_t, symbolic_regress_function_t>(symbolic_regress_function_t::SIN, 1)
             {}
             
             template<typename T>
-            inline static T call(T a)
+            constexpr inline static T call(T a)
             {
                 return std::sin(a);
             }
@@ -127,11 +127,11 @@ namespace fb
     class test_cos_function_t : public function_base_t<test_cos_function_t, symbolic_regress_function_t>
     {
         public:
-            test_cos_function_t(): function_base_t<test_cos_function_t, symbolic_regress_function_t>(symbolic_regress_function_t::COS, 1)
+            constexpr test_cos_function_t(): function_base_t<test_cos_function_t, symbolic_regress_function_t>(symbolic_regress_function_t::COS, 1)
             {}
             
             template<typename T>
-            inline static T call(T a)
+            constexpr inline static T call(T a)
             {
                 return std::cos(a);
             }

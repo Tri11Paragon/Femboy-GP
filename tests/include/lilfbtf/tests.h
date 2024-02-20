@@ -29,8 +29,8 @@ namespace fb
 {
     
     using arg_count_t = blt::size_t;
-    template<typename... allowed_arg_types>
-    using arg_t = std::variant<allowed_arg_types...>;
+    //template<typename... allowed_arg_types>
+    //using arg_t = std::variant<allowed_arg_types...>;
     
     template<typename BASE, typename ENUM_TYPE, std::enable_if_t<std::is_enum_v<ENUM_TYPE>, bool> = true>
     class function_base_t
@@ -39,19 +39,19 @@ namespace fb
             ENUM_TYPE type_;
             arg_count_t args_count_;
         public:
-            function_base_t(ENUM_TYPE type, arg_count_t args_count): type_(type), args_count_(args_count)
+            constexpr function_base_t(ENUM_TYPE type, arg_count_t args_count): type_(type), args_count_(args_count)
             {}
             
             template<typename... arg_types>
-            auto operator()(arg_types&& ... args)
+            constexpr auto operator()(arg_types&& ... args) const
             {
                 return BASE::call(std::forward<arg_types>(args)...);
             }
             
-            ENUM_TYPE type()
+            [[nodiscard]] constexpr ENUM_TYPE type() const noexcept
             { return type_; }
             
-            arg_count_t argCount()
+            [[nodiscard]] constexpr arg_count_t argCount() const noexcept
             { return args_count_; }
     };
     
