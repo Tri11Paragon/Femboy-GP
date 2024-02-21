@@ -135,21 +135,29 @@ namespace fb
     };
     
     
-    
     class flat_tree
     {
     
     };
     
-    struct node_container
+    template<typename ARG_TYPE>
+    struct operator_t
     {
-        [[nodiscard]] constexpr arg_count_t argCount() const
-        { return 0; }
-        
-        [[nodiscard]] static inline constexpr arg_count_t determine_max_argc()
-        {
-            return 2;
-        }
+        private:
+            arg_count_t argc;
+            std::function<ARG_TYPE(blt::span<ARG_TYPE>)> func;
+            blt::vector<operator_t<ARG_TYPE>> allowed_inputs;
+        public:
+            operator_t(arg_count_t argc, std::function<ARG_TYPE(blt::span<ARG_TYPE>)> func): argc(argc), func(std::move(func))
+            {}
+            
+            [[nodiscard]] constexpr arg_count_t argCount() const
+            { return argc; }
+            
+            [[nodiscard]] constexpr std::function<ARG_TYPE(blt::span<ARG_TYPE>)> function() const
+            { return func; }
+            
+            
     };
     
     template<typename NODE_CONTAINER, typename ALLOC>
