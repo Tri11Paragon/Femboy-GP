@@ -140,15 +140,39 @@ namespace fb
     
     };
     
-    template<typename ARG_TYPE>
-    struct operator_t
+    template<typename ENUM_TYPE>
+    class arg_constraint_container
+    {
+        private:
+            blt::vector<std::vector<ENUM_TYPE>> map;
+        public:
+            template<typename T, std::enable_if<std::is_convertible_v<T, blt::vector<std::vector<ENUM_TYPE>>>, bool> = true>
+            constexpr explicit arg_constraint_container(T&& map): map(std::forward<T>(map))
+            {}
+            
+            template<typename T, std::enable_if<std::is_convertible_v<T, blt::vector<ENUM_TYPE>>, bool> = true>
+            constexpr explicit arg_constraint_container(blt::size_t argc, T&& map)
+            {
+                for (blt::size_t i = 0; i < argc; i++)
+                    this->map.push_back(map);
+            }
+            
+            constexpr arg_constraint_container(std::initializer_list<blt::vector<ENUM_TYPE>> maps)
+            {
+                for (const auto& v : maps)
+                    this->map.push_back(v);
+            }
+    };
+    
+    template<typename ARG_TYPE, typename ENUM_TYPE>
+    class operator_t
     {
         private:
             arg_count_t argc;
             std::function<ARG_TYPE(blt::span<ARG_TYPE>)> func;
-            blt::vector<operator_t<ARG_TYPE>> allowed_inputs;
+            arg_constraint_container<ENUM_TYPE> allowed_inputs;
         public:
-            operator_t(arg_count_t argc, std::function<ARG_TYPE(blt::span<ARG_TYPE>)> func): argc(argc), func(std::move(func))
+            constexpr operator_t(arg_count_t argc, std::function<ARG_TYPE(blt::span<ARG_TYPE>)> func): argc(argc), func(std::move(func))
             {}
             
             [[nodiscard]] constexpr arg_count_t argCount() const
@@ -156,8 +180,8 @@ namespace fb
             
             [[nodiscard]] constexpr std::function<ARG_TYPE(blt::span<ARG_TYPE>)> function() const
             { return func; }
-            
-            
+        
+        
     };
     
     template<typename NODE_CONTAINER, typename ALLOC>
