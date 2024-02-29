@@ -230,9 +230,6 @@ namespace fb
         std::array<std::array<blt::vector<ENUM_TYPE>, MAX_ARGS>, MAX_OPERATORS> argument_constraints;
         std::array<arg_count_t, MAX_OPERATORS> argument_count;
         std::array<Func, MAX_OPERATORS> functions;
-        
-        
-        node_tree<ENUM_TYPE, MAX_ARGS> tree;
     };
     
     template<typename ENUM_TYPE, typename ARG_TYPE, typename Func, operator_t<ENUM_TYPE, ARG_TYPE, Func>... operators>
