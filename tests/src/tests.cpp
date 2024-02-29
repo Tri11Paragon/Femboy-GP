@@ -21,9 +21,18 @@
 #include <blt/std/vector.h>
 #include <iostream>
 #include "blt/std/utility.h"
+#include "blt/std/hashmap.h"
 #include <blt/std/ranges.h>
+#include <utility>
 #include <variant>
 #include <array>
+
+template<typename T>
+auto run_once()
+{
+    static auto called = false;
+    return !std::exchange(called, true);
+};
 
 namespace fb
 {
@@ -144,14 +153,12 @@ namespace fb
     class arg_constraint_container
     {
         private:
-            blt::vector<std::vector<ENUM_TYPE>> map;
+            blt::vector<blt::vector<ENUM_TYPE>> map;
         public:
-            template<typename T, std::enable_if<std::is_convertible_v<T, blt::vector<std::vector<ENUM_TYPE>>>, bool> = true>
-            constexpr explicit arg_constraint_container(T&& map): map(std::forward<T>(map))
+            constexpr explicit arg_constraint_container(const blt::vector<blt::vector<ENUM_TYPE>>& map): map(map)
             {}
             
-            template<typename T, std::enable_if<std::is_convertible_v<T, blt::vector<ENUM_TYPE>>, bool> = true>
-            constexpr explicit arg_constraint_container(blt::size_t argc, T&& map)
+            constexpr explicit arg_constraint_container(blt::size_t argc, const blt::vector<ENUM_TYPE>& map)
             {
                 for (blt::size_t i = 0; i < argc; i++)
                     this->map.push_back(map);
@@ -162,36 +169,83 @@ namespace fb
                 for (const auto& v : maps)
                     this->map.push_back(v);
             }
+            
+            [[nodiscard]] constexpr const blt::vector<ENUM_TYPE>& getAllowedArguments(blt::size_t arg) const
+            {
+                return map[arg];
+            }
     };
     
     template<typename ARG_TYPE, typename ENUM_TYPE>
     class operator_t
     {
         private:
+            ENUM_TYPE our_type;
             arg_count_t argc;
             std::function<ARG_TYPE(blt::span<ARG_TYPE>)> func;
             arg_constraint_container<ENUM_TYPE> allowed_inputs;
-        public:
-            constexpr operator_t(arg_count_t argc, std::function<ARG_TYPE(blt::span<ARG_TYPE>)> func): argc(argc), func(std::move(func))
+            
+            constexpr operator_t(ENUM_TYPE type, arg_count_t argc, std::function<ARG_TYPE(blt::span<ARG_TYPE>)> func,
+                                 arg_constraint_container<ENUM_TYPE> allowed_inputs):
+                    our_type(type), argc(argc), func(std::move(func)), allowed_inputs(std::move(allowed_inputs))
             {}
+        
+        public:
+            static constexpr operator_t make_operator(ENUM_TYPE type, arg_count_t argc,
+                                                      std::function<ARG_TYPE(blt::span<ARG_TYPE>)> func,
+                                                      arg_constraint_container<ENUM_TYPE> allowed_inputs)
+            {
+                return operator_t{type, argc, func, allowed_inputs};
+            }
             
             [[nodiscard]] constexpr arg_count_t argCount() const
             { return argc; }
             
-            [[nodiscard]] constexpr std::function<ARG_TYPE(blt::span<ARG_TYPE>)> function() const
+            [[nodiscard]] constexpr std::function<ARG_TYPE(blt::span<ARG_TYPE>)>& function() const
             { return func; }
-        
-        
+            
+            [[nodiscard]] constexpr const blt::vector<ENUM_TYPE>& getAllowedArguments(blt::size_t arg) const
+            { return allowed_inputs.getAllowedArguments(arg); }
+            
+            [[nodiscard]] constexpr ENUM_TYPE type() const
+            { return our_type; }
     };
     
-    template<typename NODE_CONTAINER, typename ALLOC>
+    template<typename ARG_TYPE, typename ENUM_TYPE>
+    struct operator_container_constructor_t;
+    
+    template<typename ARG_TYPE, typename ENUM_TYPE, blt::i32 ENUM_MAX>
+    struct operator_container_t
+    {
+            friend operator_container_constructor_t<ARG_TYPE, ENUM_TYPE>;
+        private:
+            constexpr operator_container_t(std::initializer_list<std::pair<ENUM_TYPE, operator_t<ARG_TYPE, ENUM_TYPE>>> list)
+            {
+                for (const auto& v : list)
+                {
+                    operators[static_cast<blt::i32>(v.first)] = v.second;
+                    max_argc = std::max(v.second.argCount(), max_argc);
+                }
+            }
+        
+        public:
+            arg_count_t max_argc;
+            std::array<operator_t<ARG_TYPE, ENUM_TYPE>, ENUM_MAX> operators;
+            
+            [[nodiscard]] constexpr arg_count_t getMaxArgc() const
+            {
+                return max_argc;
+            }
+    };
+    
+    template<typename NODE_CONTAINER, arg_count_t MAX_ARGS, template<typename> typename ALLOC>
     class node_tree
     {
         private:
-            static ALLOC allocator;
+            static ALLOC<NODE_CONTAINER> allocator;
             struct node
             {
-                std::array<node*, NODE_CONTAINER::determine_max_argc()> children;
+                std::array<node*, MAX_ARGS> children;
                 NODE_CONTAINER caller;
             };
         public:
