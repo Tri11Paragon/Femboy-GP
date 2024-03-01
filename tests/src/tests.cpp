@@ -210,40 +210,40 @@ namespace fb
         
     };
     
-    template<typename ENUM_TYPE, typename ARG_TYPE, typename Func, operator_t<ENUM_TYPE, ARG_TYPE, Func>... operators>
-    inline constexpr auto max_args()
-    {
-        return std::max({operators.argCount()...});
-    }
-    
-    template<typename ENUM_TYPE, typename ARG_TYPE, typename Func, operator_t<ENUM_TYPE, ARG_TYPE, Func>... operators>
-    inline constexpr auto enum_max()
-    {
-        return std::max({static_cast<blt::i32>(operators.type())...});
-    }
-    
-    template<typename ENUM_TYPE, typename ARG_TYPE, typename Func, operator_t<ENUM_TYPE, ARG_TYPE, Func>... operators>
-    struct gp_program_container_t
-    {
-        constexpr static inline auto MAX_OPERATORS = enum_max<operators...>();
-        constexpr static inline auto MAX_ARGS = max_args<operators...>();
-        std::array<std::array<blt::vector<ENUM_TYPE>, MAX_ARGS>, MAX_OPERATORS> argument_constraints;
-        std::array<arg_count_t, MAX_OPERATORS> argument_count;
-        std::array<Func, MAX_OPERATORS> functions;
-    };
-    
-    template<typename ENUM_TYPE, typename ARG_TYPE, typename Func, operator_t<ENUM_TYPE, ARG_TYPE, Func>... operators>
-    inline auto make_gp_program()
-    {
-        gp_program_container_t<ARG_TYPE, ENUM_TYPE, Func, operators...> program;
-        for (const operator_t<ENUM_TYPE, ARG_TYPE, Func>& op : {operators...})
-        {
-            auto index = static_cast<blt::i32>(op.type());
-            for (const auto& v : blt::enumerate(op.argMap()))
-                program.argument_constraints[index][v.first] = v.second;
-        }
-        return program;
-    }
+//    template<typename ENUM_TYPE, typename ARG_TYPE, typename Func, operator_t<ENUM_TYPE, ARG_TYPE, Func>... operators>
+//    inline constexpr auto max_args()
+//    {
+//        return std::max({operators.argCount()...});
+//    }
+//
+//    template<typename ENUM_TYPE, typename ARG_TYPE, typename Func, operator_t<ENUM_TYPE, ARG_TYPE, Func>... operators>
+//    inline constexpr auto enum_max()
+//    {
+//        return std::max({static_cast<blt::i32>(operators.type())...});
+//    }
+//
+//    template<typename ENUM_TYPE, typename ARG_TYPE, typename Func, operator_t<ENUM_TYPE, ARG_TYPE, Func>... operators>
+//    struct gp_program_container_t
+//    {
+//        constexpr static inline auto MAX_OPERATORS = enum_max<operators...>();
+//        constexpr static inline auto MAX_ARGS = max_args<operators...>();
+//        std::array<std::array<blt::vector<ENUM_TYPE>, MAX_ARGS>, MAX_OPERATORS> argument_constraints;
+//        std::array<arg_count_t, MAX_OPERATORS> argument_count;
+//        std::array<Func, MAX_OPERATORS> functions;
+//    };
+//
+//    template<typename ENUM_TYPE, typename ARG_TYPE, typename Func, operator_t<ENUM_TYPE, ARG_TYPE, Func>... operators>
+//    inline auto make_gp_program()
+//    {
+//        gp_program_container_t<ARG_TYPE, ENUM_TYPE, Func, operators...> program;
+//        for (const operator_t<ENUM_TYPE, ARG_TYPE, Func>& op : {operators...})
+//        {
+//            auto index = static_cast<blt::i32>(op.type());
+//            for (const auto& v : blt::enumerate(op.argMap()))
+//                program.argument_constraints[index][v.first] = v.second;
+//        }
+//        return program;
+//    }
     
     /*
      * Functions

@@ -9,7 +9,7 @@ if(!MSVC)
 add_compile_options(-march=native)
 endif()
 
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+#set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(libs/BLT)
