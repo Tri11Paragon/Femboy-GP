@@ -3,7 +3,7 @@
 #include <memory>
 #include <blt/std/logging.h>
 #include <blt/parse/argparse.h>
-#include <lilfbtf/tests.h>
+#include <lilfbtf/test2.h>
 
 struct data {
     float f;
@@ -24,15 +24,14 @@ int main(int argc, const char** argv)
     std::cout << static_cast<void*>(buffer) << " ' " << remaining_bytes << std::endl;
     void_ptr = reinterpret_cast<void*>(&buffer[offset]);
     new_ptr = static_cast<char*>(std::align(alignof(char), sizeof(char), void_ptr, remaining_bytes));
-    std::cout << static_cast<void*>(new_ptr) << " : " << remaining_bytes << " | " << (buffer - new_ptr + sizeof(char)) << std::endl;
-    offset += (buffer - new_ptr + sizeof(char));
+    std::cout << static_cast<void*>(new_ptr) << " : " << remaining_bytes << " | " << (buffer - new_ptr + 1) << std::endl;
+    offset += (buffer - new_ptr + 1);
     
     remaining_bytes = size - offset;
     void_ptr = reinterpret_cast<void*>(&buffer[offset]);
     new_ptr = static_cast<char*>(std::align(alignof(data), sizeof(data), void_ptr, remaining_bytes));
     std::cout << static_cast<void*>(new_ptr) << " : " << remaining_bytes << " | " << (buffer - new_ptr + sizeof(data)) << std::endl;
     offset += (buffer - new_ptr + sizeof(data));
-    
     
     delete[](buffer);
     

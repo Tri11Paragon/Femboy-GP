@@ -16,14 +16,20 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef LILFBTF5_LILFBTF_H
-#define LILFBTF5_LILFBTF_H
+#ifndef LILFBTF5_TEST2_H
+#define LILFBTF5_TEST2_H
 
 namespace fb
 {
-
-
-
+    
+    void execute();
+    void funny();
+    
+    inline void execute_tests()
+    {
+        execute();
+    }
+    
 }
 
-#endif //LILFBTF5_LILFBTF_H
+#endif //LILFBTF5_TEST2_H
