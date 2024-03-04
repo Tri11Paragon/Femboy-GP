@@ -86,17 +86,54 @@ namespace fb
     
     std::array<blt::i32, 4> arg_c = {2, 2, 2, 0};
     
+    struct construct_info
+    {
+        type_t type;
+        bool choice;
+    };
+    
+    std::vector<construct_info> create_info(blt::size_t size)
+    {
+        std::vector<construct_info> info;
+        
+        construct_info root = {random_type(), false};
+        std::stack<std::pair<construct_info, blt::size_t>> stack;
+        stack.emplace(root, 0);
+        while (!stack.empty())
+        {
+            auto top = stack.top();
+            auto node = top.first;
+            auto depth = top.second;
+            info.push_back(node);
+            stack.pop();
+            for (blt::i32 i = 0; i < arg_c[static_cast<int>(info.back().type)]; i++)
+            {
+                if (depth >= size)
+                    break;
+                if (choice())
+                    stack.emplace(construct_info{random_type(), true}, depth + 1);
+                else
+                    stack.emplace(construct_info{random_type_sub(), false}, depth + 1);
+            }
+        }
+        
+        return info;
+    }
+    
     class tree1
     {
+        public:
+            blt::bump_allocator<true> alloc{sizeof(node_t) * 8192};
         private:
             struct node_t
             {
+                blt::bump_allocator<true>& alloc;
                 std::array<node_t*, 2> children{};
                 double value = 0;
                 blt::i32 argc;
                 type_t type;
                 
-                explicit node_t(type_t type): argc(arg_c[static_cast<int>(type)]), type(type)
+                explicit node_t(type_t type, blt::bump_allocator<true>& alloc): alloc(alloc), argc(arg_c[static_cast<int>(type)]), type(type)
                 {
                     if (type == type_t::VALUE)
                         value = random_value();
@@ -113,7 +150,7 @@ namespace fb
                             value = children[0]->value - children[1]->value;
                             return;
                         case type_t::MUL:
-                            value =  children[0]->value * children[1]->value;
+                            value = children[0]->value * children[1]->value;
                             return;
                         case type_t::VALUE:
                             return;
@@ -143,15 +180,44 @@ namespace fb
                     }
                     return value;
                 }
+                
+                ~node_t()
+                {
+                    for (int i = 0; i < argc; i++)
+                    {
+                        alloc.destroy(children[i]);
+                        alloc.deallocate(children[i]);
+                    }
+                }
             };
             
             node_t* root = nullptr;
         public:
-            blt::bump_allocator<true> alloc{sizeof(node_t) * 8192};
             
-            void create(blt::size_t size)
+            void create(const std::vector<construct_info>& info)
             {
-                root = alloc.emplace<node_t>(random_type());
+//                root = alloc.emplace<node_t>(random_type(), alloc);
+//                std::stack<std::pair<node_t*, blt::size_t>> stack;
+//                stack.emplace(root, 0);
+//                while (!stack.empty())
+//                {
+//                    auto top = stack.top();
+//                    auto* node = top.first;
+//                    auto depth = top.second;
+//                    stack.pop();
+//                    for (blt::i32 i = 0; i < node->argc; i++)
+//                    {
+//                        auto& assignment = node->children[i];
+//                        if (choice())
+//                            assignment = alloc.emplace<node_t>(random_type(), alloc);
+//                        else
+//                            assignment = alloc.emplace<node_t>(random_type_sub(), alloc);
+//                        if (depth < size)
+//                            stack.emplace(assignment, depth + 1);
+//                    }
+//                }
+                root = alloc.emplace<node_t>(info[0].type, alloc);
+                blt::size_t index = 1;
                 std::stack<std::pair<node_t*, blt::size_t>> stack;
                 stack.emplace(root, 0);
                 while (!stack.empty())
@@ -163,12 +229,8 @@ namespace fb
                     for (blt::i32 i = 0; i < node->argc; i++)
                     {
                         auto& assignment = node->children[i];
-                        if (choice())
-                            assignment = alloc.emplace<node_t>(random_type());
-                        else
-                            assignment = alloc.emplace<node_t>(random_type_sub());
-                        if (depth < size)
-                            stack.emplace(assignment, depth + 1);
+                        assignment = alloc.emplace<node_t>(info[index++].type, alloc);
+                        stack.emplace(assignment, depth + 1);
                     }
                 }
             }
@@ -177,12 +239,49 @@ namespace fb
             {
                 return root->evaluate_tree();
             }
+            
+            ~tree1()
+            {
+                alloc.destroy(root);
+                alloc.deallocate(root);
+            }
+    };
+    
+    struct tree2
+    {
+        private:
+            struct node_t
+            {
+                double value;
+                blt::i32 argc;
+                type_t type;
+            };
+            node_t* nodes = nullptr;
+            blt::size_t size = 0;
+        public:
+            tree2() = default;
+            
+            void create(const std::vector<construct_info>& info)
+            {
+                size = static_cast<blt::size_t>(std::pow(2, std::log2(info.size()) + 1));
+                nodes = new node_t[size];
+                for (blt::size_t i = 0; i < info; i++)
+                {
+                
+                }
+            }
+            
+            ~tree2()
+            {
+                delete[] nodes;
+            }
     };
     
     void funny()
     {
+        auto info = create_info(25);
         tree1 love;
-        love.create(10);
+        love.create(info);
         BLT_TRACE(love.evaluate());
     }
 }

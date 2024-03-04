@@ -28,6 +28,7 @@ namespace fb
     inline void execute_tests()
     {
         execute();
+        funny();
     }
     
 }
