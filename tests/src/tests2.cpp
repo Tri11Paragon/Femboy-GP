@@ -89,14 +89,22 @@ namespace fb
     struct construct_info
     {
         type_t type;
-        bool choice;
+        double value;
+        
+        explicit construct_info(type_t type): type(type), value(0)
+        {
+            if (type == type_t::VALUE)
+                value = random_value();
+        }
     };
+    
+    static_assert(std::is_trivially_copyable_v<construct_info>);
     
     std::vector<construct_info> create_info(blt::size_t size)
     {
         std::vector<construct_info> info;
         
-        construct_info root = {random_type(), false};
+        construct_info root = construct_info{random_type()};
         std::stack<std::pair<construct_info, blt::size_t>> stack;
         stack.emplace(root, 0);
         while (!stack.empty())
@@ -111,9 +119,9 @@ namespace fb
                 if (depth >= size)
                     break;
                 if (choice())
-                    stack.emplace(construct_info{random_type(), true}, depth + 1);
+                    stack.emplace(construct_info{random_type()}, depth + 1);
                 else
-                    stack.emplace(construct_info{random_type_sub(), false}, depth + 1);
+                    stack.emplace(construct_info{random_type_sub()}, depth + 1);
             }
         }
         
@@ -133,11 +141,9 @@ namespace fb
                 blt::i32 argc;
                 type_t type;
                 
-                explicit node_t(type_t type, blt::bump_allocator<true>& alloc): alloc(alloc), argc(arg_c[static_cast<int>(type)]), type(type)
-                {
-                    if (type == type_t::VALUE)
-                        value = random_value();
-                }
+                explicit node_t(type_t type, double value, blt::bump_allocator<true>& alloc):
+                        alloc(alloc), value(value), argc(arg_c[static_cast<int>(type)]), type(type)
+                {}
                 
                 void evaluate()
                 {
@@ -176,6 +182,7 @@ namespace fb
                     while (!node_stack.empty())
                     {
                         node_stack.top()->evaluate();
+                        BLT_DEBUG(node_stack.top()->value);
                         node_stack.pop();
                     }
                     return value;
@@ -216,7 +223,7 @@ namespace fb
 //                            stack.emplace(assignment, depth + 1);
 //                    }
 //                }
-                root = alloc.emplace<node_t>(info[0].type, alloc);
+                root = alloc.emplace<node_t>(info[0].type, info[0].value, alloc);
                 blt::size_t index = 1;
                 std::stack<std::pair<node_t*, blt::size_t>> stack;
                 stack.emplace(root, 0);
@@ -229,7 +236,8 @@ namespace fb
                     for (blt::i32 i = 0; i < node->argc; i++)
                     {
                         auto& assignment = node->children[i];
-                        assignment = alloc.emplace<node_t>(info[index++].type, alloc);
+                        assignment = alloc.emplace<node_t>(info[index].type, info[index].value, alloc);
+                        index++;
                         stack.emplace(assignment, depth + 1);
                     }
                 }
@@ -249,26 +257,119 @@ namespace fb
     
     struct tree2
     {
+            using index = blt::size_t;
         private:
+            inline static auto u(type_t type)
+            {
+                return static_cast<int>(type);
+            }
+            
             struct node_t
             {
                 double value;
                 blt::i32 argc;
                 type_t type;
+                
+                node_t() = default;
+                
+                node_t(type_t type, double value): value(value), argc(u(type)), type(type)
+                {}
             };
+            
+            static_assert(std::is_trivially_copyable_v<node_t>);
+            
             node_t* nodes = nullptr;
             blt::size_t size = 0;
+        
         public:
             tree2() = default;
             
             void create(const std::vector<construct_info>& info)
             {
                 size = static_cast<blt::size_t>(std::pow(2, std::log2(info.size()) + 1));
+                BLT_INFO("Size %ld, %ld, %ld", size, static_cast<blt::size_t>(std::log2(info.size())), info.size());
                 nodes = new node_t[size];
-                for (blt::size_t i = 0; i < info; i++)
-                {
                 
+                nodes[1] = node_t{info[0].type, info[0].value};
+                blt::size_t index = 1;
+                std::stack<std::pair<blt::size_t, blt::size_t>> stack;
+                stack.emplace(1, 0);
+                while (!stack.empty())
+                {
+                    auto top = stack.top();
+                    auto node = top.first;
+                    auto depth = top.second;
+                    stack.pop();
+                    for (blt::i32 i = 0; i < nodes[node].argc; i++)
+                    {
+                        blt::u64 insert;
+                        if (i & 1)
+                            insert = right(node);
+                        else
+                            insert = left(node);
+                        nodes[insert] = node_t{info[index].type, info[index].value};
+                        stack.emplace(index++, depth + 1);
+                    }
                 }
+            }
+            
+            static index left(index i)
+            {
+                return i * 2;
+            }
+            
+            static index right(index i)
+            {
+                return i * 2 + 1;
+            }
+            
+            double evaluate()
+            {
+                std::stack<blt::size_t> ns;
+                std::stack<blt::size_t> node_stack;
+                
+                ns.push(1);
+                
+                while (!ns.empty())
+                {
+                    auto top = ns.top();
+                    node_stack.push(top);
+                    ns.pop();
+                    for (blt::i32 i = 0; i < nodes[top].argc; i++)
+                    {
+                        blt::u64 insert;
+                        if (i & 1)
+                            insert = right(top);
+                        else
+                            insert = left(top);
+                        ns.push(insert);
+                    }
+                }
+                
+                while (!node_stack.empty())
+                {
+                    auto top = node_stack.top();
+                    if (nodes[top].argc == 2)
+                    {
+                        switch (nodes[top].type)
+                        {
+                            case type_t::ADD:
+                                nodes[top].value = nodes[left(top)].value + nodes[right(top)].value;
+                                break;
+                            case type_t::SUB:
+                                nodes[top].value = nodes[left(top)].value - nodes[right(top)].value;
+                                break;
+                            case type_t::MUL:
+                                nodes[top].value = nodes[left(top)].value * nodes[right(top)].value;
+                                break;
+                            case type_t::VALUE:
+                                break;
+                        }
+                    }
+                    BLT_DEBUG(nodes[top].value);
+                    node_stack.pop();
+                }
+                return nodes[1].value;
             }
             
             ~tree2()
@@ -279,9 +380,13 @@ namespace fb
     
     void funny()
     {
-        auto info = create_info(25);
+        auto info = create_info(17);
         tree1 love;
         love.create(info);
         BLT_TRACE(love.evaluate());
+        
+        tree2 fem;
+        fem.create(info);
+        BLT_TRACE(fem.evaluate());
     }
 }
