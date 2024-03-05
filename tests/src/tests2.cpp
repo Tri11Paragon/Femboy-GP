@@ -42,126 +42,68 @@ namespace fb
         public:
     };
     
-    void execute()
-    {
-    
-    }
-    
     enum class type_t
     {
         ADD, SUB, MUL, VALUE
     };
     
+    static constexpr blt::u64 SEED = 691;
+    
+    struct random_engine
+    {
+        private:
+            std::mt19937_64 engine{SEED};
+        public:
+            random_engine() = default;
+            
+            void reset(blt::u64 seed = SEED)
+            {
+                engine = std::mt19937_64{seed};
+            }
+            
+            auto& get()
+            {
+                return engine;
+            }
+    } engine;
+    
     type_t random_type()
     {
         static std::random_device dev;
-        static std::mt19937_64 engine{dev()};
         static std::uniform_int_distribution dist(0, 3);
-        return static_cast<type_t>(dist(engine));
+        return static_cast<type_t>(dist(engine.get()));
     }
     
     type_t random_type_sub()
     {
         static std::random_device dev;
-        static std::mt19937_64 engine{dev()};
         static std::uniform_int_distribution dist(0, 2);
-        return static_cast<type_t>(dist(engine));
+        return static_cast<type_t>(dist(engine.get()));
     }
     
     double random_value()
     {
         static std::random_device dev;
-        static std::mt19937_64 engine{dev()};
         static std::uniform_real_distribution dist(-10.0, 10.0);
-        return dist(engine);
+        return dist(engine.get());
     }
     
     bool choice()
     {
         static std::random_device dev;
-        static std::mt19937_64 engine{dev()};
         static std::uniform_int_distribution dist(0, 1);
-        return dist(engine);
+        return dist(engine.get());
     }
     
     std::array<blt::i32, 4> arg_c = {2, 2, 2, 0};
-    
-    struct construct_info
-    {
-        type_t type;
-        double value;
-        
-        explicit construct_info(type_t type): type(type), value(0)
-        {
-            if (type == type_t::VALUE)
-                value = random_value();
-        }
-    };
-    
-    static_assert(std::is_trivially_copyable_v<construct_info>);
-    
-    std::vector<construct_info> create_info(blt::size_t size)
-    {
-        std::vector<construct_info> info;
-        
-        construct_info root = construct_info{random_type()};
-        std::stack<std::pair<construct_info, blt::size_t>> stack;
-        stack.emplace(root, 0);
-        while (!stack.empty())
-        {
-            auto top = stack.top();
-            auto node = top.first;
-            auto depth = top.second;
-            info.push_back(node);
-            stack.pop();
-            for (blt::i32 i = 0; i < arg_c[static_cast<int>(info.back().type)]; i++)
-            {
-                if (depth >= size)
-                {
-                    break;
-                } else if (depth == size - 1)
-                {
-                    stack.emplace(construct_info{type_t::VALUE}, depth + 1);
-                } else
-                {
-                    if (choice())
-                        stack.emplace(construct_info{random_type()}, depth + 1);
-                    else
-                        stack.emplace(construct_info{random_type_sub()}, depth + 1);
-                }
-            }
-        }
-        
-        return info;
-    }
-    
-    void type_stats(const std::vector<construct_info>& info)
-    {
-        blt::size_t add = 0;
-        blt::size_t sub = 0;
-        blt::size_t mul = 0;
-        blt::size_t val = 0;
-        
-        for (const auto& v : info)
-        {
-            switch (v.type)
-            {
-                case type_t::ADD:
-                    add++;
-                    break;
-                case type_t::SUB:
-                    sub++;
-                    break;
-                case type_t::MUL:
-                    mul++;
-                    break;
-                case type_t::VALUE:
-                    val++;
-                    break;
-            }
-        }
-        BLT_INFO("We have %ld adds, %ld subs, %ld mul, %ld val", add, sub, mul, val);
-    }
+    blt::size_t t1_add = 0;
+    blt::size_t t1_sub = 0;
+    blt::size_t t1_mul = 0;
+    blt::size_t t1_val = 0;
+    blt::size_t t2_add = 0;
+    blt::size_t t2_sub = 0;
+    blt::size_t t2_mul = 0;
+    blt::size_t t2_val = 0;
     
     class tree1
     {
@@ -176,9 +118,27 @@ namespace fb
                 blt::i32 argc;
                 type_t type;
                 
-                explicit node_t(type_t type, double value, blt::bump_allocator<true>& alloc):
-                        alloc(alloc), value(value), argc(arg_c[static_cast<int>(type)]), type(type)
-                {}
+                explicit node_t(type_t type, blt::bump_allocator<true>& alloc):
+                        alloc(alloc), argc(arg_c[static_cast<int>(type)]), type(type)
+                {
+                    if (type == type_t::VALUE)
+                        value = random_value();
+                    switch (type)
+                    {
+                        case type_t::ADD:
+                            t1_add++;
+                            break;
+                        case type_t::SUB:
+                            t1_sub++;
+                            break;
+                        case type_t::MUL:
+                            t1_mul++;
+                            break;
+                        case type_t::VALUE:
+                            t1_val++;
+                            break;
+                    }
+                }
                 
                 void evaluate()
                 {
@@ -211,8 +171,12 @@ namespace fb
                         auto* top = nodes.top();
                         node_stack.push(top);
                         nodes.pop();
+                        BLT_INFO("%ld type %d", top->argc, static_cast<int>(top->type));
                         for (blt::i32 i = 0; i < top->argc; i++)
+                        {
+                            BLT_TRACE("Child %p", top->children[i]);
                             nodes.push(top->children[i]);
+                        }
                     }
                     
                     while (!node_stack.empty())
@@ -239,30 +203,9 @@ namespace fb
             node_t* root = nullptr;
         public:
             
-            void create(const std::vector<construct_info>& info)
+            void create(blt::u64 size)
             {
-//                root = alloc.emplace<node_t>(random_type(), alloc);
-//                std::stack<std::pair<node_t*, blt::size_t>> stack;
-//                stack.emplace(root, 0);
-//                while (!stack.empty())
-//                {
-//                    auto top = stack.top();
-//                    auto* node = top.first;
-//                    auto depth = top.second;
-//                    stack.pop();
-//                    for (blt::i32 i = 0; i < node->argc; i++)
-//                    {
-//                        auto& assignment = node->children[i];
-//                        if (choice())
-//                            assignment = alloc.emplace<node_t>(random_type(), alloc);
-//                        else
-//                            assignment = alloc.emplace<node_t>(random_type_sub(), alloc);
-//                        if (depth < size)
-//                            stack.emplace(assignment, depth + 1);
-//                    }
-//                }
-                root = alloc.emplace<node_t>(info[0].type, info[0].value, alloc);
-                blt::size_t index = 1;
+                root = alloc.emplace<node_t>(random_type(), alloc);
                 std::stack<std::pair<node_t*, blt::size_t>> stack;
                 stack.emplace(root, 0);
                 while (!stack.empty())
@@ -274,11 +217,24 @@ namespace fb
                     for (blt::i32 i = 0; i < node->argc; i++)
                     {
                         auto& assignment = node->children[i];
-                        assignment = alloc.emplace<node_t>(info[index].type, info[index].value, alloc);
-                        index++;
-                        stack.emplace(assignment, depth + 1);
+                        if (depth >= size)
+                        {
+                            assignment = alloc.emplace<node_t>(type_t::VALUE, alloc);
+                            continue;
+                        }
+                        if (choice())
+                            assignment = alloc.emplace<node_t>(random_type(), alloc);
+                        else
+                            assignment = alloc.emplace<node_t>(random_type_sub(), alloc);
+                        if (depth < size)
+                            stack.emplace(assignment, depth + 1);
                     }
                 }
+                BLT_INFO("We have %ld adds, %ld subs, %ld mul, %ld val = %ld", t1_add, t1_sub, t1_mul, t1_val, t1_add + t1_sub + t1_mul + t1_val);
+                t1_add = 0;
+                t1_sub = 0;
+                t1_mul = 0;
+                t1_val = 0;
             }
             
             double evaluate()
@@ -310,8 +266,26 @@ namespace fb
                 
                 node_t() = default;
                 
-                node_t(type_t type, double value): value(value), argc(u(type)), type(type)
-                {}
+                explicit node_t(type_t type): value(0), argc(u(type)), type(type)
+                {
+                    if (type == type_t::VALUE)
+                        value = random_value();
+                    switch (type)
+                    {
+                        case type_t::ADD:
+                            t2_add++;
+                            break;
+                        case type_t::SUB:
+                            t2_sub++;
+                            break;
+                        case type_t::MUL:
+                            t2_mul++;
+                            break;
+                        case type_t::VALUE:
+                            t2_val++;
+                            break;
+                    }
+                }
             };
             
             static_assert(std::is_trivially_copyable_v<node_t>);
@@ -322,14 +296,13 @@ namespace fb
         public:
             tree2() = default;
             
-            void create(const std::vector<construct_info>& info)
+            void create(blt::u64 SIZE)
             {
-                size = static_cast<blt::size_t>(std::pow(2, std::log2(info.size()) + 1));
-                BLT_INFO("Size %ld, %ld, %ld", size, static_cast<blt::size_t>(std::log2(info.size())), info.size());
+                size = static_cast<blt::size_t>(std::pow(2, SIZE)) + 1;
+                BLT_INFO("Size %ld, %ld, %ld", size, static_cast<blt::size_t>(std::pow(2, SIZE + 1)), SIZE);
                 nodes = new node_t[size];
                 
-                nodes[1] = node_t{info[0].type, info[0].value};
-                blt::size_t index = 1;
+                nodes[1] = node_t{random_type()};
                 std::stack<std::pair<blt::size_t, blt::size_t>> stack;
                 stack.emplace(1, 0);
                 while (!stack.empty())
@@ -340,15 +313,27 @@ namespace fb
                     stack.pop();
                     for (blt::i32 i = 0; i < nodes[node].argc; i++)
                     {
-                        blt::u64 insert;
-                        if (i & 1)
-                            insert = right(node);
+                        auto idx = child(node, i);
+                        auto& assignment = nodes[idx];
+                        if (depth >= size)
+                        {
+                            assignment = node_t{type_t::VALUE};
+                            continue;
+                        }
+                        if (choice())
+                            assignment = node_t{random_type()};
                         else
-                            insert = left(node);
-                        nodes[insert] = node_t{info[index].type, info[index].value};
-                        stack.emplace(index++, depth + 1);
+                            assignment = node_t{random_type_sub()};
+                        if (depth < size)
+                            stack.emplace(idx, depth + 1);
                     }
                 }
+                BLT_INFO("We have %ld adds, %ld subs, %ld mul, %ld val = %ld", t1_add, t1_sub, t1_mul, t1_val, t1_add + t1_sub + t1_mul + t1_val);
+            }
+            
+            static index child(index node, index i)
+            {
+                return node * 2 + i;
             }
             
             static index left(index i)
@@ -418,15 +403,19 @@ namespace fb
     
     void funny()
     {
-        auto info = create_info(17);
-        type_stats(info);
-        
+        engine.reset();
         tree1 love;
-        love.create(info);
+        love.create(17);
         BLT_TRACE(love.evaluate());
         
+        engine.reset();
         tree2 fem;
-        fem.create(info);
+        fem.create(17);
         BLT_TRACE(fem.evaluate());
+    }
+    
+    void execute()
+    {
+    
     }
 }
