@@ -117,15 +117,50 @@ namespace fb
             for (blt::i32 i = 0; i < arg_c[static_cast<int>(info.back().type)]; i++)
             {
                 if (depth >= size)
+                {
                     break;
-                if (choice())
-                    stack.emplace(construct_info{random_type()}, depth + 1);
-                else
-                    stack.emplace(construct_info{random_type_sub()}, depth + 1);
+                } else if (depth == size - 1)
+                {
+                    stack.emplace(construct_info{type_t::VALUE}, depth + 1);
+                } else
+                {
+                    if (choice())
+                        stack.emplace(construct_info{random_type()}, depth + 1);
+                    else
+                        stack.emplace(construct_info{random_type_sub()}, depth + 1);
+                }
             }
         }
         
         return info;
+    }
+    
+    void type_stats(const std::vector<construct_info>& info)
+    {
+        blt::size_t add = 0;
+        blt::size_t sub = 0;
+        blt::size_t mul = 0;
+        blt::size_t val = 0;
+        
+        for (const auto& v : info)
+        {
+            switch (v.type)
+            {
+                case type_t::ADD:
+                    add++;
+                    break;
+                case type_t::SUB:
+                    sub++;
+                    break;
+                case type_t::MUL:
+                    mul++;
+                    break;
+                case type_t::VALUE:
+                    val++;
+                    break;
+            }
+        }
+        BLT_INFO("We have %ld adds, %ld subs, %ld mul, %ld val", add, sub, mul, val);
     }
     
     class tree1
@@ -136,7 +171,7 @@ namespace fb
             struct node_t
             {
                 blt::bump_allocator<true>& alloc;
-                std::array<node_t*, 2> children{};
+                std::array<node_t*, 2> children{nullptr};
                 double value = 0;
                 blt::i32 argc;
                 type_t type;
@@ -167,6 +202,7 @@ namespace fb
                 {
                     std::stack<node_t*> nodes;
                     std::stack<node_t*> node_stack;
+                    blt::size_t evals = 0;
                     
                     nodes.push(this);
                     
@@ -183,8 +219,10 @@ namespace fb
                     {
                         node_stack.top()->evaluate();
                         BLT_DEBUG(node_stack.top()->value);
+                        evals++;
                         node_stack.pop();
                     }
+                    BLT_INFO("Evaluated %ld times", evals);
                     return value;
                 }
                 
@@ -381,6 +419,8 @@ namespace fb
     void funny()
     {
         auto info = create_info(17);
+        type_stats(info);
+        
         tree1 love;
         love.create(info);
         BLT_TRACE(love.evaluate());
