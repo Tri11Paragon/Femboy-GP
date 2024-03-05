@@ -84,7 +84,7 @@ namespace fb
     double random_value()
     {
         static std::random_device dev;
-        static std::uniform_real_distribution dist(-10.0, 10.0);
+        static std::uniform_real_distribution dist(-2.0, 2.0);
         return dist(engine.get());
     }
     
@@ -108,7 +108,7 @@ namespace fb
     class tree1
     {
         public:
-            blt::bump_allocator<true> alloc{sizeof(node_t) * 8192};
+            blt::bump_allocator<true> alloc{sizeof(node_t) * 32};
         private:
             struct node_t
             {
@@ -171,10 +171,10 @@ namespace fb
                         auto* top = nodes.top();
                         node_stack.push(top);
                         nodes.pop();
-                        BLT_INFO("%ld type %d", top->argc, static_cast<int>(top->type));
+                        //BLT_INFO("%ld type %d", top->argc, static_cast<int>(top->type));
                         for (blt::i32 i = 0; i < top->argc; i++)
                         {
-                            BLT_TRACE("Child %p", top->children[i]);
+                            //BLT_TRACE("Child %p", top->children[i]);
                             nodes.push(top->children[i]);
                         }
                     }
@@ -182,7 +182,7 @@ namespace fb
                     while (!node_stack.empty())
                     {
                         node_stack.top()->evaluate();
-                        BLT_DEBUG(node_stack.top()->value);
+                        //BLT_DEBUG(node_stack.top()->value);
                         evals++;
                         node_stack.pop();
                     }
@@ -213,22 +213,27 @@ namespace fb
                     auto top = stack.top();
                     auto* node = top.first;
                     auto depth = top.second;
+                    //BLT_WARN("gen type %ld with argc: %ld", node->type, node->argc);
                     stack.pop();
+                    //BLT_TRACE0_STREAM << "Size: " << stack.size() << "\n";
                     for (blt::i32 i = 0; i < node->argc; i++)
                     {
-                        auto& assignment = node->children[i];
                         if (depth >= size)
                         {
-                            assignment = alloc.emplace<node_t>(type_t::VALUE, alloc);
+                            node->children[i] = alloc.emplace<node_t>(type_t::VALUE, alloc);
+                            //BLT_INFO("Skipping due to size, value %lf", node->children[i]->value);
                             continue;
                         }
                         if (choice())
-                            assignment = alloc.emplace<node_t>(random_type(), alloc);
+                            node->children[i] = alloc.emplace<node_t>(random_type(), alloc);
                         else
-                            assignment = alloc.emplace<node_t>(random_type_sub(), alloc);
+                            node->children[i] = alloc.emplace<node_t>(random_type_sub(), alloc);
+                        //BLT_INFO("child %p to %p has type generated %ld with argc %d, value %lf", node->children[i], node,
+                        //         static_cast<int>(node->children[i]->type), node->children[i]->argc, node->children[i]->value);
                         if (depth < size)
-                            stack.emplace(assignment, depth + 1);
+                            stack.emplace(node->children[i], depth + 1);
                     }
+                    //BLT_TRACE0_STREAM << "Size: " << stack.size() << "\n";
                 }
                 BLT_INFO("We have %ld adds, %ld subs, %ld mul, %ld val = %ld", t1_add, t1_sub, t1_mul, t1_val, t1_add + t1_sub + t1_mul + t1_val);
                 t1_add = 0;
@@ -249,169 +254,12 @@ namespace fb
             }
     };
     
-    struct tree2
-    {
-            using index = blt::size_t;
-        private:
-            inline static auto u(type_t type)
-            {
-                return static_cast<int>(type);
-            }
-            
-            struct node_t
-            {
-                double value;
-                blt::i32 argc;
-                type_t type;
-                
-                node_t() = default;
-                
-                explicit node_t(type_t type): value(0), argc(u(type)), type(type)
-                {
-                    if (type == type_t::VALUE)
-                        value = random_value();
-                    switch (type)
-                    {
-                        case type_t::ADD:
-                            t2_add++;
-                            break;
-                        case type_t::SUB:
-                            t2_sub++;
-                            break;
-                        case type_t::MUL:
-                            t2_mul++;
-                            break;
-                        case type_t::VALUE:
-                            t2_val++;
-                            break;
-                    }
-                }
-            };
-            
-            static_assert(std::is_trivially_copyable_v<node_t>);
-            
-            node_t* nodes = nullptr;
-            blt::size_t size = 0;
-        
-        public:
-            tree2() = default;
-            
-            void create(blt::u64 SIZE)
-            {
-                size = static_cast<blt::size_t>(std::pow(2, SIZE)) + 1;
-                BLT_INFO("Size %ld, %ld, %ld", size, static_cast<blt::size_t>(std::pow(2, SIZE + 1)), SIZE);
-                nodes = new node_t[size];
-                
-                nodes[1] = node_t{random_type()};
-                std::stack<std::pair<blt::size_t, blt::size_t>> stack;
-                stack.emplace(1, 0);
-                while (!stack.empty())
-                {
-                    auto top = stack.top();
-                    auto node = top.first;
-                    auto depth = top.second;
-                    stack.pop();
-                    for (blt::i32 i = 0; i < nodes[node].argc; i++)
-                    {
-                        auto idx = child(node, i);
-                        auto& assignment = nodes[idx];
-                        if (depth >= size)
-                        {
-                            assignment = node_t{type_t::VALUE};
-                            continue;
-                        }
-                        if (choice())
-                            assignment = node_t{random_type()};
-                        else
-                            assignment = node_t{random_type_sub()};
-                        if (depth < size)
-                            stack.emplace(idx, depth + 1);
-                    }
-                }
-                BLT_INFO("We have %ld adds, %ld subs, %ld mul, %ld val = %ld", t1_add, t1_sub, t1_mul, t1_val, t1_add + t1_sub + t1_mul + t1_val);
-            }
-            
-            static index child(index node, index i)
-            {
-                return node * 2 + i;
-            }
-            
-            static index left(index i)
-            {
-                return i * 2;
-            }
-            
-            static index right(index i)
-            {
-                return i * 2 + 1;
-            }
-            
-            double evaluate()
-            {
-                std::stack<blt::size_t> ns;
-                std::stack<blt::size_t> node_stack;
-                
-                ns.push(1);
-                
-                while (!ns.empty())
-                {
-                    auto top = ns.top();
-                    node_stack.push(top);
-                    ns.pop();
-                    for (blt::i32 i = 0; i < nodes[top].argc; i++)
-                    {
-                        blt::u64 insert;
-                        if (i & 1)
-                            insert = right(top);
-                        else
-                            insert = left(top);
-                        ns.push(insert);
-                    }
-                }
-                
-                while (!node_stack.empty())
-                {
-                    auto top = node_stack.top();
-                    if (nodes[top].argc == 2)
-                    {
-                        switch (nodes[top].type)
-                        {
-                            case type_t::ADD:
-                                nodes[top].value = nodes[left(top)].value + nodes[right(top)].value;
-                                break;
-                            case type_t::SUB:
-                                nodes[top].value = nodes[left(top)].value - nodes[right(top)].value;
-                                break;
-                            case type_t::MUL:
-                                nodes[top].value = nodes[left(top)].value * nodes[right(top)].value;
-                                break;
-                            case type_t::VALUE:
-                                break;
-                        }
-                    }
-                    BLT_DEBUG(nodes[top].value);
-                    node_stack.pop();
-                }
-                return nodes[1].value;
-            }
-            
-            ~tree2()
-            {
-                delete[] nodes;
-            }
-    };
-    
     void funny()
     {
         engine.reset();
         tree1 love;
         love.create(17);
         BLT_TRACE(love.evaluate());
-        
-        engine.reset();
-        tree2 fem;
-        fem.create(17);
-        BLT_TRACE(fem.evaluate());
     }
     
     void execute()
