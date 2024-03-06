@@ -97,15 +97,6 @@ namespace fb
     }
     
     std::array<blt::i32, static_cast<int>(type_t::END)> arg_c = {2, 2, 2, 2, 0};
-    blt::size_t t1_add = 0;
-    blt::size_t t1_sub = 0;
-    blt::size_t t1_mul = 0;
-    blt::size_t t1_div = 0;
-    blt::size_t t1_val = 0;
-    blt::size_t t2_add = 0;
-    blt::size_t t2_sub = 0;
-    blt::size_t t2_mul = 0;
-    blt::size_t t2_val = 0;
     
     class tree1
     {
@@ -125,26 +116,6 @@ namespace fb
                 {
                     if (type == type_t::VALUE)
                         value = random_value();
-                    switch (type)
-                    {
-                        case type_t::ADD:
-                            t1_add++;
-                            break;
-                        case type_t::SUB:
-                            t1_sub++;
-                            break;
-                        case type_t::MUL:
-                            t1_mul++;
-                            break;
-                        case type_t::DIV:
-                            t1_div++;
-                            break;
-                        case type_t::VALUE:
-                            t1_val++;
-                            break;
-                        case type_t::END:
-                            break;
-                    }
                 }
                 
                 void evaluate()
@@ -177,7 +148,6 @@ namespace fb
                 {
                     std::stack<node_t*> nodes;
                     std::stack<node_t*> node_stack;
-                    blt::size_t evals = 0;
                     
                     nodes.push(this);
                     
@@ -186,22 +156,15 @@ namespace fb
                         auto* top = nodes.top();
                         node_stack.push(top);
                         nodes.pop();
-                        //BLT_INFO("%ld type %d", top->argc, static_cast<int>(top->type));
                         for (blt::i32 i = 0; i < top->argc; i++)
-                        {
-                            //BLT_TRACE("Child %p", top->children[i]);
                             nodes.push(top->children[i]);
-                        }
                     }
                     
                     while (!node_stack.empty())
                     {
                         node_stack.top()->evaluate();
-                        //BLT_DEBUG(node_stack.top()->value);
-                        evals++;
                         node_stack.pop();
                     }
-//                    BLT_INFO("Evaluated %ld times", evals);
                     return value;
                 }
                 
@@ -252,11 +215,6 @@ namespace fb
                 }
 //                BLT_INFO("We have %ld adds, %ld subs, %ld mul, %ld div, %ld val, == %ld", t1_add, t1_sub, t1_mul, t1_div, t1_val,
 //                         t1_add + t1_sub + t1_mul + t1_val + t1_div);
-                t1_add = 0;
-                t1_sub = 0;
-                t1_mul = 0;
-                t1_div = 0;
-                t1_val = 0;
             }
             
             double evaluate()
@@ -273,22 +231,20 @@ namespace fb
     
     void funny()
     {
+        blt::bump_allocator2 alloc;
+        
         constexpr auto size = 512;
         constexpr auto tree_size = 17;
         engine.reset();
         tree1 love[size];
         for (auto& i : love)
             i.create(tree_size);
-        std::string val;
-        val.reserve(size * 128 * 2);
         BLT_START_INTERVAL("Tree Evaluation", "Single Class Bump Allocated Tree");
         for (auto& i : love)
         {
-            val += static_cast<char>(static_cast<long>(i.evaluate()));
-            val += '\n';
+            blt::black_box(i.evaluate());
         }
         BLT_END_INTERVAL("Tree Evaluation", "Single Class Bump Allocated Tree");
-        BLT_TRACE(val);
         BLT_PRINT_PROFILE("Tree Evaluation");
     }
     
