@@ -20,6 +20,7 @@
 #include <blt/std/types.h>
 #include "blt/std/ranges.h"
 #include "blt/std/allocator.h"
+#include "blt/profiling/profiler_v2.h"
 #include <random>
 #include <vector>
 #include <stack>
@@ -44,7 +45,7 @@ namespace fb
     
     enum class type_t
     {
-        ADD, SUB, MUL, VALUE
+        ADD, SUB, MUL, DIV, VALUE, END
     };
     
     static constexpr blt::u64 SEED = 691;
@@ -70,14 +71,14 @@ namespace fb
     type_t random_type()
     {
         static std::random_device dev;
-        static std::uniform_int_distribution dist(0, 3);
+        static std::uniform_int_distribution dist(0, static_cast<int>(type_t::END) - 1);
         return static_cast<type_t>(dist(engine.get()));
     }
     
     type_t random_type_sub()
     {
         static std::random_device dev;
-        static std::uniform_int_distribution dist(0, 2);
+        static std::uniform_int_distribution dist(0, static_cast<int>(type_t::END) - 2);
         return static_cast<type_t>(dist(engine.get()));
     }
     
@@ -95,10 +96,11 @@ namespace fb
         return dist(engine.get());
     }
     
-    std::array<blt::i32, 4> arg_c = {2, 2, 2, 0};
+    std::array<blt::i32, static_cast<int>(type_t::END)> arg_c = {2, 2, 2, 2, 0};
     blt::size_t t1_add = 0;
     blt::size_t t1_sub = 0;
     blt::size_t t1_mul = 0;
+    blt::size_t t1_div = 0;
     blt::size_t t1_val = 0;
     blt::size_t t2_add = 0;
     blt::size_t t2_sub = 0;
@@ -108,7 +110,7 @@ namespace fb
     class tree1
     {
         public:
-            blt::bump_allocator<true> alloc{sizeof(node_t) * 32};
+            blt::bump_allocator<true> alloc{sizeof(node_t) * 8192};
         private:
             struct node_t
             {
@@ -134,8 +136,13 @@ namespace fb
                         case type_t::MUL:
                             t1_mul++;
                             break;
+                        case type_t::DIV:
+                            t1_div++;
+                            break;
                         case type_t::VALUE:
                             t1_val++;
+                            break;
+                        case type_t::END:
                             break;
                     }
                 }
@@ -155,6 +162,14 @@ namespace fb
                             return;
                         case type_t::VALUE:
                             return;
+                        case type_t::DIV:
+                            if (children[1]->value == 0)
+                                value = 0;
+                            else
+                                value = children[0]->value / children[1]->value;
+                            break;
+                        case type_t::END:
+                            break;
                     }
                 }
                 
@@ -186,7 +201,7 @@ namespace fb
                         evals++;
                         node_stack.pop();
                     }
-                    BLT_INFO("Evaluated %ld times", evals);
+//                    BLT_INFO("Evaluated %ld times", evals);
                     return value;
                 }
                 
@@ -235,10 +250,12 @@ namespace fb
                     }
                     //BLT_TRACE0_STREAM << "Size: " << stack.size() << "\n";
                 }
-                BLT_INFO("We have %ld adds, %ld subs, %ld mul, %ld val = %ld", t1_add, t1_sub, t1_mul, t1_val, t1_add + t1_sub + t1_mul + t1_val);
+//                BLT_INFO("We have %ld adds, %ld subs, %ld mul, %ld div, %ld val, == %ld", t1_add, t1_sub, t1_mul, t1_div, t1_val,
+//                         t1_add + t1_sub + t1_mul + t1_val + t1_div);
                 t1_add = 0;
                 t1_sub = 0;
                 t1_mul = 0;
+                t1_div = 0;
                 t1_val = 0;
             }
             
@@ -256,10 +273,23 @@ namespace fb
     
     void funny()
     {
+        constexpr auto size = 512;
+        constexpr auto tree_size = 17;
         engine.reset();
-        tree1 love;
-        love.create(17);
-        BLT_TRACE(love.evaluate());
+        tree1 love[size];
+        for (auto& i : love)
+            i.create(tree_size);
+        std::string val;
+        val.reserve(size * 128 * 2);
+        BLT_START_INTERVAL("Tree Evaluation", "Single Class Bump Allocated Tree");
+        for (auto& i : love)
+        {
+            val += static_cast<char>(static_cast<long>(i.evaluate()));
+            val += '\n';
+        }
+        BLT_END_INTERVAL("Tree Evaluation", "Single Class Bump Allocated Tree");
+        BLT_TRACE(val);
+        BLT_PRINT_PROFILE("Tree Evaluation");
     }
     
     void execute()
