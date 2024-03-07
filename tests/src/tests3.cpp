@@ -25,9 +25,15 @@ namespace fb
     class base
     {
         private:
-            blt::size_t argc = 0;
-            
+            blt::size_t argc_ = 0;
         public:
+            explicit base(blt::size_t argc): argc_(argc)
+            {}
+            
+            [[nodiscard]] inline blt::size_t argc() const
+            {
+                return argc_;
+            }
     };
     
     void test3()
