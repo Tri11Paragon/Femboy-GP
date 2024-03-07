@@ -24,7 +24,10 @@ namespace fb
 {
     class base
     {
-    
+        private:
+            blt::size_t argc = 0;
+            
+        public:
     };
     
     void test3()
