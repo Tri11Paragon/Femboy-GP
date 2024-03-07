@@ -43,59 +43,6 @@ namespace fb
         public:
     };
     
-    enum class type_t
-    {
-        ADD, SUB, MUL, DIV, VALUE, END
-    };
-    
-    static constexpr blt::u64 SEED = 691;
-    
-    struct random_engine
-    {
-        private:
-            std::mt19937_64 engine{SEED};
-        public:
-            random_engine() = default;
-            
-            void reset(blt::u64 seed = SEED)
-            {
-                engine = std::mt19937_64{seed};
-            }
-            
-            auto& get()
-            {
-                return engine;
-            }
-    } engine;
-    
-    type_t random_type()
-    {
-        static std::random_device dev;
-        static std::uniform_int_distribution dist(0, static_cast<int>(type_t::END) - 1);
-        return static_cast<type_t>(dist(engine.get()));
-    }
-    
-    type_t random_type_sub()
-    {
-        static std::random_device dev;
-        static std::uniform_int_distribution dist(0, static_cast<int>(type_t::END) - 2);
-        return static_cast<type_t>(dist(engine.get()));
-    }
-    
-    double random_value()
-    {
-        static std::random_device dev;
-        static std::uniform_real_distribution dist(-2.0, 2.0);
-        return dist(engine.get());
-    }
-    
-    bool choice()
-    {
-        static std::random_device dev;
-        static std::uniform_int_distribution dist(0, 1);
-        return dist(engine.get());
-    }
-    
     std::array<blt::i32, static_cast<int>(type_t::END)> arg_c = {2, 2, 2, 2, 0};
     
     template<typename ALLOC>
@@ -249,7 +196,7 @@ namespace fb
         BLT_END_INTERVAL("Tree Evaluation", blt::type_string<ALLOC>() + ": Single Class Tree");
     }
     
-    void funny()
+    void test2()
     {
         bump<blt::bump_allocator_old<true>>();
         bump<blt::bump_allocator<4096 * 512, true, 4096 * 512>>();
@@ -258,10 +205,5 @@ namespace fb
         BLT_PRINT_PROFILE("Tree Construction");
         BLT_PRINT_PROFILE("Tree Evaluation");
         BLT_PRINT_PROFILE("Tree Destruction");
-    }
-    
-    void execute()
-    {
-    
     }
 }

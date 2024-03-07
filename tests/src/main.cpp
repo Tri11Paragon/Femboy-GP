@@ -46,7 +46,7 @@ int main(int argc, const char** argv)
     
     if (args.contains("--tests"))
     {
-        //fb::execute_tests();
+//        fb::test2();
         fb::test3();
     }
     

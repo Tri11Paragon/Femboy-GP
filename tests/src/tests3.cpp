@@ -19,20 +19,230 @@
 #include <blt/std/array.h>
 #include "blt/std/utility.h"
 #include "blt/std/logging.h"
+#include "blt/std/allocator.h"
+#include <lilfbtf/test2.h>
+#include <random>
+#include <stack>
 
 namespace fb
 {
-    class base
+    using TYPE = double;
+    
+    class base_t
     {
         private:
             blt::size_t argc_ = 0;
+        protected:
+            TYPE value = 0;
         public:
-            explicit base(blt::size_t argc): argc_(argc)
+            explicit base_t(blt::size_t argc): argc_(argc)
             {}
             
             [[nodiscard]] inline blt::size_t argc() const
+            { return argc_; }
+            
+            [[nodiscard]] inline TYPE getValue() const
             {
-                return argc_;
+                return value;
+            }
+            
+            inline virtual void call(blt::span<TYPE> args) = 0;
+            
+            virtual ~base_t() = default;
+    };
+    
+    class add_t : public base_t
+    {
+        public:
+            add_t(): base_t(2)
+            {}
+            
+            inline void call(blt::span<TYPE> args) final
+            {
+                value = args[0] + args[1];
+            }
+    };
+    
+    class sub_t : public base_t
+    {
+        public:
+            sub_t(): base_t(2)
+            {}
+            
+            inline void call(blt::span<TYPE> args) final
+            {
+                value = args[0] - args[1];
+            }
+    };
+    
+    class mul_t : public base_t
+    {
+        public:
+            mul_t(): base_t(2)
+            {}
+            
+            inline void call(blt::span<TYPE> args) final
+            {
+                value = args[0] * args[1];
+            }
+    };
+    
+    class div_t : public base_t
+    {
+        public:
+            div_t(): base_t(2)
+            {}
+            
+            inline void call(blt::span<TYPE> args) final
+            {
+                if (args[1] == 0)
+                    value = 0;
+                else
+                    value = args[0] / args[1];
+            }
+    };
+    
+    class value_t : public base_t
+    {
+        private:
+            TYPE value = 0;
+        public:
+            value_t(): base_t(0)
+            {
+                value = random_value();
+            }
+            
+            inline void call(blt::span<TYPE>) final
+            {}
+    };
+    
+    blt::bump_allocator alloc;
+    
+    base_t* create_node_type(type_t i)
+    {
+        switch (i)
+        {
+            case type_t::ADD:
+                return alloc.emplace<add_t>();
+            case type_t::SUB:
+                return alloc.emplace<sub_t>();
+            case type_t::MUL:
+                return alloc.emplace<mul_t>();
+            case type_t::DIV:
+                return alloc.emplace<div_t>();
+            case type_t::VALUE:
+                return alloc.emplace<value_t>();
+            default:
+                BLT_ERROR("Hey maybe something weird is going on here");
+                return nullptr;
+        }
+    }
+    
+    class tree2
+    {
+        private:
+            struct node_t
+            {
+                base_t* type;
+                std::array<node_t*, 2> children{nullptr};
+                
+                explicit node_t(type_t type): type(create_node_type(type))
+                {}
+                
+                void evaluate()
+                {
+                    TYPE v1 = children[0]->type->getValue();
+                    TYPE v2 = children[1]->type->getValue();
+                    TYPE d[2]{v1, v2};
+                    type->call(blt::span{d});
+                }
+                
+                double evaluate_tree()
+                {
+                    std::stack<node_t*> nodes;
+                    std::stack<node_t*> node_stack;
+                    
+                    nodes.push(this);
+                    
+                    while (!nodes.empty())
+                    {
+                        auto* top = nodes.top();
+                        node_stack.push(top);
+                        nodes.pop();
+                        for (blt::size_t i = 0; i < top->type->argc(); i++)
+                            nodes.push(top->children[i]);
+                    }
+                    
+                    while (!node_stack.empty())
+                    {
+                        node_stack.top()->evaluate();
+                        node_stack.pop();
+                    }
+                    return value;
+                }
+                
+                ~node_t()
+                {
+                    alloc.destroy(type);
+                    alloc.deallocate(type);
+                    for (blt::size_t i = 0; i < type->argc(); i++)
+                    {
+                        alloc.destroy(children[i]);
+                        alloc.deallocate(children[i]);
+                    }
+                }
+            };
+            
+            node_t* root = nullptr;
+        public:
+            
+            void create(blt::u64 size)
+            {
+                root = alloc.template emplace<node_t>(random_type());
+                std::stack<std::pair<node_t*, blt::size_t>> stack;
+                stack.emplace(root, 0);
+                while (!stack.empty())
+                {
+                    auto top = stack.top();
+                    auto* node = top.first;
+                    auto depth = top.second;
+                    //BLT_WARN("gen type %ld with argc: %ld", node->type, node->argc);
+                    stack.pop();
+                    //BLT_TRACE0_STREAM << "Size: " << stack.size() << "\n";
+                    for (blt::i32 i = 0; i < node->argc; i++)
+                    {
+                        if (depth >= size)
+                        {
+                            node->children[i] = alloc.template emplace<node_t>(type_t::VALUE);
+                            //BLT_INFO("Skipping due to size, value %lf", node->children[i]->value);
+                            continue;
+                        }
+                        if (choice())
+                            node->children[i] = alloc.template emplace<node_t>(random_type());
+                        else
+                            node->children[i] = alloc.template emplace<node_t>(random_type_sub());
+                        //BLT_INFO("child %p to %p has type generated %ld with argc %d, value %lf", node->children[i], node,
+                        //         static_cast<int>(node->children[i]->type), node->children[i]->argc, node->children[i]->value);
+                        if (depth < size)
+                            stack.emplace(node->children[i], depth + 1);
+                    }
+                    //BLT_TRACE0_STREAM << "Size: " << stack.size() << "\n";
+                }
+//                BLT_INFO("We have %ld adds, %ld subs, %ld mul, %ld div, %ld val, == %ld", t1_add, t1_sub, t1_mul, t1_div, t1_val,
+//                         t1_add + t1_sub + t1_mul + t1_val + t1_div);
+            }
+            
+            double evaluate()
+            {
+                return root->evaluate_tree();
+            }
+            
+            ~tree2()
+            {
+                BLT_START_INTERVAL("Tree Destruction", blt::type_string<ALLOC>() + ": Single Class Tree");
+                alloc.destroy(root);
+                alloc.deallocate(root);
+                BLT_END_INTERVAL("Tree Destruction", blt::type_string<ALLOC>() + ": Single Class Tree");
             }
     };
     
