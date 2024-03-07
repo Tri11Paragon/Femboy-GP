@@ -239,8 +239,10 @@ namespace fb
         constexpr auto tree_size = 17;
         engine.reset();
         tree1<ALLOC> love[size];
+        BLT_START_INTERVAL("Tree Construction", blt::type_string<ALLOC>() + ": Single Class Tree");
         for (auto& i : love)
             i.create(tree_size);
+        BLT_END_INTERVAL("Tree Construction", blt::type_string<ALLOC>() + ": Single Class Tree");
         BLT_START_INTERVAL("Tree Evaluation", blt::type_string<ALLOC>() + ": Single Class Tree");
         for (auto& i : love)
             blt::black_box(i.evaluate());
@@ -249,10 +251,11 @@ namespace fb
     
     void funny()
     {
-        bump<blt::bump_allocator<true>>();
-        bump<blt::bump_allocator2<4096 * 512, true, 4096 * 512>>();
-        bump<blt::bump_allocator2<4096 * 512, false, 4096 * 512>>();
+        bump<blt::bump_allocator_old<true>>();
+        bump<blt::bump_allocator<4096 * 512, true, 4096 * 512>>();
+        bump<blt::bump_allocator<4096 * 512, false, 4096 * 512>>();
         
+        BLT_PRINT_PROFILE("Tree Construction");
         BLT_PRINT_PROFILE("Tree Evaluation");
         BLT_PRINT_PROFILE("Tree Destruction");
     }

@@ -4,6 +4,7 @@
 #include <blt/std/logging.h>
 #include <blt/parse/argparse.h>
 #include <lilfbtf/test2.h>
+#include <lilfbtf/test3.h>
 
 struct data {
     float f;
@@ -44,7 +45,10 @@ int main(int argc, const char** argv)
     auto args = parser.parse_args(argc, argv);
     
     if (args.contains("--tests"))
-        fb::execute_tests();
+    {
+        //fb::execute_tests();
+        fb::test3();
+    }
     
     return 0;
 }
