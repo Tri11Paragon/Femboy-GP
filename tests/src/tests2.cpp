@@ -98,20 +98,21 @@ namespace fb
     
     std::array<blt::i32, static_cast<int>(type_t::END)> arg_c = {2, 2, 2, 2, 0};
     
+    template<typename ALLOC>
     class tree1
     {
         public:
-            blt::bump_allocator<true> alloc{sizeof(node_t) * 8192};
+            ALLOC alloc{sizeof(node_t) * 8192};
         private:
             struct node_t
             {
-                blt::bump_allocator<true>& alloc;
+                ALLOC& alloc;
                 std::array<node_t*, 2> children{nullptr};
                 double value = 0;
                 blt::i32 argc;
                 type_t type;
                 
-                explicit node_t(type_t type, blt::bump_allocator<true>& alloc):
+                explicit node_t(type_t type, ALLOC& alloc):
                         alloc(alloc), argc(arg_c[static_cast<int>(type)]), type(type)
                 {
                     if (type == type_t::VALUE)
@@ -183,7 +184,7 @@ namespace fb
             
             void create(blt::u64 size)
             {
-                root = alloc.emplace<node_t>(random_type(), alloc);
+                root = alloc.template emplace<node_t>(random_type(), alloc);
                 std::stack<std::pair<node_t*, blt::size_t>> stack;
                 stack.emplace(root, 0);
                 while (!stack.empty())
@@ -198,14 +199,14 @@ namespace fb
                     {
                         if (depth >= size)
                         {
-                            node->children[i] = alloc.emplace<node_t>(type_t::VALUE, alloc);
+                            node->children[i] = alloc.template emplace<node_t>(type_t::VALUE, alloc);
                             //BLT_INFO("Skipping due to size, value %lf", node->children[i]->value);
                             continue;
                         }
                         if (choice())
-                            node->children[i] = alloc.emplace<node_t>(random_type(), alloc);
+                            node->children[i] = alloc.template emplace<node_t>(random_type(), alloc);
                         else
-                            node->children[i] = alloc.emplace<node_t>(random_type_sub(), alloc);
+                            node->children[i] = alloc.template emplace<node_t>(random_type_sub(), alloc);
                         //BLT_INFO("child %p to %p has type generated %ld with argc %d, value %lf", node->children[i], node,
                         //         static_cast<int>(node->children[i]->type), node->children[i]->argc, node->children[i]->value);
                         if (depth < size)
@@ -224,28 +225,36 @@ namespace fb
             
             ~tree1()
             {
+                BLT_START_INTERVAL("Tree Destruction", blt::type_string<ALLOC>() + ": Single Class Tree");
                 alloc.destroy(root);
                 alloc.deallocate(root);
+                BLT_END_INTERVAL("Tree Destruction", blt::type_string<ALLOC>() + ": Single Class Tree");
             }
     };
     
-    void funny()
+    template<typename ALLOC>
+    void bump()
     {
-        blt::bump_allocator2 alloc;
-        
         constexpr auto size = 512;
         constexpr auto tree_size = 17;
         engine.reset();
-        tree1 love[size];
+        tree1<ALLOC> love[size];
         for (auto& i : love)
             i.create(tree_size);
-        BLT_START_INTERVAL("Tree Evaluation", "Single Class Bump Allocated Tree");
+        BLT_START_INTERVAL("Tree Evaluation", blt::type_string<ALLOC>() + ": Single Class Tree");
         for (auto& i : love)
-        {
             blt::black_box(i.evaluate());
-        }
-        BLT_END_INTERVAL("Tree Evaluation", "Single Class Bump Allocated Tree");
+        BLT_END_INTERVAL("Tree Evaluation", blt::type_string<ALLOC>() + ": Single Class Tree");
+    }
+    
+    void funny()
+    {
+        bump<blt::bump_allocator<true>>();
+        bump<blt::bump_allocator2<4096 * 512, true, 4096 * 512>>();
+        bump<blt::bump_allocator2<4096 * 512, false, 4096 * 512>>();
+        
         BLT_PRINT_PROFILE("Tree Evaluation");
+        BLT_PRINT_PROFILE("Tree Destruction");
     }
     
     void execute()
