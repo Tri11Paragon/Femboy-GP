@@ -199,11 +199,7 @@ namespace fb
     void test2()
     {
         bump<blt::bump_allocator_old<true>>();
-        bump<blt::bump_allocator<4096 * 512, true, 4096 * 512>>();
+        bump<blt::bump_allocator<4096 * 512, true, 4096 * 512, false>>();
         bump<blt::bump_allocator<4096 * 512, false, 4096 * 512>>();
-        
-        BLT_PRINT_PROFILE("Tree Construction");
-        BLT_PRINT_PROFILE("Tree Evaluation");
-        BLT_PRINT_PROFILE("Tree Destruction");
     }
 }

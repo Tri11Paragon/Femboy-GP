@@ -5,6 +5,7 @@
 #include <blt/parse/argparse.h>
 #include <lilfbtf/test2.h>
 #include <lilfbtf/test3.h>
+#include "blt/profiling/profiler_v2.h"
 
 struct data {
     float f;
@@ -46,8 +47,12 @@ int main(int argc, const char** argv)
     
     if (args.contains("--tests"))
     {
-//        fb::test2();
+        //fb::test2();
         fb::test3();
+        
+        BLT_PRINT_PROFILE("Tree Construction");
+        BLT_PRINT_PROFILE("Tree Evaluation");
+        BLT_PRINT_PROFILE("Tree Destruction");
     }
     
     return 0;

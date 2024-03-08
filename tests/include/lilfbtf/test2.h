@@ -53,28 +53,28 @@ namespace fb
         ADD, SUB, MUL, DIV, VALUE, END
     };
     
-    type_t random_type()
+    inline type_t random_type()
     {
         static std::random_device dev;
         static std::uniform_int_distribution dist(0, static_cast<int>(type_t::END) - 1);
         return static_cast<type_t>(dist(engine.get()));
     }
     
-    type_t random_type_sub()
+    inline type_t random_type_sub()
     {
         static std::random_device dev;
         static std::uniform_int_distribution dist(0, static_cast<int>(type_t::END) - 2);
         return static_cast<type_t>(dist(engine.get()));
     }
     
-    double random_value()
+    inline double random_value()
     {
         static std::random_device dev;
         static std::uniform_real_distribution dist(-2.0, 2.0);
         return dist(engine.get());
     }
     
-    bool choice()
+    inline bool choice()
     {
         static std::random_device dev;
         static std::uniform_int_distribution dist(0, 1);
