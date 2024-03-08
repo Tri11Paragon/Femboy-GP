@@ -255,12 +255,21 @@ namespace fb
             {
                 base_t* type = nullptr;
                 node_t** children = nullptr;
+                type_t type_value;
                 
-                explicit node_t(type_t type): type(create_node_type(type))
+                explicit node_t(type_t type): type(create_node_type(type)), type_value(type)
                 {
                     if (this->type == nullptr)
                         throw std::bad_alloc();
+                    else if (reinterpret_cast<blt::size_t>(this->type) % alignof(base_t*) != 0)
+                        BLT_WARN("type pointer %p is misaligned, expecting alignment of %ld reminder %ld", this->type, alignof(base_t*),
+                                 reinterpret_cast<blt::size_t>(this->type) % alignof(base_t*));
                     children = alloc.emplace_many<node_t*>(this->type->argc());
+                    for (blt::size_t i = 0; i < this->type->argc(); i++)
+                        children[i] = nullptr;
+                    if (reinterpret_cast<blt::size_t>(this->children) % alignof(node_t**) != 0)
+                        BLT_WARN("children pointer is misaligned, expecting alignment of %ld remainder %ld", this->children, alignof(node_t**),
+                                 reinterpret_cast<blt::size_t>(this->children) % alignof(node_t**));
                 }
                 
                 void evaluate() const
@@ -301,17 +310,11 @@ namespace fb
                 
                 ~node_t()
                 {
-                    if (children != nullptr)
+                    for (blt::size_t i = 0; i < type->argc(); i++)
                     {
-                        for (blt::size_t i = 0; i < type->argc(); i++)
-                        {
-                            alloc.destroy(children[i]);
-                            alloc.deallocate(children[i]);
-                        }
-                    } else
-                        if (type->argc() != 0)
-                            BLT_WARN("Hey wtf is up %ld", type->argc());
-                    alloc.destroy(children);
+                        alloc.destroy(children[i]);
+                        alloc.deallocate(children[i]);
+                    }
                     alloc.deallocate(children);
                     alloc.destroy(type);
                     alloc.deallocate(type);
@@ -432,7 +435,27 @@ namespace fb
         
         delete[] cum;
         
-        //run();
+        run();
         run2();
+
+//        using testing = blt::size_t;
+//        constexpr blt::size_t INT_SIZE = blt::BLT_2MB_SIZE * 8 / sizeof(testing);
+//        auto** data = new testing*[INT_SIZE];
+//
+//        for (blt::size_t i = 0; i < INT_SIZE; i++)
+//        {
+//            data[i] = alloc.emplace<testing>();
+//            *data[i] = 256;
+//        }
+//
+//        for (blt::size_t i = 0; i < INT_SIZE; i++)
+//        {
+//            alloc.deallocate(data[i]);
+//            auto* blk = alloc.blk(data[i]);
+//            if (*data[i] != 256)
+//                BLT_WARN("Data is not 256 (%d)! %ld || %ld || 0x%lx || 0x%lx pointer %p part of block %p", *data[i], i % blt::BLT_2MB_SIZE, i, i, i % blt::BLT_2MB_SIZE, data[i], blk);
+//        }
+
+//        delete[] data;
     }
 }

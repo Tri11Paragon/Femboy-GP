@@ -47,7 +47,7 @@ int main(int argc, const char** argv)
     
     if (args.contains("--tests"))
     {
-        //fb::test2();
+        fb::test2();
         fb::test3();
         
         BLT_PRINT_PROFILE("Tree Construction");
