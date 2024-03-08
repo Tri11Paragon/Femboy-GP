@@ -255,9 +255,8 @@ namespace fb
             {
                 base_t* type = nullptr;
                 node_t** children = nullptr;
-                type_t type_value;
                 
-                explicit node_t(type_t type): type(create_node_type(type)), type_value(type)
+                explicit node_t(type_t type): type(create_node_type(type))
                 {
                     if (this->type == nullptr)
                         throw std::bad_alloc();
@@ -400,7 +399,7 @@ namespace fb
     
     void run2()
     {
-        constexpr auto size = 512;
+        constexpr auto size = 1;
         constexpr auto tree_size = 17;
         engine.reset();
         tree3 love[size];
@@ -435,7 +434,7 @@ namespace fb
         
         delete[] cum;
         
-        run();
+        //run();
         run2();
 
 //        using testing = blt::size_t;
