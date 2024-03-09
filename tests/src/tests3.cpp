@@ -23,10 +23,116 @@
 #include "blt/profiling/profiler_v2.h"
 #include <lilfbtf/test2.h>
 #include <stack>
+#include <any>
+#include <utility>
 
 namespace fb
 {
     using TYPE = double;
+    
+    class func_base_t
+    {
+        private:
+            blt::size_t argc_ = 0;
+            std::function<void(func_base_t& us, blt::span<TYPE> args)> func;
+        protected:
+            TYPE value = 0;
+        public:
+            explicit func_base_t(blt::size_t argc, std::function<void(func_base_t& us, blt::span<TYPE> args)> func):
+                    argc_(argc), func(std::move(func))
+            {}
+            
+            [[nodiscard]] inline blt::size_t argc() const
+            { return argc_; }
+            
+            [[nodiscard]] inline TYPE getValue() const
+            {
+                return value;
+            }
+            
+            inline func_base_t setValue(TYPE val)
+            {
+                this->value = val;
+                return *this;
+            }
+            
+            inline void call(blt::span<TYPE> args)
+            {
+                func(*this, args);
+            };
+            
+            ~func_base_t() = default;
+    };
+    
+    class func_ref_base_t
+    {
+        private:
+            blt::size_t argc_ = 0;
+            std::function<void(func_ref_base_t& us, blt::span<TYPE> args)>& func;
+        protected:
+            TYPE value = 0;
+        public:
+            explicit func_ref_base_t(blt::size_t argc, std::function<void(func_ref_base_t& us, blt::span<TYPE> args)>& func):
+                    argc_(argc), func(func)
+            {}
+            
+            [[nodiscard]] inline blt::size_t argc() const
+            { return argc_; }
+            
+            [[nodiscard]] inline TYPE getValue() const
+            {
+                return value;
+            }
+            
+            inline func_ref_base_t setValue(TYPE val)
+            {
+                this->value = val;
+                return *this;
+            }
+            
+            inline void call(blt::span<TYPE> args)
+            {
+                func(*this, args);
+            };
+            
+            ~func_ref_base_t() = default;
+    };
+    using func_ref_t = std::function<void(func_ref_base_t&, blt::span<TYPE>)>;
+    
+    class func_ref_any_base_t
+    {
+        private:
+            blt::size_t argc_ = 0;
+            std::function<void(func_ref_any_base_t& us, blt::span<std::any> args)>& func;
+        protected:
+            std::any value;
+        public:
+            explicit func_ref_any_base_t(blt::size_t argc, std::function<void(func_ref_any_base_t& us, blt::span<std::any> args)>& func):
+                    argc_(argc), func(func)
+            {}
+            
+            [[nodiscard]] inline blt::size_t argc() const
+            { return argc_; }
+            
+            [[nodiscard]] inline std::any getValue() const
+            {
+                return value;
+            }
+            
+            inline func_ref_any_base_t& setValue(std::any val)
+            {
+                this->value = std::move(val);
+                return *this;
+            }
+            
+            inline void call(blt::span<std::any> args)
+            {
+                func(*this, args);
+            };
+            
+            ~func_ref_any_base_t() = default;
+    };
+    using func_ref_any_t = std::function<void(func_ref_any_base_t&, blt::span<std::any>)>;
     
     class base_t
     {
@@ -116,6 +222,40 @@ namespace fb
     
     blt::bump_allocator<blt::BLT_2MB_SIZE, true> alloc;
     
+    inline func_ref_t add_function = [](func_ref_base_t& us, blt::span<TYPE> args) {
+        us.setValue(args[0] + args[1]);
+    };
+    inline func_ref_t sub_function = [](func_ref_base_t& us, blt::span<TYPE> args) {
+        us.setValue(args[0] - args[1]);
+    };
+    inline func_ref_t mul_function = [](func_ref_base_t& us, blt::span<TYPE> args) {
+        us.setValue(args[0] * args[1]);
+    };
+    inline func_ref_t div_function = [](func_ref_base_t& us, blt::span<TYPE> args) {
+        if (args[1] == 0)
+            us.setValue(0);
+        else
+            us.setValue(args[0] / args[1]);
+    };
+    inline func_ref_t value_function = [](auto&, auto) {};
+    
+    inline func_ref_any_t add_function_any = [](func_ref_any_base_t& us, blt::span<std::any> args) {
+        us.setValue(std::any_cast<double>(args[0]) + std::any_cast<double>(args[1]));
+    };
+    inline func_ref_any_t sub_function_any = [](func_ref_any_base_t& us, blt::span<std::any> args) {
+        us.setValue(std::any_cast<double>(args[0]) - std::any_cast<double>(args[1]));
+    };
+    inline func_ref_any_t mul_function_any = [](func_ref_any_base_t& us, blt::span<std::any> args) {
+        us.setValue(std::any_cast<double>(args[0]) * std::any_cast<double>(args[1]));
+    };
+    inline func_ref_any_t div_function_any = [](func_ref_any_base_t& us, blt::span<std::any> args) {
+        if (std::any_cast<double>(args[1]) == 0)
+            us.setValue(0.0);
+        else
+            us.setValue(std::any_cast<double>(args[0]) / std::any_cast<double>(args[1]));
+    };
+    inline func_ref_any_t value_function_any = [](auto&, auto) {};
+    
     base_t* create_node_type(type_t i)
     {
         switch (i)
@@ -133,6 +273,79 @@ namespace fb
             default:
                 BLT_ERROR("Hey maybe something weird is going on here");
                 return nullptr;
+        }
+    }
+    
+    func_base_t create_node_func_type(type_t i)
+    {
+        switch (i)
+        {
+            case type_t::ADD:
+                return func_base_t(2, [](func_base_t& us, blt::span<TYPE> args) {
+                    us.setValue(args[0] + args[1]);
+                });
+            case type_t::SUB:
+                return func_base_t(2, [](func_base_t& us, blt::span<TYPE> args) {
+                    us.setValue(args[0] - args[1]);
+                });
+            case type_t::MUL:
+                return func_base_t(2, [](func_base_t& us, blt::span<TYPE> args) {
+                    us.setValue(args[0] * args[1]);
+                });
+            case type_t::DIV:
+                return func_base_t(2, [](func_base_t& us, blt::span<TYPE> args) {
+                    if (args[1] == 0)
+                        us.setValue(0);
+                    else
+                        us.setValue(args[0] / args[1]);
+                });
+            case type_t::VALUE:
+                return func_base_t(0, [](func_base_t&, blt::span<TYPE>) {
+                
+                }).setValue(random_value());
+            default:
+                BLT_ERROR("Hey maybe something weird is going on here");
+                return func_base_t{0, [](auto, auto) {}};
+        }
+    }
+    
+    func_ref_base_t create_node_func_ref_type(type_t i)
+    {
+        switch (i)
+        {
+            case type_t::ADD:
+                return func_ref_base_t(2, add_function);
+            case type_t::SUB:
+                return func_ref_base_t(2, sub_function);
+            case type_t::MUL:
+                return func_ref_base_t(2, mul_function);
+            case type_t::DIV:
+                return func_ref_base_t(2, div_function);
+            case type_t::VALUE:
+                return func_ref_base_t(0, value_function).setValue(random_value());
+            default:
+                BLT_ERROR("Hey maybe something weird is going on here");
+                return func_ref_base_t(0, value_function);
+        }
+    }
+    
+    func_ref_any_base_t create_node_func_ref_any_type(type_t i)
+    {
+        switch (i)
+        {
+            case type_t::ADD:
+                return func_ref_any_base_t(2, add_function_any);
+            case type_t::SUB:
+                return func_ref_any_base_t(2, sub_function_any);
+            case type_t::MUL:
+                return func_ref_any_base_t(2, mul_function_any);
+            case type_t::DIV:
+                return func_ref_any_base_t(2, div_function_any);
+            case type_t::VALUE:
+                return func_ref_any_base_t(0, value_function_any).setValue(random_value());
+            default:
+                BLT_ERROR("Hey maybe something weird is going on here");
+                return func_ref_any_base_t(0, value_function_any);
         }
     }
     
@@ -381,6 +594,357 @@ namespace fb
             }
     };
     
+    class tree4
+    {
+        private:
+            struct node_t
+            {
+                func_base_t type;
+                node_t** children = nullptr;
+                
+                explicit node_t(type_t type): type(create_node_func_type(type))
+                {
+                    children = alloc.emplace_many<node_t*>(this->type.argc());
+                    for (blt::size_t i = 0; i < this->type.argc(); i++)
+                        children[i] = nullptr;
+                }
+                
+                void evaluate()
+                {
+                    if (type.argc() > 0)
+                    {
+                        TYPE v1 = children[0]->type.getValue();
+                        TYPE v2 = children[1]->type.getValue();
+                        TYPE d[2]{v1, v2};
+                        type.call(blt::span{d});
+                    } else
+                        type.call({});
+                }
+                
+                double evaluate_tree()
+                {
+                    std::stack<node_t*> nodes;
+                    std::stack<node_t*> node_stack;
+                    
+                    nodes.push(this);
+                    
+                    while (!nodes.empty())
+                    {
+                        auto* top = nodes.top();
+                        node_stack.push(top);
+                        nodes.pop();
+                        for (blt::size_t i = 0; i < top->type.argc(); i++)
+                            nodes.push(top->children[i]);
+                    }
+                    
+                    while (!node_stack.empty())
+                    {
+                        node_stack.top()->evaluate();
+                        node_stack.pop();
+                    }
+                    return type.getValue();
+                }
+                
+                ~node_t()
+                {
+                    for (blt::size_t i = 0; i < type.argc(); i++)
+                    {
+                        alloc.destroy(children[i]);
+                        alloc.deallocate(children[i]);
+                    }
+                    alloc.deallocate(children);
+                }
+            };
+            
+            node_t* root = nullptr;
+        public:
+            tree4()
+            {}
+            
+            void create(blt::u64 size)
+            {
+                root = alloc.template emplace<node_t>(random_type());
+                std::stack<std::pair<node_t*, blt::size_t>> stack;
+                stack.emplace(root, 0);
+                while (!stack.empty())
+                {
+                    auto top = stack.top();
+                    auto* node = top.first;
+                    auto depth = top.second;
+                    //BLT_WARN("gen type %ld with argc: %ld", node->type, node->argc);
+                    stack.pop();
+                    //BLT_TRACE0_STREAM << "Size: " << stack.size() << "\n";
+                    for (blt::size_t i = 0; i < node->type.argc(); i++)
+                    {
+                        if (depth >= size)
+                        {
+                            node->children[i] = alloc.template emplace<node_t>(type_t::VALUE);
+                            //BLT_INFO("Skipping due to size, value %lf", node->children[i]->value);
+                            continue;
+                        }
+                        if (choice())
+                            node->children[i] = alloc.template emplace<node_t>(random_type());
+                        else
+                            node->children[i] = alloc.template emplace<node_t>(random_type_sub());
+                        //BLT_INFO("child %p to %p has type generated %ld with argc %d, value %lf", node->children[i], node,
+                        //         static_cast<int>(node->children[i]->type), node->children[i]->argc, node->children[i]->value);
+                        if (depth < size)
+                            stack.emplace(node->children[i], depth + 1);
+                    }
+                    //BLT_TRACE0_STREAM << "Size: " << stack.size() << "\n";
+                }
+//                BLT_INFO("We have %ld adds, %ld subs, %ld mul, %ld div, %ld val, == %ld", t1_add, t1_sub, t1_mul, t1_div, t1_val,
+//                         t1_add + t1_sub + t1_mul + t1_val + t1_div);
+            }
+            
+            double evaluate()
+            {
+                return root->evaluate_tree();
+            }
+            
+            ~tree4()
+            {
+                BLT_START_INTERVAL("Tree Destruction", "Inheritance Tree v3");
+                alloc.destroy(root);
+                alloc.deallocate(root);
+                BLT_END_INTERVAL("Tree Destruction", "Inheritance Tree v3");
+            }
+    };
+    
+    class tree5
+    {
+        private:
+            struct node_t
+            {
+                func_ref_base_t type;
+                node_t** children = nullptr;
+                
+                explicit node_t(type_t type): type(create_node_func_ref_type(type))
+                {
+                    children = alloc.emplace_many<node_t*>(this->type.argc());
+                    for (blt::size_t i = 0; i < this->type.argc(); i++)
+                        children[i] = nullptr;
+                }
+                
+                void evaluate()
+                {
+                    if (type.argc() > 0)
+                    {
+                        TYPE v1 = children[0]->type.getValue();
+                        TYPE v2 = children[1]->type.getValue();
+                        TYPE d[2]{v1, v2};
+                        type.call(blt::span{d});
+                    } else
+                        type.call({});
+                }
+                
+                double evaluate_tree()
+                {
+                    std::stack<node_t*> nodes;
+                    std::stack<node_t*> node_stack;
+                    
+                    nodes.push(this);
+                    
+                    while (!nodes.empty())
+                    {
+                        auto* top = nodes.top();
+                        node_stack.push(top);
+                        nodes.pop();
+                        for (blt::size_t i = 0; i < top->type.argc(); i++)
+                            nodes.push(top->children[i]);
+                    }
+                    
+                    while (!node_stack.empty())
+                    {
+                        node_stack.top()->evaluate();
+                        node_stack.pop();
+                    }
+                    return type.getValue();
+                }
+                
+                ~node_t()
+                {
+                    for (blt::size_t i = 0; i < type.argc(); i++)
+                    {
+                        alloc.destroy(children[i]);
+                        alloc.deallocate(children[i]);
+                    }
+                    alloc.deallocate(children);
+                }
+            };
+            
+            node_t* root = nullptr;
+        public:
+            tree5()
+            {}
+            
+            void create(blt::u64 size)
+            {
+                root = alloc.template emplace<node_t>(random_type());
+                std::stack<std::pair<node_t*, blt::size_t>> stack;
+                stack.emplace(root, 0);
+                while (!stack.empty())
+                {
+                    auto top = stack.top();
+                    auto* node = top.first;
+                    auto depth = top.second;
+                    //BLT_WARN("gen type %ld with argc: %ld", node->type, node->argc);
+                    stack.pop();
+                    //BLT_TRACE0_STREAM << "Size: " << stack.size() << "\n";
+                    for (blt::size_t i = 0; i < node->type.argc(); i++)
+                    {
+                        if (depth >= size)
+                        {
+                            node->children[i] = alloc.template emplace<node_t>(type_t::VALUE);
+                            //BLT_INFO("Skipping due to size, value %lf", node->children[i]->value);
+                            continue;
+                        }
+                        if (choice())
+                            node->children[i] = alloc.template emplace<node_t>(random_type());
+                        else
+                            node->children[i] = alloc.template emplace<node_t>(random_type_sub());
+                        //BLT_INFO("child %p to %p has type generated %ld with argc %d, value %lf", node->children[i], node,
+                        //         static_cast<int>(node->children[i]->type), node->children[i]->argc, node->children[i]->value);
+                        if (depth < size)
+                            stack.emplace(node->children[i], depth + 1);
+                    }
+                    //BLT_TRACE0_STREAM << "Size: " << stack.size() << "\n";
+                }
+//                BLT_INFO("We have %ld adds, %ld subs, %ld mul, %ld div, %ld val, == %ld", t1_add, t1_sub, t1_mul, t1_div, t1_val,
+//                         t1_add + t1_sub + t1_mul + t1_val + t1_div);
+            }
+            
+            double evaluate()
+            {
+                return root->evaluate_tree();
+            }
+            
+            ~tree5()
+            {
+                BLT_START_INTERVAL("Tree Destruction", "Inheritance Tree v4");
+                alloc.destroy(root);
+                alloc.deallocate(root);
+                BLT_END_INTERVAL("Tree Destruction", "Inheritance Tree v4");
+            }
+    };
+    
+    class tree6
+    {
+        private:
+            struct node_t
+            {
+                func_ref_any_base_t type;
+                node_t** children = nullptr;
+                
+                explicit node_t(type_t type): type(create_node_func_ref_any_type(type))
+                {
+                    children = alloc.emplace_many<node_t*>(this->type.argc());
+                    for (blt::size_t i = 0; i < this->type.argc(); i++)
+                        children[i] = nullptr;
+                }
+                
+                void evaluate()
+                {
+                    if (type.argc() > 0)
+                    {
+                        std::any v1 = children[0]->type.getValue();
+                        std::any v2 = children[1]->type.getValue();
+                        std::any d[2]{v1, v2};
+                        type.call(blt::span{d});
+                    } else
+                        type.call({});
+                }
+                
+                double evaluate_tree()
+                {
+                    std::stack<node_t*> nodes;
+                    std::stack<node_t*> node_stack;
+                    
+                    nodes.push(this);
+                    
+                    while (!nodes.empty())
+                    {
+                        auto* top = nodes.top();
+                        node_stack.push(top);
+                        nodes.pop();
+                        for (blt::size_t i = 0; i < top->type.argc(); i++)
+                            nodes.push(top->children[i]);
+                    }
+                    
+                    while (!node_stack.empty())
+                    {
+                        node_stack.top()->evaluate();
+                        node_stack.pop();
+                    }
+                    return std::any_cast<double>(type.getValue());
+                }
+                
+                ~node_t()
+                {
+                    for (blt::size_t i = 0; i < type.argc(); i++)
+                    {
+                        alloc.destroy(children[i]);
+                        alloc.deallocate(children[i]);
+                    }
+                    alloc.deallocate(children);
+                }
+            };
+            
+            node_t* root = nullptr;
+        public:
+            tree6()
+            {}
+            
+            void create(blt::u64 size)
+            {
+                root = alloc.template emplace<node_t>(random_type());
+                std::stack<std::pair<node_t*, blt::size_t>> stack;
+                stack.emplace(root, 0);
+                while (!stack.empty())
+                {
+                    auto top = stack.top();
+                    auto* node = top.first;
+                    auto depth = top.second;
+                    //BLT_WARN("gen type %ld with argc: %ld", node->type, node->argc);
+                    stack.pop();
+                    //BLT_TRACE0_STREAM << "Size: " << stack.size() << "\n";
+                    for (blt::size_t i = 0; i < node->type.argc(); i++)
+                    {
+                        if (depth >= size)
+                        {
+                            node->children[i] = alloc.template emplace<node_t>(type_t::VALUE);
+                            //BLT_INFO("Skipping due to size, value %lf", node->children[i]->value);
+                            continue;
+                        }
+                        if (choice())
+                            node->children[i] = alloc.template emplace<node_t>(random_type());
+                        else
+                            node->children[i] = alloc.template emplace<node_t>(random_type_sub());
+                        //BLT_INFO("child %p to %p has type generated %ld with argc %d, value %lf", node->children[i], node,
+                        //         static_cast<int>(node->children[i]->type), node->children[i]->argc, node->children[i]->value);
+                        if (depth < size)
+                            stack.emplace(node->children[i], depth + 1);
+                    }
+                    //BLT_TRACE0_STREAM << "Size: " << stack.size() << "\n";
+                }
+//                BLT_INFO("We have %ld adds, %ld subs, %ld mul, %ld div, %ld val, == %ld", t1_add, t1_sub, t1_mul, t1_div, t1_val,
+//                         t1_add + t1_sub + t1_mul + t1_val + t1_div);
+            }
+            
+            double evaluate()
+            {
+                return root->evaluate_tree();
+            }
+            
+            ~tree6()
+            {
+                BLT_START_INTERVAL("Tree Destruction", "Inheritance Tree v5");
+                alloc.destroy(root);
+                alloc.deallocate(root);
+                BLT_END_INTERVAL("Tree Destruction", "Inheritance Tree v5");
+            }
+    };
+    
     void run()
     {
         constexpr auto size = 512;
@@ -399,7 +963,7 @@ namespace fb
     
     void run2()
     {
-        constexpr auto size = 1;
+        constexpr auto size = 512;
         constexpr auto tree_size = 17;
         engine.reset();
         tree3 love[size];
@@ -411,6 +975,54 @@ namespace fb
         for (auto& i : love)
             blt::black_box(i.evaluate());
         BLT_END_INTERVAL("Tree Evaluation", "Inheritance Tree v2");
+    }
+    
+    void run3()
+    {
+        constexpr auto size = 512;
+        constexpr auto tree_size = 17;
+        engine.reset();
+        tree4 love[size];
+        BLT_START_INTERVAL("Tree Construction", "Inheritance Tree v3");
+        for (auto& i : love)
+            i.create(tree_size);
+        BLT_END_INTERVAL("Tree Construction", "Inheritance Tree v3");
+        BLT_START_INTERVAL("Tree Evaluation", "Inheritance Tree v3");
+        for (auto& i : love)
+            blt::black_box(i.evaluate());
+        BLT_END_INTERVAL("Tree Evaluation", "Inheritance Tree v3");
+    }
+    
+    void run4()
+    {
+        constexpr auto size = 512;
+        constexpr auto tree_size = 17;
+        engine.reset();
+        tree5 love[size];
+        BLT_START_INTERVAL("Tree Construction", "Inheritance Tree v4");
+        for (auto& i : love)
+            i.create(tree_size);
+        BLT_END_INTERVAL("Tree Construction", "Inheritance Tree v4");
+        BLT_START_INTERVAL("Tree Evaluation", "Inheritance Tree v4");
+        for (auto& i : love)
+            blt::black_box(i.evaluate());
+        BLT_END_INTERVAL("Tree Evaluation", "Inheritance Tree v4");
+    }
+    
+    void run5()
+    {
+        constexpr auto size = 512;
+        constexpr auto tree_size = 17;
+        engine.reset();
+        tree6 love[size];
+        BLT_START_INTERVAL("Tree Construction", "Inheritance Tree v5");
+        for (auto& i : love)
+            i.create(tree_size);
+        BLT_END_INTERVAL("Tree Construction", "Inheritance Tree v5");
+        BLT_START_INTERVAL("Tree Evaluation", "Inheritance Tree v5");
+        for (auto& i : love)
+            blt::black_box(i.evaluate());
+        BLT_END_INTERVAL("Tree Evaluation", "Inheritance Tree v5");
     }
     
     void test3()
@@ -434,8 +1046,11 @@ namespace fb
         
         delete[] cum;
         
-        //run();
+        run();
         run2();
+        run3();
+        run4();
+        run5();
 
 //        using testing = blt::size_t;
 //        constexpr blt::size_t INT_SIZE = blt::BLT_2MB_SIZE * 8 / sizeof(testing);
