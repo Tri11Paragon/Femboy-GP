@@ -25,6 +25,7 @@
 #include <stack>
 #include <any>
 #include <utility>
+#include <variant>
 
 namespace fb
 {
