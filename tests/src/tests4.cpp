@@ -26,6 +26,7 @@
 #include <blt/std/hashmap.h>
 #include <blt/std/types.h>
 #include <random>
+#include <thread>
 #include <stack>
 #include "blt/profiling/profiler_v2.h"
 #include "blt/std/allocator.h"
@@ -1476,9 +1477,19 @@ namespace fb
         BLT_INFO(sizeof(any_t_union));
         
         run_any_t();
-        run_any_t_variant();
-        run_any_t_union();
-        run_std_any_t();
+        //run_any_t_variant();
+        //run_any_t_union();
+        //run_std_any_t();
+        
+        for (int i = 0; i < 500; i++)
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        
+        {
+            auto v = blt::system::get_memory_process();
+            BLT_DEBUG("Currently %ld bytes aka %s in memory", v.resident, blt::string::fromBytes(v.resident).c_str());
+        }
+        BLT_INFO("Current bytes: %s, blocks: %ld", blt::string::fromBytes(alloc_2.getStats().getAllocatedBytes()).c_str(),
+                 alloc_2.getStats().getAllocatedBlocks());
     }
     
 }

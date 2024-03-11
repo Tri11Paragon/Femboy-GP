@@ -1,0 +1,1071 @@
+desc: (none)
+cmd: ./cmake-build-relwithdebinfo-clean/lilfbtf5_test --tests
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=294931498
+mem_heap_B=50419062
+mem_heap_extra_B=36817810
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=828759205
+mem_heap_B=138499446
+mem_heap_extra_B=106924546
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=1489887706
+mem_heap_B=247551350
+mem_heap_extra_B=203733986
+mem_stacks_B=0
+heap_tree=detailed
+n3: 247551350 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 218103808 0x14705E: allocate_block (allocator.h:757)
+  n1: 218103808 0x14705E: allocate_forward (allocator.h:773)
+   n1: 218103808 0x14705E: allocate<fb::tree_any::node_t> (allocator.h:867)
+    n5: 218103808 0x14705E: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:909)
+     n1: 100663296 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+      n1: 100663296 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 100663296 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 100663296 0x122DF8: main (main.cpp:53)
+     n1: 81788928 0x14836A: fb::tree_any::create(unsigned long) (tests4.cpp:918)
+      n1: 81788928 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 81788928 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 81788928 0x122DF8: main (main.cpp:53)
+     n1: 20971520 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+      n1: 20971520 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 20971520 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 20971520 0x122DF8: main (main.cpp:53)
+     n1: 10485760 0x148509: fb::tree_any::create(unsigned long) (tests4.cpp:915)
+      n1: 10485760 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 10485760 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 10485760 0x122DF8: main (main.cpp:53)
+     n0: 4194304 in 1 place, below massif's threshold (1.00%)
+ n1: 27262976 0x147116: allocate_block (allocator.h:757)
+  n1: 27262976 0x147116: allocate_forward (allocator.h:773)
+   n1: 27262976 0x147116: allocate<fb::tree_any::node_t*> (allocator.h:867)
+    n1: 27262976 0x147116: emplace_many<fb::tree_any::node_t*> (allocator.h:926)
+     n1: 27262976 0x147116: node_t (tests4.cpp:833)
+      n2: 27262976 0x147116: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:910)
+       n1: 23068672 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+        n1: 23068672 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 23068672 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 23068672 0x122DF8: main (main.cpp:53)
+       n0: 4194304 in 1 place, below massif's threshold (1.00%)
+ n0: 2184566 in 59 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=4
+#-----------
+time=1871329266
+mem_heap_B=310465910
+mem_heap_extra_B=264623666
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=2519766407
+mem_heap_B=417420662
+mem_heap_extra_B=271738810
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=2888383340
+mem_heap_B=478238070
+mem_heap_extra_B=279343538
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=3435087293
+mem_heap_B=568415606
+mem_heap_extra_B=296960122
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=4070695789
+mem_heap_B=673273206
+mem_heap_extra_B=326967722
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=4604668522
+mem_heap_B=761353590
+mem_heap_extra_B=342130714
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=4934760604
+mem_heap_B=813782390
+mem_heap_extra_B=351246514
+mem_stacks_B=0
+heap_tree=detailed
+n3: 813782390 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 698351616 0x14705E: allocate_block (allocator.h:757)
+  n1: 698351616 0x14705E: allocate_forward (allocator.h:773)
+   n1: 698351616 0x14705E: allocate<fb::tree_any::node_t> (allocator.h:867)
+    n5: 698351616 0x14705E: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:909)
+     n1: 312475648 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+      n1: 312475648 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 312475648 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 312475648 0x122DF8: main (main.cpp:53)
+     n1: 264241152 0x14836A: fb::tree_any::create(unsigned long) (tests4.cpp:918)
+      n1: 264241152 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 264241152 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 264241152 0x122DF8: main (main.cpp:53)
+     n1: 60817408 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+      n1: 60817408 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 60817408 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 60817408 0x122DF8: main (main.cpp:53)
+     n1: 31457280 0x148509: fb::tree_any::create(unsigned long) (tests4.cpp:915)
+      n1: 31457280 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 31457280 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 31457280 0x122DF8: main (main.cpp:53)
+     n1: 29360128 0x1484E2: fb::tree_any::create(unsigned long) (tests4.cpp:914)
+      n1: 29360128 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 29360128 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 29360128 0x122DF8: main (main.cpp:53)
+ n1: 113246208 0x147116: allocate_block (allocator.h:757)
+  n1: 113246208 0x147116: allocate_forward (allocator.h:773)
+   n1: 113246208 0x147116: allocate<fb::tree_any::node_t*> (allocator.h:867)
+    n1: 113246208 0x147116: emplace_many<fb::tree_any::node_t*> (allocator.h:926)
+     n1: 113246208 0x147116: node_t (tests4.cpp:833)
+      n2: 113246208 0x147116: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:910)
+       n1: 102760448 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+        n1: 102760448 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 102760448 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 102760448 0x122DF8: main (main.cpp:53)
+       n0: 10485760 in 1 place, below massif's threshold (1.00%)
+ n0: 2184566 in 59 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=11
+#-----------
+time=5722898589
+mem_heap_B=943805814
+mem_heap_extra_B=384900610
+mem_stacks_B=0
+heap_tree=detailed
+n3: 943805814 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 811597824 0x14705E: allocate_block (allocator.h:757)
+  n1: 811597824 0x14705E: allocate_forward (allocator.h:773)
+   n1: 811597824 0x14705E: allocate<fb::tree_any::node_t> (allocator.h:867)
+    n5: 811597824 0x14705E: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:909)
+     n1: 367001600 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+      n1: 367001600 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 367001600 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 367001600 0x122DF8: main (main.cpp:53)
+     n1: 299892736 0x14836A: fb::tree_any::create(unsigned long) (tests4.cpp:918)
+      n1: 299892736 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 299892736 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 299892736 0x122DF8: main (main.cpp:53)
+     n1: 69206016 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+      n1: 69206016 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 69206016 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 69206016 0x122DF8: main (main.cpp:53)
+     n1: 39845888 0x1484E2: fb::tree_any::create(unsigned long) (tests4.cpp:914)
+      n1: 39845888 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 39845888 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 39845888 0x122DF8: main (main.cpp:53)
+     n1: 35651584 0x148509: fb::tree_any::create(unsigned long) (tests4.cpp:915)
+      n1: 35651584 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 35651584 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 35651584 0x122DF8: main (main.cpp:53)
+ n1: 130023424 0x147116: allocate_block (allocator.h:757)
+  n1: 130023424 0x147116: allocate_forward (allocator.h:773)
+   n1: 130023424 0x147116: allocate<fb::tree_any::node_t*> (allocator.h:867)
+    n1: 130023424 0x147116: emplace_many<fb::tree_any::node_t*> (allocator.h:926)
+     n1: 130023424 0x147116: node_t (tests4.cpp:833)
+      n2: 130023424 0x147116: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:910)
+       n1: 117440512 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+        n1: 117440512 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 117440512 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 117440512 0x122DF8: main (main.cpp:53)
+       n0: 12582912 in 1 place, below massif's threshold (1.00%)
+ n0: 2184566 in 59 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=12
+#-----------
+time=6257437849
+mem_heap_B=1033983350
+mem_heap_extra_B=417488074
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=6651345605
+mem_heap_B=1098995062
+mem_heap_extra_B=445679474
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=7083534831
+mem_heap_B=1170298230
+mem_heap_extra_B=481125154
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=7681135460
+mem_heap_B=1268864374
+mem_heap_extra_B=537920330
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=8177079458
+mem_heap_B=1350653302
+mem_heap_extra_B=591917234
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=8940033258
+mem_heap_B=1476482422
+mem_heap_extra_B=687154514
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=9601234686
+mem_heap_B=1585534326
+mem_heap_extra_B=781621042
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=10033506981
+mem_heap_B=1656837494
+mem_heap_extra_B=849375970
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=10396065925
+mem_heap_B=1715557750
+mem_heap_extra_B=866786434
+mem_stacks_B=0
+heap_tree=detailed
+n3: 1715557750 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1480589312 0x14705E: allocate_block (allocator.h:757)
+  n1: 1480589312 0x14705E: allocate_forward (allocator.h:773)
+   n1: 1480589312 0x14705E: allocate<fb::tree_any::node_t> (allocator.h:867)
+    n5: 1480589312 0x14705E: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:909)
+     n1: 662700032 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+      n1: 662700032 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 662700032 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 662700032 0x122DF8: main (main.cpp:53)
+     n1: 551550976 0x14836A: fb::tree_any::create(unsigned long) (tests4.cpp:918)
+      n1: 551550976 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 551550976 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 551550976 0x122DF8: main (main.cpp:53)
+     n1: 100663296 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+      n1: 100663296 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 100663296 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 100663296 0x122DF8: main (main.cpp:53)
+     n1: 85983232 0x148509: fb::tree_any::create(unsigned long) (tests4.cpp:915)
+      n1: 85983232 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 85983232 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 85983232 0x122DF8: main (main.cpp:53)
+     n1: 79691776 0x1484E2: fb::tree_any::create(unsigned long) (tests4.cpp:914)
+      n1: 79691776 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 79691776 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 79691776 0x122DF8: main (main.cpp:53)
+ n1: 232783872 0x147116: allocate_block (allocator.h:757)
+  n1: 232783872 0x147116: allocate_forward (allocator.h:773)
+   n1: 232783872 0x147116: allocate<fb::tree_any::node_t*> (allocator.h:867)
+    n1: 232783872 0x147116: emplace_many<fb::tree_any::node_t*> (allocator.h:926)
+     n1: 232783872 0x147116: node_t (tests4.cpp:833)
+      n2: 232783872 0x147116: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:910)
+       n1: 205520896 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+        n1: 205520896 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 205520896 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 205520896 0x122DF8: main (main.cpp:53)
+       n1: 27262976 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+        n1: 27262976 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 27262976 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 27262976 0x122DF8: main (main.cpp:53)
+ n0: 2184566 in 59 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=21
+#-----------
+time=11126703839
+mem_heap_B=1837192566
+mem_heap_extra_B=878313586
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=11711610622
+mem_heap_B=1933661558
+mem_heap_extra_B=897253442
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=12143890421
+mem_heap_B=2004964726
+mem_heap_extra_B=916823026
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=12853288781
+mem_heap_B=2120308086
+mem_heap_extra_B=958504666
+mem_stacks_B=0
+heap_tree=detailed
+n3: 2120308086 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 1818230784 0x14705E: allocate_block (allocator.h:757)
+  n1: 1818230784 0x14705E: allocate_forward (allocator.h:773)
+   n1: 1818230784 0x14705E: allocate<fb::tree_any::node_t> (allocator.h:867)
+    n5: 1818230784 0x14705E: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:909)
+     n1: 822083584 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+      n1: 822083584 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 822083584 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 822083584 0x122DF8: main (main.cpp:53)
+     n1: 652214272 0x14836A: fb::tree_any::create(unsigned long) (tests4.cpp:918)
+      n1: 652214272 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 652214272 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 652214272 0x122DF8: main (main.cpp:53)
+     n1: 125829120 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+      n1: 125829120 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 125829120 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 125829120 0x122DF8: main (main.cpp:53)
+     n1: 111149056 0x148509: fb::tree_any::create(unsigned long) (tests4.cpp:915)
+      n1: 111149056 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 111149056 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 111149056 0x122DF8: main (main.cpp:53)
+     n1: 106954752 0x1484E2: fb::tree_any::create(unsigned long) (tests4.cpp:914)
+      n1: 106954752 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 106954752 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 106954752 0x122DF8: main (main.cpp:53)
+ n1: 299892736 0x147116: allocate_block (allocator.h:757)
+  n1: 299892736 0x147116: allocate_forward (allocator.h:773)
+   n1: 299892736 0x147116: allocate<fb::tree_any::node_t*> (allocator.h:867)
+    n1: 299892736 0x147116: emplace_many<fb::tree_any::node_t*> (allocator.h:926)
+     n1: 299892736 0x147116: node_t (tests4.cpp:833)
+      n2: 299892736 0x147116: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:910)
+       n1: 270532608 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+        n1: 270532608 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 270532608 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 270532608 0x122DF8: main (main.cpp:53)
+       n0: 29360128 in 1 place, below massif's threshold (1.00%)
+ n0: 2184566 in 59 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=25
+#-----------
+time=13478803947
+mem_heap_B=2225165686
+mem_heap_extra_B=1007149066
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=14224184331
+mem_heap_B=2346800502
+mem_heap_extra_B=1076405242
+mem_stacks_B=0
+heap_tree=detailed
+n3: 2346800502 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 2017460224 0x14705E: allocate_block (allocator.h:757)
+  n1: 2017460224 0x14705E: allocate_forward (allocator.h:773)
+   n1: 2017460224 0x14705E: allocate<fb::tree_any::node_t> (allocator.h:867)
+    n5: 2017460224 0x14705E: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:909)
+     n1: 903872512 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+      n1: 903872512 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 903872512 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 903872512 0x122DF8: main (main.cpp:53)
+     n1: 723517440 0x14836A: fb::tree_any::create(unsigned long) (tests4.cpp:918)
+      n1: 723517440 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 723517440 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 723517440 0x122DF8: main (main.cpp:53)
+     n1: 146800640 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+      n1: 146800640 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 146800640 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 146800640 0x122DF8: main (main.cpp:53)
+     n1: 125829120 0x148509: fb::tree_any::create(unsigned long) (tests4.cpp:915)
+      n1: 125829120 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 125829120 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 125829120 0x122DF8: main (main.cpp:53)
+     n1: 117440512 0x1484E2: fb::tree_any::create(unsigned long) (tests4.cpp:914)
+      n1: 117440512 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 117440512 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 117440512 0x122DF8: main (main.cpp:53)
+ n1: 327155712 0x147116: allocate_block (allocator.h:757)
+  n1: 327155712 0x147116: allocate_forward (allocator.h:773)
+   n1: 327155712 0x147116: allocate<fb::tree_any::node_t*> (allocator.h:867)
+    n1: 327155712 0x147116: emplace_many<fb::tree_any::node_t*> (allocator.h:926)
+     n1: 327155712 0x147116: node_t (tests4.cpp:833)
+      n2: 327155712 0x147116: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:910)
+       n1: 295698432 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+        n1: 295698432 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 295698432 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 295698432 0x122DF8: main (main.cpp:53)
+       n0: 31457280 in 1 place, below massif's threshold (1.00%)
+ n0: 2184566 in 59 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=27
+#-----------
+time=14559467804
+mem_heap_B=2403423606
+mem_heap_extra_B=1113345346
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=15195031289
+mem_heap_B=2508281206
+mem_heap_extra_B=1189637746
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=15716321094
+mem_heap_B=2594264438
+mem_heap_extra_B=1259838602
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=16142274392
+mem_heap_B=2663470454
+mem_heap_extra_B=1321342946
+mem_stacks_B=0
+heap_tree=detailed
+n3: 2663470454 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 2269118464 0x14705E: allocate_block (allocator.h:757)
+  n1: 2269118464 0x14705E: allocate_forward (allocator.h:773)
+   n1: 2269118464 0x14705E: allocate<fb::tree_any::node_t> (allocator.h:867)
+    n5: 2269118464 0x14705E: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:909)
+     n1: 1017118720 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+      n1: 1017118720 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 1017118720 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 1017118720 0x122DF8: main (main.cpp:53)
+     n1: 807403520 0x14836A: fb::tree_any::create(unsigned long) (tests4.cpp:918)
+      n1: 807403520 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 807403520 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 807403520 0x122DF8: main (main.cpp:53)
+     n1: 159383552 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+      n1: 159383552 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 159383552 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 159383552 0x122DF8: main (main.cpp:53)
+     n1: 146800640 0x1484E2: fb::tree_any::create(unsigned long) (tests4.cpp:914)
+      n1: 146800640 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 146800640 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 146800640 0x122DF8: main (main.cpp:53)
+     n1: 138412032 0x148509: fb::tree_any::create(unsigned long) (tests4.cpp:915)
+      n1: 138412032 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 138412032 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 138412032 0x122DF8: main (main.cpp:53)
+ n1: 392167424 0x147116: allocate_block (allocator.h:757)
+  n1: 392167424 0x147116: allocate_forward (allocator.h:773)
+   n1: 392167424 0x147116: allocate<fb::tree_any::node_t*> (allocator.h:867)
+    n1: 392167424 0x147116: emplace_many<fb::tree_any::node_t*> (allocator.h:926)
+     n1: 392167424 0x147116: node_t (tests4.cpp:833)
+      n2: 392167424 0x147116: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:910)
+       n1: 354418688 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+        n1: 354418688 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 354418688 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 354418688 0x122DF8: main (main.cpp:53)
+       n0: 37748736 in 1 place, below massif's threshold (1.00%)
+ n0: 2184566 in 59 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=31
+#-----------
+time=16775653443
+mem_heap_B=2768328054
+mem_heap_extra_B=1402059026
+mem_stacks_B=0
+heap_tree=detailed
+n3: 2768328054 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 2348810240 0x14705E: allocate_block (allocator.h:757)
+  n1: 2348810240 0x14705E: allocate_forward (allocator.h:773)
+   n1: 2348810240 0x14705E: allocate<fb::tree_any::node_t> (allocator.h:867)
+    n5: 2348810240 0x14705E: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:909)
+     n1: 1054867456 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+      n1: 1054867456 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 1054867456 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 1054867456 0x122DF8: main (main.cpp:53)
+     n1: 834666496 0x14836A: fb::tree_any::create(unsigned long) (tests4.cpp:918)
+      n1: 834666496 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 834666496 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 834666496 0x122DF8: main (main.cpp:53)
+     n1: 167772160 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+      n1: 167772160 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 167772160 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 167772160 0x122DF8: main (main.cpp:53)
+     n1: 146800640 0x1484E2: fb::tree_any::create(unsigned long) (tests4.cpp:914)
+      n1: 146800640 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 146800640 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 146800640 0x122DF8: main (main.cpp:53)
+     n1: 144703488 0x148509: fb::tree_any::create(unsigned long) (tests4.cpp:915)
+      n1: 144703488 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 144703488 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 144703488 0x122DF8: main (main.cpp:53)
+ n1: 417333248 0x147116: allocate_block (allocator.h:757)
+  n1: 417333248 0x147116: allocate_forward (allocator.h:773)
+   n1: 417333248 0x147116: allocate<fb::tree_any::node_t*> (allocator.h:867)
+    n1: 417333248 0x147116: emplace_many<fb::tree_any::node_t*> (allocator.h:926)
+     n1: 417333248 0x147116: node_t (tests4.cpp:833)
+      n2: 417333248 0x147116: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:910)
+       n1: 377487360 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+        n1: 377487360 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 377487360 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 377487360 0x122DF8: main (main.cpp:53)
+       n0: 39845888 in 1 place, below massif's threshold (1.00%)
+ n0: 2184566 in 59 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=32
+#-----------
+time=17343635381
+mem_heap_B=2862699894
+mem_heap_extra_B=1407961226
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=17966706012
+mem_heap_B=2965460342
+mem_heap_extra_B=1423821154
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=18335503881
+mem_heap_B=3026277750
+mem_heap_extra_B=1437840218
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=18854078495
+mem_heap_B=3110163830
+mem_heap_extra_B=1462829338
+mem_stacks_B=0
+heap_tree=detailed
+n3: 3110163830 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 2634022912 0x14705E: allocate_block (allocator.h:757)
+  n1: 2634022912 0x14705E: allocate_forward (allocator.h:773)
+   n1: 2634022912 0x14705E: allocate<fb::tree_any::node_t> (allocator.h:867)
+    n5: 2634022912 0x14705E: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:909)
+     n1: 1161822208 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+      n1: 1161822208 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 1161822208 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 1161822208 0x122DF8: main (main.cpp:53)
+     n1: 945815552 0x14836A: fb::tree_any::create(unsigned long) (tests4.cpp:918)
+      n1: 945815552 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 945815552 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 945815552 0x122DF8: main (main.cpp:53)
+     n1: 186646528 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+      n1: 186646528 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 186646528 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 186646528 0x122DF8: main (main.cpp:53)
+     n1: 169869312 0x1484E2: fb::tree_any::create(unsigned long) (tests4.cpp:914)
+      n1: 169869312 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 169869312 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 169869312 0x122DF8: main (main.cpp:53)
+     n1: 169869312 0x148509: fb::tree_any::create(unsigned long) (tests4.cpp:915)
+      n1: 169869312 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 169869312 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 169869312 0x122DF8: main (main.cpp:53)
+ n1: 473956352 0x147116: allocate_block (allocator.h:757)
+  n1: 473956352 0x147116: allocate_forward (allocator.h:773)
+   n1: 473956352 0x147116: allocate<fb::tree_any::node_t*> (allocator.h:867)
+    n1: 473956352 0x147116: emplace_many<fb::tree_any::node_t*> (allocator.h:926)
+     n1: 473956352 0x147116: node_t (tests4.cpp:833)
+      n2: 473956352 0x147116: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:910)
+       n1: 429916160 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+        n1: 429916160 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 429916160 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 429916160 0x122DF8: main (main.cpp:53)
+       n0: 44040192 in 1 place, below massif's threshold (1.00%)
+ n0: 2184566 in 59 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=36
+#-----------
+time=19158219223
+mem_heap_B=3160495478
+mem_heap_extra_B=1480968538
+mem_stacks_B=0
+heap_tree=detailed
+n3: 3160495478 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 2671771648 0x14705E: allocate_block (allocator.h:757)
+  n1: 2671771648 0x14705E: allocate_forward (allocator.h:773)
+   n1: 2671771648 0x14705E: allocate<fb::tree_any::node_t> (allocator.h:867)
+    n5: 2671771648 0x14705E: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:909)
+     n1: 1174405120 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+      n1: 1174405120 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 1174405120 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 1174405120 0x122DF8: main (main.cpp:53)
+     n1: 968884224 0x14836A: fb::tree_any::create(unsigned long) (tests4.cpp:918)
+      n1: 968884224 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 968884224 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 968884224 0x122DF8: main (main.cpp:53)
+     n1: 188743680 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+      n1: 188743680 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 188743680 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 188743680 0x122DF8: main (main.cpp:53)
+     n1: 169869312 0x1484E2: fb::tree_any::create(unsigned long) (tests4.cpp:914)
+      n1: 169869312 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 169869312 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 169869312 0x122DF8: main (main.cpp:53)
+     n1: 169869312 0x148509: fb::tree_any::create(unsigned long) (tests4.cpp:915)
+      n1: 169869312 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 169869312 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 169869312 0x122DF8: main (main.cpp:53)
+ n1: 486539264 0x147116: allocate_block (allocator.h:757)
+  n1: 486539264 0x147116: allocate_forward (allocator.h:773)
+   n1: 486539264 0x147116: allocate<fb::tree_any::node_t*> (allocator.h:867)
+    n1: 486539264 0x147116: emplace_many<fb::tree_any::node_t*> (allocator.h:926)
+     n1: 486539264 0x147116: node_t (tests4.cpp:833)
+      n2: 486539264 0x147116: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:910)
+       n1: 442499072 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+        n1: 442499072 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 442499072 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 442499072 0x122DF8: main (main.cpp:53)
+       n0: 44040192 in 1 place, below massif's threshold (1.00%)
+ n0: 2184566 in 59 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=37
+#-----------
+time=19708482251
+mem_heap_B=3252770166
+mem_heap_extra_B=1520351354
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=20058744966
+mem_heap_B=3309393270
+mem_heap_extra_B=1548444098
+mem_stacks_B=0
+heap_tree=detailed
+n3: 3309393270 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 2799697920 0x14705E: allocate_block (allocator.h:757)
+  n1: 2799697920 0x14705E: allocate_forward (allocator.h:773)
+   n1: 2799697920 0x14705E: allocate<fb::tree_any::node_t> (allocator.h:867)
+    n5: 2799697920 0x14705E: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:909)
+     n1: 1224736768 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+      n1: 1224736768 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 1224736768 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 1224736768 0x122DF8: main (main.cpp:53)
+     n1: 1015021568 0x14836A: fb::tree_any::create(unsigned long) (tests4.cpp:918)
+      n1: 1015021568 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 1015021568 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 1015021568 0x122DF8: main (main.cpp:53)
+     n1: 201326592 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+      n1: 201326592 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 201326592 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 201326592 0x122DF8: main (main.cpp:53)
+     n1: 180355072 0x148509: fb::tree_any::create(unsigned long) (tests4.cpp:915)
+      n1: 180355072 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 180355072 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 180355072 0x122DF8: main (main.cpp:53)
+     n1: 178257920 0x1484E2: fb::tree_any::create(unsigned long) (tests4.cpp:914)
+      n1: 178257920 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 178257920 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 178257920 0x122DF8: main (main.cpp:53)
+ n1: 507510784 0x147116: allocate_block (allocator.h:757)
+  n1: 507510784 0x147116: allocate_forward (allocator.h:773)
+   n1: 507510784 0x147116: allocate<fb::tree_any::node_t*> (allocator.h:867)
+    n1: 507510784 0x147116: emplace_many<fb::tree_any::node_t*> (allocator.h:926)
+     n1: 507510784 0x147116: node_t (tests4.cpp:833)
+      n2: 507510784 0x147116: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:910)
+       n1: 459276288 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+        n1: 459276288 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 459276288 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 459276288 0x122DF8: main (main.cpp:53)
+       n0: 48234496 in 1 place, below massif's threshold (1.00%)
+ n0: 2184566 in 59 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=39
+#-----------
+time=20616810791
+mem_heap_B=3401667958
+mem_heap_extra_B=1600622818
+mem_stacks_B=0
+heap_tree=detailed
+n3: 3401667958 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 2879389696 0x14705E: allocate_block (allocator.h:757)
+  n1: 2879389696 0x14705E: allocate_forward (allocator.h:773)
+   n1: 2879389696 0x14705E: allocate<fb::tree_any::node_t> (allocator.h:867)
+    n5: 2879389696 0x14705E: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:909)
+     n1: 1254096896 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+      n1: 1254096896 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 1254096896 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 1254096896 0x122DF8: main (main.cpp:53)
+     n1: 1044381696 0x14836A: fb::tree_any::create(unsigned long) (tests4.cpp:918)
+      n1: 1044381696 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 1044381696 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 1044381696 0x122DF8: main (main.cpp:53)
+     n1: 207618048 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+      n1: 207618048 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 207618048 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 207618048 0x122DF8: main (main.cpp:53)
+     n1: 188743680 0x1484E2: fb::tree_any::create(unsigned long) (tests4.cpp:914)
+      n1: 188743680 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 188743680 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 188743680 0x122DF8: main (main.cpp:53)
+     n1: 184549376 0x148509: fb::tree_any::create(unsigned long) (tests4.cpp:915)
+      n1: 184549376 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 184549376 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 184549376 0x122DF8: main (main.cpp:53)
+ n1: 520093696 0x147116: allocate_block (allocator.h:757)
+  n1: 520093696 0x147116: allocate_forward (allocator.h:773)
+   n1: 520093696 0x147116: allocate<fb::tree_any::node_t*> (allocator.h:867)
+    n1: 520093696 0x147116: emplace_many<fb::tree_any::node_t*> (allocator.h:926)
+     n1: 520093696 0x147116: node_t (tests4.cpp:833)
+      n2: 520093696 0x147116: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:910)
+       n1: 469762048 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+        n1: 469762048 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 469762048 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 469762048 0x122DF8: main (main.cpp:53)
+       n1: 50331648 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+        n1: 50331648 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 50331648 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 50331648 0x122DF8: main (main.cpp:53)
+ n0: 2184566 in 59 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=40
+#-----------
+time=21068738784
+mem_heap_B=3477165430
+mem_heap_extra_B=1649212738
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=21612512579
+mem_heap_B=3565245814
+mem_heap_extra_B=1712610226
+mem_stacks_B=0
+heap_tree=peak
+n3: 3565245814 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 3009413120 0x14705E: allocate_block (allocator.h:757)
+  n1: 3009413120 0x14705E: allocate_forward (allocator.h:773)
+   n1: 3009413120 0x14705E: allocate<fb::tree_any::node_t> (allocator.h:867)
+    n5: 3009413120 0x14705E: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:909)
+     n1: 1306525696 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+      n1: 1306525696 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 1306525696 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 1306525696 0x122DF8: main (main.cpp:53)
+     n1: 1088421888 0x14836A: fb::tree_any::create(unsigned long) (tests4.cpp:918)
+      n1: 1088421888 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 1088421888 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 1088421888 0x122DF8: main (main.cpp:53)
+     n1: 216006656 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+      n1: 216006656 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 216006656 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 216006656 0x122DF8: main (main.cpp:53)
+     n1: 201326592 0x148509: fb::tree_any::create(unsigned long) (tests4.cpp:915)
+      n1: 201326592 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 201326592 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 201326592 0x122DF8: main (main.cpp:53)
+     n1: 197132288 0x1484E2: fb::tree_any::create(unsigned long) (tests4.cpp:914)
+      n1: 197132288 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 197132288 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 197132288 0x122DF8: main (main.cpp:53)
+ n1: 553648128 0x147116: allocate_block (allocator.h:757)
+  n1: 553648128 0x147116: allocate_forward (allocator.h:773)
+   n1: 553648128 0x147116: allocate<fb::tree_any::node_t*> (allocator.h:867)
+    n1: 553648128 0x147116: emplace_many<fb::tree_any::node_t*> (allocator.h:926)
+     n1: 553648128 0x147116: node_t (tests4.cpp:833)
+      n2: 553648128 0x147116: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:910)
+       n1: 499122176 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+        n1: 499122176 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 499122176 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 499122176 0x122DF8: main (main.cpp:53)
+       n1: 54525952 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+        n1: 54525952 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 54525952 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 54525952 0x122DF8: main (main.cpp:53)
+ n0: 2184566 in 59 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=42
+#-----------
+time=22019214925
+mem_heap_B=3569473206
+mem_heap_extra_B=1712673754
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=22629267883
+mem_heap_B=3570257590
+mem_heap_extra_B=1712686010
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=23035971948
+mem_heap_B=3567677622
+mem_heap_extra_B=1712645698
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=23442675724
+mem_heap_B=3572011190
+mem_heap_extra_B=1712710898
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=46
+#-----------
+time=24052731373
+mem_heap_B=3566896310
+mem_heap_extra_B=1712633490
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=24459435431
+mem_heap_B=3570423478
+mem_heap_extra_B=1712688602
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=24866137726
+mem_heap_B=3565495990
+mem_heap_extra_B=1712614010
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=49
+#-----------
+time=25272840977
+mem_heap_B=3566711478
+mem_heap_extra_B=1712630602
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=25567772683
+mem_heap_B=3569317558
+mem_heap_extra_B=1712671322
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=25862704848
+mem_heap_B=3567685302
+mem_heap_extra_B=1712645818
+mem_stacks_B=0
+heap_tree=detailed
+n3: 3567685302 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 3009413120 0x14705E: allocate_block (allocator.h:757)
+  n1: 3009413120 0x14705E: allocate_forward (allocator.h:773)
+   n1: 3009413120 0x14705E: allocate<fb::tree_any::node_t> (allocator.h:867)
+    n5: 3009413120 0x14705E: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:909)
+     n1: 1306525696 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+      n1: 1306525696 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 1306525696 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 1306525696 0x122DF8: main (main.cpp:53)
+     n1: 1088421888 0x14836A: fb::tree_any::create(unsigned long) (tests4.cpp:918)
+      n1: 1088421888 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 1088421888 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 1088421888 0x122DF8: main (main.cpp:53)
+     n1: 216006656 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+      n1: 216006656 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 216006656 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 216006656 0x122DF8: main (main.cpp:53)
+     n1: 201326592 0x148509: fb::tree_any::create(unsigned long) (tests4.cpp:915)
+      n1: 201326592 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 201326592 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 201326592 0x122DF8: main (main.cpp:53)
+     n1: 197132288 0x1484E2: fb::tree_any::create(unsigned long) (tests4.cpp:914)
+      n1: 197132288 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 197132288 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 197132288 0x122DF8: main (main.cpp:53)
+ n1: 553648128 0x147116: allocate_block (allocator.h:757)
+  n1: 553648128 0x147116: allocate_forward (allocator.h:773)
+   n1: 553648128 0x147116: allocate<fb::tree_any::node_t*> (allocator.h:867)
+    n1: 553648128 0x147116: emplace_many<fb::tree_any::node_t*> (allocator.h:926)
+     n1: 553648128 0x147116: node_t (tests4.cpp:833)
+      n2: 553648128 0x147116: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:910)
+       n1: 499122176 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+        n1: 499122176 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 499122176 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 499122176 0x122DF8: main (main.cpp:53)
+       n1: 54525952 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+        n1: 54525952 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 54525952 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 54525952 0x122DF8: main (main.cpp:53)
+ n0: 4624054 in 63 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=52
+#-----------
+time=26157636922
+mem_heap_B=3566610102
+mem_heap_extra_B=1712630938
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=53
+#-----------
+time=26452569267
+mem_heap_B=3569712822
+mem_heap_extra_B=1712677498
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=54
+#-----------
+time=26747501641
+mem_heap_B=3568697526
+mem_heap_extra_B=1712662914
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=55
+#-----------
+time=27042434463
+mem_heap_B=3570367670
+mem_heap_extra_B=1712687730
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=56
+#-----------
+time=27337404351
+mem_heap_B=3313587527
+mem_heap_extra_B=1550643865
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=57
+#-----------
+time=27632526526
+mem_heap_B=2831242567
+mem_heap_extra_B=1405072265
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=58
+#-----------
+time=27927643708
+mem_heap_B=2348897607
+mem_heap_extra_B=1077720185
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=59
+#-----------
+time=28222762613
+mem_heap_B=1866552647
+mem_heap_extra_B=883160425
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=60
+#-----------
+time=28517883074
+mem_heap_B=1384207687
+mem_heap_extra_B=615872089
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=61
+#-----------
+time=28812999745
+mem_heap_B=901862727
+mem_heap_extra_B=372324169
+mem_stacks_B=0
+heap_tree=detailed
+n3: 901862727 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 771751936 0x14705E: allocate_block (allocator.h:757)
+  n1: 771751936 0x14705E: allocate_forward (allocator.h:773)
+   n1: 771751936 0x14705E: allocate<fb::tree_any::node_t> (allocator.h:867)
+    n5: 771751936 0x14705E: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:909)
+     n1: 341835776 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+      n1: 341835776 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 341835776 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 341835776 0x122DF8: main (main.cpp:53)
+     n1: 291504128 0x14836A: fb::tree_any::create(unsigned long) (tests4.cpp:918)
+      n1: 291504128 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 291504128 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 291504128 0x122DF8: main (main.cpp:53)
+     n1: 69206016 0x1484BB: fb::tree_any::create(unsigned long) (tests4.cpp:913)
+      n1: 69206016 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 69206016 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 69206016 0x122DF8: main (main.cpp:53)
+     n1: 35651584 0x148509: fb::tree_any::create(unsigned long) (tests4.cpp:915)
+      n1: 35651584 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 35651584 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 35651584 0x122DF8: main (main.cpp:53)
+     n1: 33554432 0x1484E2: fb::tree_any::create(unsigned long) (tests4.cpp:914)
+      n1: 33554432 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+       n1: 33554432 0x142263: fb::test4() (tests4.cpp:1479)
+        n0: 33554432 0x122DF8: main (main.cpp:53)
+ n1: 127926272 0x147116: allocate_block (allocator.h:757)
+  n1: 127926272 0x147116: allocate_forward (allocator.h:773)
+   n1: 127926272 0x147116: allocate<fb::tree_any::node_t*> (allocator.h:867)
+    n1: 127926272 0x147116: emplace_many<fb::tree_any::node_t*> (allocator.h:926)
+     n1: 127926272 0x147116: node_t (tests4.cpp:833)
+      n2: 127926272 0x147116: fb::tree_any::node_t* blt::bump_allocator<2097152ul, false, 2097152ul, false>::emplace<fb::tree_any::node_t, fb::type_t>(fb::type_t&&) (allocator.h:910)
+       n1: 115343360 0x1483D8: fb::tree_any::create(unsigned long) (tests4.cpp:931)
+        n1: 115343360 0x141CEC: fb::run_any_t() (tests4.cpp:1363)
+         n1: 115343360 0x142263: fb::test4() (tests4.cpp:1479)
+          n0: 115343360 0x122DF8: main (main.cpp:53)
+       n0: 12582912 in 1 place, below massif's threshold (1.00%)
+ n0: 2184519 in 63 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=62
+#-----------
+time=29108126705
+mem_heap_B=419517767
+mem_heap_extra_B=271943737
+mem_stacks_B=0
+heap_tree=empty
