@@ -7,6 +7,7 @@
 #include <lilfbtf/test3.h>
 #include <lilfbtf/test4.h>
 #include "blt/profiling/profiler_v2.h"
+#include "lilfbtf/test5.h"
 
 struct data {
     float f;
@@ -50,7 +51,8 @@ int main(int argc, const char** argv)
     {
         //fb::test2();
         //fb::test3();
-        fb::test4();
+        //fb::test4();
+        fb::test5();
         
         BLT_PRINT_PROFILE("Tree Construction");
         BLT_PRINT_PROFILE("Tree Evaluation");
