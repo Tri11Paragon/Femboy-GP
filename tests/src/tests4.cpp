@@ -29,6 +29,8 @@
 #include <stack>
 #include "blt/profiling/profiler_v2.h"
 #include "blt/std/allocator.h"
+#include "blt/std/format.h"
+#include "blt/std/system.h"
 
 namespace fb
 {
@@ -876,7 +878,7 @@ namespace fb
                         alloc_2.destroy(children[i]);
                         alloc_2.deallocate(children[i]);
                     }
-                    alloc_2.deallocate(children);
+                    alloc_2.deallocate(children, type.argc());
                 }
             };
             
@@ -1007,7 +1009,7 @@ namespace fb
                         alloc_2.destroy(children[i]);
                         alloc_2.deallocate(children[i]);
                     }
-                    alloc_2.deallocate(children);
+                    alloc_2.deallocate(children, type.argc());
                 }
             };
             
@@ -1138,7 +1140,7 @@ namespace fb
                         alloc_2.destroy(children[i]);
                         alloc_2.deallocate(children[i]);
                     }
-                    alloc_2.deallocate(children);
+                    alloc_2.deallocate(children, type.argc());
                 }
             };
             
@@ -1272,7 +1274,7 @@ namespace fb
                         alloc_2.destroy(children[i]);
                         alloc_2.deallocate(children[i]);
                     }
-                    alloc_2.deallocate(children);
+                    alloc_2.deallocate(children, type.argc());
                 }
             };
             
@@ -1348,62 +1350,122 @@ namespace fb
     
     void run_any_t()
     {
+        alloc_2.resetStats();
         engine.reset();
         tree_any love[size];
+        {
+            auto v = blt::system::get_memory_process();
+            BLT_DEBUG("Currently %ld bytes aka %s in memory", v.resident, blt::string::fromBytes(v.resident).c_str());
+        }
         BLT_START_INTERVAL("Tree Construction", "any_t tree");
         for (auto& i : love)
             i.create(tree_size);
         BLT_END_INTERVAL("Tree Construction", "any_t tree");
         BLT_INFO("Construction any_t finished");
+        {
+            auto v = blt::system::get_memory_process();
+            BLT_DEBUG("Currently %ld bytes aka %s in memory", v.resident, blt::string::fromBytes(v.resident).c_str());
+        }
         BLT_START_INTERVAL("Tree Evaluation", "any_t tree");
         for (auto& i : love)
             blt::black_box(i.evaluate());
         BLT_END_INTERVAL("Tree Evaluation", "any_t tree");
+        {
+            auto v = blt::system::get_memory_process();
+            BLT_DEBUG("Currently %ld bytes aka %s in memory", v.resident, blt::string::fromBytes(v.resident).c_str());
+        }
+        BLT_INFO("Peak bytes for any_t: %s, blocks: %ld", blt::string::fromBytes(alloc_2.getStats().getPeakBytes()).c_str(),
+                 alloc_2.getStats().getPeakBlocks());
     }
     
     void run_any_t_variant()
     {
+        alloc_2.resetStats();
         engine.reset();
         tree_any_variant love[size];
+        {
+            auto v = blt::system::get_memory_process();
+            BLT_DEBUG("Currently %ld bytes aka %s in memory", v.resident, blt::string::fromBytes(v.resident).c_str());
+        }
         BLT_START_INTERVAL("Tree Construction", "any_t_variant tree");
         for (auto& i : love)
             i.create(tree_size);
         BLT_END_INTERVAL("Tree Construction", "any_t_variant tree");
         BLT_INFO("Construction any_t_variant finished");
+        {
+            auto v = blt::system::get_memory_process();
+            BLT_DEBUG("Currently %ld bytes aka %s in memory", v.resident, blt::string::fromBytes(v.resident).c_str());
+        }
         BLT_START_INTERVAL("Tree Evaluation", "any_t_variant tree");
         for (auto& i : love)
             blt::black_box(i.evaluate());
         BLT_END_INTERVAL("Tree Evaluation", "any_t_variant tree");
+        {
+            auto v = blt::system::get_memory_process();
+            BLT_DEBUG("Currently %ld bytes aka %s in memory", v.resident, blt::string::fromBytes(v.resident).c_str());
+        }
+        BLT_INFO("Peak bytes for any_t_variant: %s, blocks: %ld", blt::string::fromBytes(alloc_2.getStats().getPeakBytes()).c_str(),
+                 alloc_2.getStats().getPeakBlocks());
     }
     
     void run_any_t_union()
     {
+        alloc_2.resetStats();
         engine.reset();
         tree_any_union love[size];
+        {
+            auto v = blt::system::get_memory_process();
+            BLT_DEBUG("Currently %ld bytes aka %s in memory", v.resident, blt::string::fromBytes(v.resident).c_str());
+        }
         BLT_START_INTERVAL("Tree Construction", "any_t_union tree");
         for (auto& i : love)
             i.create(tree_size);
         BLT_END_INTERVAL("Tree Construction", "any_t_union tree");
         BLT_INFO("Construction any_t_union finished");
+        {
+            auto v = blt::system::get_memory_process();
+            BLT_DEBUG("Currently %ld bytes aka %s in memory", v.resident, blt::string::fromBytes(v.resident).c_str());
+        }
         BLT_START_INTERVAL("Tree Evaluation", "any_t_union tree");
         for (auto& i : love)
             blt::black_box(i.evaluate());
         BLT_END_INTERVAL("Tree Evaluation", "any_t_union tree");
+        {
+            auto v = blt::system::get_memory_process();
+            BLT_DEBUG("Currently %ld bytes aka %s in memory", v.resident, blt::string::fromBytes(v.resident).c_str());
+        }
+        BLT_INFO("Peak bytes for any_t_union: %s, blocks: %ld", blt::string::fromBytes(alloc_2.getStats().getPeakBytes()).c_str(),
+                 alloc_2.getStats().getPeakBlocks());
     }
     
     void run_std_any_t()
     {
+        alloc_2.resetStats();
         engine.reset();
         tree_std_any love[size];
+        {
+            auto v = blt::system::get_memory_process();
+            BLT_DEBUG("Currently %ld bytes aka %s in memory", v.resident, blt::string::fromBytes(v.resident).c_str());
+        }
         BLT_START_INTERVAL("Tree Construction", "std::any tree");
         for (auto& i : love)
             i.create(tree_size);
         BLT_END_INTERVAL("Tree Construction", "std::any tree");
         BLT_INFO("Construction std::any finished");
+        {
+            auto v = blt::system::get_memory_process();
+            BLT_DEBUG("Currently %ld bytes aka %s in memory", v.resident, blt::string::fromBytes(v.resident).c_str());
+        }
         BLT_START_INTERVAL("Tree Evaluation", "std::any tree");
         for (auto& i : love)
             blt::black_box(i.evaluate());
         BLT_END_INTERVAL("Tree Evaluation", "std::any tree");
+        {
+            auto v = blt::system::get_memory_process();
+            BLT_DEBUG("Currently %ld bytes aka %s in memory", v.resident, blt::string::fromBytes(v.resident).c_str());
+        }
+        BLT_INFO("Peak bytes for std::any: %s, blocks: %ld", blt::string::fromBytes(alloc_2.getStats().getPeakBytes()).c_str(),
+                 alloc_2.getStats().getPeakBlocks());
     }
     
     void test4()
