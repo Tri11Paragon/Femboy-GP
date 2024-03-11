@@ -1,0 +1,858 @@
+desc: (none)
+cmd: ./cmake-build-relwithdebinfo-clean/lilfbtf5_test --tests
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=6026267536
+mem_heap_B=86886
+mem_heap_extra_B=834
+mem_stacks_B=0
+heap_tree=detailed
+n6: 86886 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 73728 0x492578D: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+  n1: 73728 0x4004E3D: call_init (dl-init.c:74)
+   n1: 73728 0x4004E3D: call_init (dl-init.c:26)
+    n1: 73728 0x4004F23: _dl_init (dl-init.c:121)
+     n1: 73728 0x401A4FF: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+      n1: 73728 0x1: ???
+       n1: 73728 0x1FFEFFFC36: ???
+        n0: 73728 0x1FFEFFFC67: ???
+ n1: 5512 0x1468D2: tag_map (logging.h:255)
+  n1: 5512 0x1468D2: std::__detail::_MakeUniq<blt::logging::tag_map>::__single_object std::make_unique<blt::logging::tag_map, blt::logging::tag_map>(blt::logging::tag_map&&) (unique_ptr.h:1070)
+   n1: 5512 0x122FBB: __static_initialization_and_destruction_0() (logging.h:443)
+    n1: 5512 0x4C0F7F5: call_init (libc-start.c:145)
+     n1: 5512 0x4C0F7F5: __libc_start_main@@GLIBC_2.34 (libc-start.c:347)
+      n0: 5512 0x123220: (below main) (in /home/brett/Documents/code/c++/Femboy_GP/cmake-build-relwithdebinfo-clean/lilfbtf5_test)
+ n0: 2362 in 46 places, all below massif's threshold (1.00%)
+ n1: 2180 0x4CACD7A: __tzfile_read (tzfile.c:279)
+  n1: 2180 0x4CAC6D3: tzset_internal (tzset.c:405)
+   n1: 2180 0x4CAC8C2: __tz_convert (tzset.c:577)
+    n1: 2180 0x142BFA: operator() (logging.h:399)
+     n1: 2180 0x142BFA: __invoke_impl<std::__cxx11::basic_string<char>, blt::logging::<lambda(const blt::logging::tag_func_param&)>&, const blt::logging::tag_func_param&> (invoke.h:61)
+      n1: 2180 0x142BFA: __invoke_r<std::__cxx11::basic_string<char>, blt::logging::<lambda(const blt::logging::tag_func_param&)>&, const blt::logging::tag_func_param&> (invoke.h:116)
+       n1: 2180 0x142BFA: std::_Function_handler<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > (blt::logging::tag_func_param const&), blt::logging::tagMap::{lambda(blt::logging::tag_func_param const&)#10}>::_M_invoke(std::_Any_data const&, blt::logging::tag_func_param const&) (std_function.h:291)
+        n1: 2180 0x144B8E: operator() (std_function.h:591)
+         n1: 2180 0x144B8E: blt::logging::parseString(blt::logging::string_parser&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int) (logging.h:557)
+          n1: 2180 0x14516A: blt::logging::applyFormatString(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int) (logging.h:571)
+           n1: 2180 0x1452E1: blt::logging::log_internal(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int, __va_list_tag (&) [1]) (logging.h:592)
+            n1: 2180 0x13DE78: void blt::logging::log<unsigned long>(unsigned long, blt::logging::log_level, char const*, int, ...) (logging.h:145)
+             n1: 2180 0x13D750: fb::test4() (tests4.cpp:683)
+              n0: 2180 0x121348: main (main.cpp:53)
+ n1: 2080 0x4C2620E: __new_exitfn (cxa_atexit.c:112)
+  n2: 2080 0x4C26297: __internal_atexit (cxa_atexit.c:44)
+   n1: 1040 0x121F60: __static_initialization_and_destruction_0 (tests4.cpp:247)
+    n1: 1040 0x121F60: _GLOBAL__sub_I__ZN2fb7combineERKSt6vectorINS_6type_tESaIS1_EES5_ (tests4.cpp:690)
+     n1: 1040 0x4C0F7F5: call_init (libc-start.c:145)
+      n1: 1040 0x4C0F7F5: __libc_start_main@@GLIBC_2.34 (libc-start.c:347)
+       n0: 1040 0x123220: (below main) (in /home/brett/Documents/code/c++/Femboy_GP/cmake-build-relwithdebinfo-clean/lilfbtf5_test)
+   n1: 1040 0x140B3A: choice (tests4.cpp:128)
+    n1: 1040 0x140B3A: fb::tree_any::create(unsigned long) (tests4.cpp:488)
+     n1: 1040 0x13CD2C: fb::run_any_t() (tests4.cpp:657)
+      n1: 1040 0x13D76E: fb::test4() (tests4.cpp:686)
+       n0: 1040 0x121348: main (main.cpp:53)
+ n1: 1024 0x4C5B48B: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x4C6A0BF: _IO_doallocbuf (genops.c:347)
+   n2: 1024 0x4C6A0BF: _IO_doallocbuf (genops.c:342)
+    n1: 1024 0x4C69157: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
+     n1: 1024 0x4C6829D: _IO_new_file_xsputn (fileops.c:1243)
+      n1: 1024 0x4C6829D: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+       n1: 1024 0x4C5CA64: fwrite (iofwrite.c:39)
+        n1: 1024 0x49A7DBD: std::ostreambuf_iterator<char, std::char_traits<char> > std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::_M_insert_int<unsigned long>(std::ostreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, char, unsigned long) const (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+         n1: 1024 0x49A7F2E: std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::do_put(std::ostreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, char, void const*) const (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+          n1: 1024 0x49B784C: std::ostream& std::ostream::_M_insert<void const*>(void const*) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+           n1: 1024 0x120F94: operator<< (ostream:293)
+            n0: 1024 0x120F94: main (main.cpp:27)
+    n0: 0 in 1 place, below massif's threshold (1.00%)
+#-----------
+snapshot=2
+#-----------
+time=10960901026
+mem_heap_B=86886
+mem_heap_extra_B=834
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=17305802164
+mem_heap_B=86886
+mem_heap_extra_B=834
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=21385485553
+mem_heap_B=86886
+mem_heap_extra_B=834
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=27186700952
+mem_heap_B=86886
+mem_heap_extra_B=834
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=31245222559
+mem_heap_B=86886
+mem_heap_extra_B=834
+mem_stacks_B=0
+heap_tree=detailed
+n6: 86886 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 73728 0x492578D: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+  n1: 73728 0x4004E3D: call_init (dl-init.c:74)
+   n1: 73728 0x4004E3D: call_init (dl-init.c:26)
+    n1: 73728 0x4004F23: _dl_init (dl-init.c:121)
+     n1: 73728 0x401A4FF: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+      n1: 73728 0x1: ???
+       n1: 73728 0x1FFEFFFC36: ???
+        n0: 73728 0x1FFEFFFC67: ???
+ n1: 5512 0x1468D2: tag_map (logging.h:255)
+  n1: 5512 0x1468D2: std::__detail::_MakeUniq<blt::logging::tag_map>::__single_object std::make_unique<blt::logging::tag_map, blt::logging::tag_map>(blt::logging::tag_map&&) (unique_ptr.h:1070)
+   n1: 5512 0x122FBB: __static_initialization_and_destruction_0() (logging.h:443)
+    n1: 5512 0x4C0F7F5: call_init (libc-start.c:145)
+     n1: 5512 0x4C0F7F5: __libc_start_main@@GLIBC_2.34 (libc-start.c:347)
+      n0: 5512 0x123220: (below main) (in /home/brett/Documents/code/c++/Femboy_GP/cmake-build-relwithdebinfo-clean/lilfbtf5_test)
+ n0: 2362 in 46 places, all below massif's threshold (1.00%)
+ n1: 2180 0x4CACD7A: __tzfile_read (tzfile.c:279)
+  n1: 2180 0x4CAC6D3: tzset_internal (tzset.c:405)
+   n1: 2180 0x4CAC8C2: __tz_convert (tzset.c:577)
+    n1: 2180 0x142BFA: operator() (logging.h:399)
+     n1: 2180 0x142BFA: __invoke_impl<std::__cxx11::basic_string<char>, blt::logging::<lambda(const blt::logging::tag_func_param&)>&, const blt::logging::tag_func_param&> (invoke.h:61)
+      n1: 2180 0x142BFA: __invoke_r<std::__cxx11::basic_string<char>, blt::logging::<lambda(const blt::logging::tag_func_param&)>&, const blt::logging::tag_func_param&> (invoke.h:116)
+       n1: 2180 0x142BFA: std::_Function_handler<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > (blt::logging::tag_func_param const&), blt::logging::tagMap::{lambda(blt::logging::tag_func_param const&)#10}>::_M_invoke(std::_Any_data const&, blt::logging::tag_func_param const&) (std_function.h:291)
+        n1: 2180 0x144B8E: operator() (std_function.h:591)
+         n1: 2180 0x144B8E: blt::logging::parseString(blt::logging::string_parser&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int) (logging.h:557)
+          n1: 2180 0x14516A: blt::logging::applyFormatString(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int) (logging.h:571)
+           n1: 2180 0x1452E1: blt::logging::log_internal(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int, __va_list_tag (&) [1]) (logging.h:592)
+            n1: 2180 0x13DE78: void blt::logging::log<unsigned long>(unsigned long, blt::logging::log_level, char const*, int, ...) (logging.h:145)
+             n1: 2180 0x13D750: fb::test4() (tests4.cpp:683)
+              n0: 2180 0x121348: main (main.cpp:53)
+ n1: 2080 0x4C2620E: __new_exitfn (cxa_atexit.c:112)
+  n2: 2080 0x4C26297: __internal_atexit (cxa_atexit.c:44)
+   n1: 1040 0x121F60: __static_initialization_and_destruction_0 (tests4.cpp:247)
+    n1: 1040 0x121F60: _GLOBAL__sub_I__ZN2fb7combineERKSt6vectorINS_6type_tESaIS1_EES5_ (tests4.cpp:690)
+     n1: 1040 0x4C0F7F5: call_init (libc-start.c:145)
+      n1: 1040 0x4C0F7F5: __libc_start_main@@GLIBC_2.34 (libc-start.c:347)
+       n0: 1040 0x123220: (below main) (in /home/brett/Documents/code/c++/Femboy_GP/cmake-build-relwithdebinfo-clean/lilfbtf5_test)
+   n1: 1040 0x140B3A: choice (tests4.cpp:128)
+    n1: 1040 0x140B3A: fb::tree_any::create(unsigned long) (tests4.cpp:488)
+     n1: 1040 0x13CD2C: fb::run_any_t() (tests4.cpp:657)
+      n1: 1040 0x13D76E: fb::test4() (tests4.cpp:686)
+       n0: 1040 0x121348: main (main.cpp:53)
+ n1: 1024 0x4C5B48B: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x4C6A0BF: _IO_doallocbuf (genops.c:347)
+   n2: 1024 0x4C6A0BF: _IO_doallocbuf (genops.c:342)
+    n1: 1024 0x4C69157: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
+     n1: 1024 0x4C6829D: _IO_new_file_xsputn (fileops.c:1243)
+      n1: 1024 0x4C6829D: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+       n1: 1024 0x4C5CA64: fwrite (iofwrite.c:39)
+        n1: 1024 0x49A7DBD: std::ostreambuf_iterator<char, std::char_traits<char> > std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::_M_insert_int<unsigned long>(std::ostreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, char, unsigned long) const (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+         n1: 1024 0x49A7F2E: std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::do_put(std::ostreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, char, void const*) const (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+          n1: 1024 0x49B784C: std::ostream& std::ostream::_M_insert<void const*>(void const*) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+           n1: 1024 0x120F94: operator<< (ostream:293)
+            n0: 1024 0x120F94: main (main.cpp:27)
+    n0: 0 in 1 place, below massif's threshold (1.00%)
+#-----------
+snapshot=7
+#-----------
+time=37138415091
+mem_heap_B=86886
+mem_heap_extra_B=834
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=41908130824
+mem_heap_B=86886
+mem_heap_extra_B=834
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=45419822763
+mem_heap_B=86886
+mem_heap_extra_B=834
+mem_stacks_B=0
+heap_tree=detailed
+n6: 86886 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 73728 0x492578D: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+  n1: 73728 0x4004E3D: call_init (dl-init.c:74)
+   n1: 73728 0x4004E3D: call_init (dl-init.c:26)
+    n1: 73728 0x4004F23: _dl_init (dl-init.c:121)
+     n1: 73728 0x401A4FF: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+      n1: 73728 0x1: ???
+       n1: 73728 0x1FFEFFFC36: ???
+        n0: 73728 0x1FFEFFFC67: ???
+ n1: 5512 0x1468D2: tag_map (logging.h:255)
+  n1: 5512 0x1468D2: std::__detail::_MakeUniq<blt::logging::tag_map>::__single_object std::make_unique<blt::logging::tag_map, blt::logging::tag_map>(blt::logging::tag_map&&) (unique_ptr.h:1070)
+   n1: 5512 0x122FBB: __static_initialization_and_destruction_0() (logging.h:443)
+    n1: 5512 0x4C0F7F5: call_init (libc-start.c:145)
+     n1: 5512 0x4C0F7F5: __libc_start_main@@GLIBC_2.34 (libc-start.c:347)
+      n0: 5512 0x123220: (below main) (in /home/brett/Documents/code/c++/Femboy_GP/cmake-build-relwithdebinfo-clean/lilfbtf5_test)
+ n0: 2362 in 46 places, all below massif's threshold (1.00%)
+ n1: 2180 0x4CACD7A: __tzfile_read (tzfile.c:279)
+  n1: 2180 0x4CAC6D3: tzset_internal (tzset.c:405)
+   n1: 2180 0x4CAC8C2: __tz_convert (tzset.c:577)
+    n1: 2180 0x142BFA: operator() (logging.h:399)
+     n1: 2180 0x142BFA: __invoke_impl<std::__cxx11::basic_string<char>, blt::logging::<lambda(const blt::logging::tag_func_param&)>&, const blt::logging::tag_func_param&> (invoke.h:61)
+      n1: 2180 0x142BFA: __invoke_r<std::__cxx11::basic_string<char>, blt::logging::<lambda(const blt::logging::tag_func_param&)>&, const blt::logging::tag_func_param&> (invoke.h:116)
+       n1: 2180 0x142BFA: std::_Function_handler<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > (blt::logging::tag_func_param const&), blt::logging::tagMap::{lambda(blt::logging::tag_func_param const&)#10}>::_M_invoke(std::_Any_data const&, blt::logging::tag_func_param const&) (std_function.h:291)
+        n1: 2180 0x144B8E: operator() (std_function.h:591)
+         n1: 2180 0x144B8E: blt::logging::parseString(blt::logging::string_parser&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int) (logging.h:557)
+          n1: 2180 0x14516A: blt::logging::applyFormatString(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int) (logging.h:571)
+           n1: 2180 0x1452E1: blt::logging::log_internal(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int, __va_list_tag (&) [1]) (logging.h:592)
+            n1: 2180 0x13DE78: void blt::logging::log<unsigned long>(unsigned long, blt::logging::log_level, char const*, int, ...) (logging.h:145)
+             n1: 2180 0x13D750: fb::test4() (tests4.cpp:683)
+              n0: 2180 0x121348: main (main.cpp:53)
+ n1: 2080 0x4C2620E: __new_exitfn (cxa_atexit.c:112)
+  n2: 2080 0x4C26297: __internal_atexit (cxa_atexit.c:44)
+   n1: 1040 0x121F60: __static_initialization_and_destruction_0 (tests4.cpp:247)
+    n1: 1040 0x121F60: _GLOBAL__sub_I__ZN2fb7combineERKSt6vectorINS_6type_tESaIS1_EES5_ (tests4.cpp:690)
+     n1: 1040 0x4C0F7F5: call_init (libc-start.c:145)
+      n1: 1040 0x4C0F7F5: __libc_start_main@@GLIBC_2.34 (libc-start.c:347)
+       n0: 1040 0x123220: (below main) (in /home/brett/Documents/code/c++/Femboy_GP/cmake-build-relwithdebinfo-clean/lilfbtf5_test)
+   n1: 1040 0x140B3A: choice (tests4.cpp:128)
+    n1: 1040 0x140B3A: fb::tree_any::create(unsigned long) (tests4.cpp:488)
+     n1: 1040 0x13CD2C: fb::run_any_t() (tests4.cpp:657)
+      n1: 1040 0x13D76E: fb::test4() (tests4.cpp:686)
+       n0: 1040 0x121348: main (main.cpp:53)
+ n1: 1024 0x4C5B48B: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x4C6A0BF: _IO_doallocbuf (genops.c:347)
+   n2: 1024 0x4C6A0BF: _IO_doallocbuf (genops.c:342)
+    n1: 1024 0x4C69157: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
+     n1: 1024 0x4C6829D: _IO_new_file_xsputn (fileops.c:1243)
+      n1: 1024 0x4C6829D: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+       n1: 1024 0x4C5CA64: fwrite (iofwrite.c:39)
+        n1: 1024 0x49A7DBD: std::ostreambuf_iterator<char, std::char_traits<char> > std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::_M_insert_int<unsigned long>(std::ostreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, char, unsigned long) const (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+         n1: 1024 0x49A7F2E: std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::do_put(std::ostreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, char, void const*) const (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+          n1: 1024 0x49B784C: std::ostream& std::ostream::_M_insert<void const*>(void const*) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+           n1: 1024 0x120F94: operator<< (ostream:293)
+            n0: 1024 0x120F94: main (main.cpp:27)
+    n0: 0 in 1 place, below massif's threshold (1.00%)
+#-----------
+snapshot=10
+#-----------
+time=49200203963
+mem_heap_B=86886
+mem_heap_extra_B=834
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=53382441577
+mem_heap_B=86886
+mem_heap_extra_B=834
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=56968378566
+mem_heap_B=86886
+mem_heap_extra_B=834
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=61738136928
+mem_heap_B=86886
+mem_heap_extra_B=834
+mem_stacks_B=0
+heap_tree=detailed
+n6: 86886 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 73728 0x492578D: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+  n1: 73728 0x4004E3D: call_init (dl-init.c:74)
+   n1: 73728 0x4004E3D: call_init (dl-init.c:26)
+    n1: 73728 0x4004F23: _dl_init (dl-init.c:121)
+     n1: 73728 0x401A4FF: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+      n1: 73728 0x1: ???
+       n1: 73728 0x1FFEFFFC36: ???
+        n0: 73728 0x1FFEFFFC67: ???
+ n1: 5512 0x1468D2: tag_map (logging.h:255)
+  n1: 5512 0x1468D2: std::__detail::_MakeUniq<blt::logging::tag_map>::__single_object std::make_unique<blt::logging::tag_map, blt::logging::tag_map>(blt::logging::tag_map&&) (unique_ptr.h:1070)
+   n1: 5512 0x122FBB: __static_initialization_and_destruction_0() (logging.h:443)
+    n1: 5512 0x4C0F7F5: call_init (libc-start.c:145)
+     n1: 5512 0x4C0F7F5: __libc_start_main@@GLIBC_2.34 (libc-start.c:347)
+      n0: 5512 0x123220: (below main) (in /home/brett/Documents/code/c++/Femboy_GP/cmake-build-relwithdebinfo-clean/lilfbtf5_test)
+ n0: 2362 in 46 places, all below massif's threshold (1.00%)
+ n1: 2180 0x4CACD7A: __tzfile_read (tzfile.c:279)
+  n1: 2180 0x4CAC6D3: tzset_internal (tzset.c:405)
+   n1: 2180 0x4CAC8C2: __tz_convert (tzset.c:577)
+    n1: 2180 0x142BFA: operator() (logging.h:399)
+     n1: 2180 0x142BFA: __invoke_impl<std::__cxx11::basic_string<char>, blt::logging::<lambda(const blt::logging::tag_func_param&)>&, const blt::logging::tag_func_param&> (invoke.h:61)
+      n1: 2180 0x142BFA: __invoke_r<std::__cxx11::basic_string<char>, blt::logging::<lambda(const blt::logging::tag_func_param&)>&, const blt::logging::tag_func_param&> (invoke.h:116)
+       n1: 2180 0x142BFA: std::_Function_handler<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > (blt::logging::tag_func_param const&), blt::logging::tagMap::{lambda(blt::logging::tag_func_param const&)#10}>::_M_invoke(std::_Any_data const&, blt::logging::tag_func_param const&) (std_function.h:291)
+        n1: 2180 0x144B8E: operator() (std_function.h:591)
+         n1: 2180 0x144B8E: blt::logging::parseString(blt::logging::string_parser&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int) (logging.h:557)
+          n1: 2180 0x14516A: blt::logging::applyFormatString(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int) (logging.h:571)
+           n1: 2180 0x1452E1: blt::logging::log_internal(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int, __va_list_tag (&) [1]) (logging.h:592)
+            n1: 2180 0x13DE78: void blt::logging::log<unsigned long>(unsigned long, blt::logging::log_level, char const*, int, ...) (logging.h:145)
+             n1: 2180 0x13D750: fb::test4() (tests4.cpp:683)
+              n0: 2180 0x121348: main (main.cpp:53)
+ n1: 2080 0x4C2620E: __new_exitfn (cxa_atexit.c:112)
+  n2: 2080 0x4C26297: __internal_atexit (cxa_atexit.c:44)
+   n1: 1040 0x121F60: __static_initialization_and_destruction_0 (tests4.cpp:247)
+    n1: 1040 0x121F60: _GLOBAL__sub_I__ZN2fb7combineERKSt6vectorINS_6type_tESaIS1_EES5_ (tests4.cpp:690)
+     n1: 1040 0x4C0F7F5: call_init (libc-start.c:145)
+      n1: 1040 0x4C0F7F5: __libc_start_main@@GLIBC_2.34 (libc-start.c:347)
+       n0: 1040 0x123220: (below main) (in /home/brett/Documents/code/c++/Femboy_GP/cmake-build-relwithdebinfo-clean/lilfbtf5_test)
+   n1: 1040 0x140B3A: choice (tests4.cpp:128)
+    n1: 1040 0x140B3A: fb::tree_any::create(unsigned long) (tests4.cpp:488)
+     n1: 1040 0x13CD2C: fb::run_any_t() (tests4.cpp:657)
+      n1: 1040 0x13D76E: fb::test4() (tests4.cpp:686)
+       n0: 1040 0x121348: main (main.cpp:53)
+ n1: 1024 0x4C5B48B: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x4C6A0BF: _IO_doallocbuf (genops.c:347)
+   n2: 1024 0x4C6A0BF: _IO_doallocbuf (genops.c:342)
+    n1: 1024 0x4C69157: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
+     n1: 1024 0x4C6829D: _IO_new_file_xsputn (fileops.c:1243)
+      n1: 1024 0x4C6829D: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+       n1: 1024 0x4C5CA64: fwrite (iofwrite.c:39)
+        n1: 1024 0x49A7DBD: std::ostreambuf_iterator<char, std::char_traits<char> > std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::_M_insert_int<unsigned long>(std::ostreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, char, unsigned long) const (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+         n1: 1024 0x49A7F2E: std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::do_put(std::ostreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, char, void const*) const (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+          n1: 1024 0x49B784C: std::ostream& std::ostream::_M_insert<void const*>(void const*) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+           n1: 1024 0x120F94: operator<< (ostream:293)
+            n0: 1024 0x120F94: main (main.cpp:27)
+    n0: 0 in 1 place, below massif's threshold (1.00%)
+#-----------
+snapshot=14
+#-----------
+time=64749828635
+mem_heap_B=86886
+mem_heap_extra_B=834
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=68731880129
+mem_heap_B=86886
+mem_heap_extra_B=834
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=73503868948
+mem_heap_B=86886
+mem_heap_extra_B=834
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=80436969153
+mem_heap_B=1424550
+mem_heap_extra_B=19194
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=85505854132
+mem_heap_B=10355878
+mem_heap_extra_B=156186
+mem_stacks_B=0
+heap_tree=peak
+n3: 10355878 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 9939968 0x13EDA6: allocate (new_allocator.h:151)
+  n1: 9939968 0x13EDA6: allocate (alloc_traits.h:482)
+   n1: 9939968 0x13EDA6: _M_allocate_node (stl_deque.h:583)
+    n1: 9939968 0x13EDA6: void std::deque<fb::tree_any::node_t*, std::allocator<fb::tree_any::node_t*> >::_M_push_back_aux<fb::tree_any::node_t* const&>(fb::tree_any::node_t* const&) (deque.tcc:497)
+     n1: 9939968 0x13F02B: push_back (stl_deque.h:1548)
+      n1: 9939968 0x13F02B: push (stl_stack.h:261)
+       n1: 9939968 0x13F02B: fb::tree_any::node_t::evaluate_tree() (tests4.cpp:431)
+        n1: 9939968 0x13CE97: evaluate (tests4.cpp:507)
+         n1: 9939968 0x13CE97: fb::run_any_t() (tests4.cpp:661)
+          n1: 9939968 0x13D76E: fb::test4() (tests4.cpp:686)
+           n0: 9939968 0x121348: main (main.cpp:53)
+ n1: 327664 0x13EC03: allocate (new_allocator.h:151)
+  n1: 327664 0x13EC03: allocate (alloc_traits.h:482)
+   n1: 327664 0x13EC03: _M_allocate_map (stl_deque.h:597)
+    n1: 327664 0x13EC03: std::deque<fb::tree_any::node_t*, std::allocator<fb::tree_any::node_t*> >::_M_reallocate_map(unsigned long, bool) (deque.tcc:959)
+     n1: 327664 0x13EDFB: _M_reserve_map_at_back (stl_deque.h:2172)
+      n1: 327664 0x13EDFB: _M_reserve_map_at_back (stl_deque.h:2168)
+       n1: 327664 0x13EDFB: void std::deque<fb::tree_any::node_t*, std::allocator<fb::tree_any::node_t*> >::_M_push_back_aux<fb::tree_any::node_t* const&>(fb::tree_any::node_t* const&) (deque.tcc:496)
+        n1: 327664 0x13F02B: push_back (stl_deque.h:1548)
+         n1: 327664 0x13F02B: push (stl_stack.h:261)
+          n1: 327664 0x13F02B: fb::tree_any::node_t::evaluate_tree() (tests4.cpp:431)
+           n1: 327664 0x13CE97: evaluate (tests4.cpp:507)
+            n1: 327664 0x13CE97: fb::run_any_t() (tests4.cpp:661)
+             n1: 327664 0x13D76E: fb::test4() (tests4.cpp:686)
+              n0: 327664 0x121348: main (main.cpp:53)
+ n0: 88246 in 54 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=19
+#-----------
+time=89959410681
+mem_heap_B=6357670
+mem_heap_extra_B=96274
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=95853846172
+mem_heap_B=2959526
+mem_heap_extra_B=44458
+mem_stacks_B=0
+heap_tree=detailed
+n4: 2959526 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 2789376 0x13EDA6: allocate (new_allocator.h:151)
+  n1: 2789376 0x13EDA6: allocate (alloc_traits.h:482)
+   n1: 2789376 0x13EDA6: _M_allocate_node (stl_deque.h:583)
+    n1: 2789376 0x13EDA6: void std::deque<fb::tree_any::node_t*, std::allocator<fb::tree_any::node_t*> >::_M_push_back_aux<fb::tree_any::node_t* const&>(fb::tree_any::node_t* const&) (deque.tcc:497)
+     n1: 2789376 0x13F02B: push_back (stl_deque.h:1548)
+      n1: 2789376 0x13F02B: push (stl_stack.h:261)
+       n1: 2789376 0x13F02B: fb::tree_any::node_t::evaluate_tree() (tests4.cpp:431)
+        n1: 2789376 0x13CE97: evaluate (tests4.cpp:507)
+         n1: 2789376 0x13CE97: fb::run_any_t() (tests4.cpp:661)
+          n1: 2789376 0x13D76E: fb::test4() (tests4.cpp:686)
+           n0: 2789376 0x121348: main (main.cpp:53)
+ n1: 81904 0x13EC03: allocate (new_allocator.h:151)
+  n1: 81904 0x13EC03: allocate (alloc_traits.h:482)
+   n1: 81904 0x13EC03: _M_allocate_map (stl_deque.h:597)
+    n1: 81904 0x13EC03: std::deque<fb::tree_any::node_t*, std::allocator<fb::tree_any::node_t*> >::_M_reallocate_map(unsigned long, bool) (deque.tcc:959)
+     n1: 81904 0x13EDFB: _M_reserve_map_at_back (stl_deque.h:2172)
+      n1: 81904 0x13EDFB: _M_reserve_map_at_back (stl_deque.h:2168)
+       n1: 81904 0x13EDFB: void std::deque<fb::tree_any::node_t*, std::allocator<fb::tree_any::node_t*> >::_M_push_back_aux<fb::tree_any::node_t* const&>(fb::tree_any::node_t* const&) (deque.tcc:496)
+        n1: 81904 0x13F02B: push_back (stl_deque.h:1548)
+         n1: 81904 0x13F02B: push (stl_stack.h:261)
+          n1: 81904 0x13F02B: fb::tree_any::node_t::evaluate_tree() (tests4.cpp:431)
+           n1: 81904 0x13CE97: evaluate (tests4.cpp:507)
+            n1: 81904 0x13CE97: fb::run_any_t() (tests4.cpp:661)
+             n1: 81904 0x13D76E: fb::test4() (tests4.cpp:686)
+              n0: 81904 0x121348: main (main.cpp:53)
+ n1: 73728 0x492578D: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+  n1: 73728 0x4004E3D: call_init (dl-init.c:74)
+   n1: 73728 0x4004E3D: call_init (dl-init.c:26)
+    n1: 73728 0x4004F23: _dl_init (dl-init.c:121)
+     n1: 73728 0x401A4FF: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+      n1: 73728 0x1: ???
+       n1: 73728 0x1FFEFFFC36: ???
+        n0: 73728 0x1FFEFFFC67: ???
+ n0: 14518 in 53 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=21
+#-----------
+time=99737684506
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=103594472315
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=108952276984
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=detailed
+n6: 87607 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 73728 0x492578D: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+  n1: 73728 0x4004E3D: call_init (dl-init.c:74)
+   n1: 73728 0x4004E3D: call_init (dl-init.c:26)
+    n1: 73728 0x4004F23: _dl_init (dl-init.c:121)
+     n1: 73728 0x401A4FF: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+      n1: 73728 0x1: ???
+       n1: 73728 0x1FFEFFFC36: ???
+        n0: 73728 0x1FFEFFFC67: ???
+ n1: 5512 0x1468D2: tag_map (logging.h:255)
+  n1: 5512 0x1468D2: std::__detail::_MakeUniq<blt::logging::tag_map>::__single_object std::make_unique<blt::logging::tag_map, blt::logging::tag_map>(blt::logging::tag_map&&) (unique_ptr.h:1070)
+   n1: 5512 0x122FBB: __static_initialization_and_destruction_0() (logging.h:443)
+    n1: 5512 0x4C0F7F5: call_init (libc-start.c:145)
+     n1: 5512 0x4C0F7F5: __libc_start_main@@GLIBC_2.34 (libc-start.c:347)
+      n0: 5512 0x123220: (below main) (in /home/brett/Documents/code/c++/Femboy_GP/cmake-build-relwithdebinfo-clean/lilfbtf5_test)
+ n0: 3083 in 55 places, all below massif's threshold (1.00%)
+ n1: 2180 0x4CACD7A: __tzfile_read (tzfile.c:279)
+  n1: 2180 0x4CAC6D3: tzset_internal (tzset.c:405)
+   n1: 2180 0x4CAC8C2: __tz_convert (tzset.c:577)
+    n1: 2180 0x142BFA: operator() (logging.h:399)
+     n1: 2180 0x142BFA: __invoke_impl<std::__cxx11::basic_string<char>, blt::logging::<lambda(const blt::logging::tag_func_param&)>&, const blt::logging::tag_func_param&> (invoke.h:61)
+      n1: 2180 0x142BFA: __invoke_r<std::__cxx11::basic_string<char>, blt::logging::<lambda(const blt::logging::tag_func_param&)>&, const blt::logging::tag_func_param&> (invoke.h:116)
+       n1: 2180 0x142BFA: std::_Function_handler<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > (blt::logging::tag_func_param const&), blt::logging::tagMap::{lambda(blt::logging::tag_func_param const&)#10}>::_M_invoke(std::_Any_data const&, blt::logging::tag_func_param const&) (std_function.h:291)
+        n1: 2180 0x144B8E: operator() (std_function.h:591)
+         n1: 2180 0x144B8E: blt::logging::parseString(blt::logging::string_parser&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int) (logging.h:557)
+          n1: 2180 0x14516A: blt::logging::applyFormatString(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int) (logging.h:571)
+           n1: 2180 0x1452E1: blt::logging::log_internal(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int, __va_list_tag (&) [1]) (logging.h:592)
+            n1: 2180 0x13DE78: void blt::logging::log<unsigned long>(unsigned long, blt::logging::log_level, char const*, int, ...) (logging.h:145)
+             n1: 2180 0x13D750: fb::test4() (tests4.cpp:683)
+              n0: 2180 0x121348: main (main.cpp:53)
+ n1: 2080 0x4C2620E: __new_exitfn (cxa_atexit.c:112)
+  n2: 2080 0x4C26297: __internal_atexit (cxa_atexit.c:44)
+   n1: 1040 0x121F60: __static_initialization_and_destruction_0 (tests4.cpp:247)
+    n1: 1040 0x121F60: _GLOBAL__sub_I__ZN2fb7combineERKSt6vectorINS_6type_tESaIS1_EES5_ (tests4.cpp:690)
+     n1: 1040 0x4C0F7F5: call_init (libc-start.c:145)
+      n1: 1040 0x4C0F7F5: __libc_start_main@@GLIBC_2.34 (libc-start.c:347)
+       n0: 1040 0x123220: (below main) (in /home/brett/Documents/code/c++/Femboy_GP/cmake-build-relwithdebinfo-clean/lilfbtf5_test)
+   n1: 1040 0x140B3A: choice (tests4.cpp:128)
+    n1: 1040 0x140B3A: fb::tree_any::create(unsigned long) (tests4.cpp:488)
+     n1: 1040 0x13CD2C: fb::run_any_t() (tests4.cpp:657)
+      n1: 1040 0x13D76E: fb::test4() (tests4.cpp:686)
+       n0: 1040 0x121348: main (main.cpp:53)
+ n1: 1024 0x4C5B48B: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x4C6A0BF: _IO_doallocbuf (genops.c:347)
+   n2: 1024 0x4C6A0BF: _IO_doallocbuf (genops.c:342)
+    n1: 1024 0x4C69157: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
+     n1: 1024 0x4C6829D: _IO_new_file_xsputn (fileops.c:1243)
+      n1: 1024 0x4C6829D: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+       n1: 1024 0x4C5CA64: fwrite (iofwrite.c:39)
+        n1: 1024 0x49A7DBD: std::ostreambuf_iterator<char, std::char_traits<char> > std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::_M_insert_int<unsigned long>(std::ostreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, char, unsigned long) const (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+         n1: 1024 0x49A7F2E: std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::do_put(std::ostreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, char, void const*) const (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+          n1: 1024 0x49B784C: std::ostream& std::ostream::_M_insert<void const*>(void const*) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+           n1: 1024 0x120F94: operator<< (ostream:293)
+            n0: 1024 0x120F94: main (main.cpp:27)
+    n0: 0 in 1 place, below massif's threshold (1.00%)
+#-----------
+snapshot=24
+#-----------
+time=115272732216
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=119355856302
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=123105273765
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=27
+#-----------
+time=129287048924
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=133145252688
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=139470453667
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=143368482484
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=148383165099
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=154691379205
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=160055173613
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=163767050179
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=detailed
+n6: 87607 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 73728 0x492578D: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+  n1: 73728 0x4004E3D: call_init (dl-init.c:74)
+   n1: 73728 0x4004E3D: call_init (dl-init.c:26)
+    n1: 73728 0x4004F23: _dl_init (dl-init.c:121)
+     n1: 73728 0x401A4FF: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+      n1: 73728 0x1: ???
+       n1: 73728 0x1FFEFFFC36: ???
+        n0: 73728 0x1FFEFFFC67: ???
+ n1: 5512 0x1468D2: tag_map (logging.h:255)
+  n1: 5512 0x1468D2: std::__detail::_MakeUniq<blt::logging::tag_map>::__single_object std::make_unique<blt::logging::tag_map, blt::logging::tag_map>(blt::logging::tag_map&&) (unique_ptr.h:1070)
+   n1: 5512 0x122FBB: __static_initialization_and_destruction_0() (logging.h:443)
+    n1: 5512 0x4C0F7F5: call_init (libc-start.c:145)
+     n1: 5512 0x4C0F7F5: __libc_start_main@@GLIBC_2.34 (libc-start.c:347)
+      n0: 5512 0x123220: (below main) (in /home/brett/Documents/code/c++/Femboy_GP/cmake-build-relwithdebinfo-clean/lilfbtf5_test)
+ n0: 3083 in 55 places, all below massif's threshold (1.00%)
+ n1: 2180 0x4CACD7A: __tzfile_read (tzfile.c:279)
+  n1: 2180 0x4CAC6D3: tzset_internal (tzset.c:405)
+   n1: 2180 0x4CAC8C2: __tz_convert (tzset.c:577)
+    n1: 2180 0x142BFA: operator() (logging.h:399)
+     n1: 2180 0x142BFA: __invoke_impl<std::__cxx11::basic_string<char>, blt::logging::<lambda(const blt::logging::tag_func_param&)>&, const blt::logging::tag_func_param&> (invoke.h:61)
+      n1: 2180 0x142BFA: __invoke_r<std::__cxx11::basic_string<char>, blt::logging::<lambda(const blt::logging::tag_func_param&)>&, const blt::logging::tag_func_param&> (invoke.h:116)
+       n1: 2180 0x142BFA: std::_Function_handler<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > (blt::logging::tag_func_param const&), blt::logging::tagMap::{lambda(blt::logging::tag_func_param const&)#10}>::_M_invoke(std::_Any_data const&, blt::logging::tag_func_param const&) (std_function.h:291)
+        n1: 2180 0x144B8E: operator() (std_function.h:591)
+         n1: 2180 0x144B8E: blt::logging::parseString(blt::logging::string_parser&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int) (logging.h:557)
+          n1: 2180 0x14516A: blt::logging::applyFormatString(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int) (logging.h:571)
+           n1: 2180 0x1452E1: blt::logging::log_internal(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int, __va_list_tag (&) [1]) (logging.h:592)
+            n1: 2180 0x13DE78: void blt::logging::log<unsigned long>(unsigned long, blt::logging::log_level, char const*, int, ...) (logging.h:145)
+             n1: 2180 0x13D750: fb::test4() (tests4.cpp:683)
+              n0: 2180 0x121348: main (main.cpp:53)
+ n1: 2080 0x4C2620E: __new_exitfn (cxa_atexit.c:112)
+  n2: 2080 0x4C26297: __internal_atexit (cxa_atexit.c:44)
+   n1: 1040 0x121F60: __static_initialization_and_destruction_0 (tests4.cpp:247)
+    n1: 1040 0x121F60: _GLOBAL__sub_I__ZN2fb7combineERKSt6vectorINS_6type_tESaIS1_EES5_ (tests4.cpp:690)
+     n1: 1040 0x4C0F7F5: call_init (libc-start.c:145)
+      n1: 1040 0x4C0F7F5: __libc_start_main@@GLIBC_2.34 (libc-start.c:347)
+       n0: 1040 0x123220: (below main) (in /home/brett/Documents/code/c++/Femboy_GP/cmake-build-relwithdebinfo-clean/lilfbtf5_test)
+   n1: 1040 0x140B3A: choice (tests4.cpp:128)
+    n1: 1040 0x140B3A: fb::tree_any::create(unsigned long) (tests4.cpp:488)
+     n1: 1040 0x13CD2C: fb::run_any_t() (tests4.cpp:657)
+      n1: 1040 0x13D76E: fb::test4() (tests4.cpp:686)
+       n0: 1040 0x121348: main (main.cpp:53)
+ n1: 1024 0x4C5B48B: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x4C6A0BF: _IO_doallocbuf (genops.c:347)
+   n2: 1024 0x4C6A0BF: _IO_doallocbuf (genops.c:342)
+    n1: 1024 0x4C69157: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
+     n1: 1024 0x4C6829D: _IO_new_file_xsputn (fileops.c:1243)
+      n1: 1024 0x4C6829D: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+       n1: 1024 0x4C5CA64: fwrite (iofwrite.c:39)
+        n1: 1024 0x49A7DBD: std::ostreambuf_iterator<char, std::char_traits<char> > std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::_M_insert_int<unsigned long>(std::ostreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, char, unsigned long) const (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+         n1: 1024 0x49A7F2E: std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::do_put(std::ostreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, char, void const*) const (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+          n1: 1024 0x49B784C: std::ostream& std::ostream::_M_insert<void const*>(void const*) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+           n1: 1024 0x120F94: operator<< (ostream:293)
+            n0: 1024 0x120F94: main (main.cpp:27)
+    n0: 0 in 1 place, below massif's threshold (1.00%)
+#-----------
+snapshot=35
+#-----------
+time=167361789964
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=172778255732
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=178154198837
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=181828199091
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=detailed
+n6: 87607 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 73728 0x492578D: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+  n1: 73728 0x4004E3D: call_init (dl-init.c:74)
+   n1: 73728 0x4004E3D: call_init (dl-init.c:26)
+    n1: 73728 0x4004F23: _dl_init (dl-init.c:121)
+     n1: 73728 0x401A4FF: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+      n1: 73728 0x1: ???
+       n1: 73728 0x1FFEFFFC36: ???
+        n0: 73728 0x1FFEFFFC67: ???
+ n1: 5512 0x1468D2: tag_map (logging.h:255)
+  n1: 5512 0x1468D2: std::__detail::_MakeUniq<blt::logging::tag_map>::__single_object std::make_unique<blt::logging::tag_map, blt::logging::tag_map>(blt::logging::tag_map&&) (unique_ptr.h:1070)
+   n1: 5512 0x122FBB: __static_initialization_and_destruction_0() (logging.h:443)
+    n1: 5512 0x4C0F7F5: call_init (libc-start.c:145)
+     n1: 5512 0x4C0F7F5: __libc_start_main@@GLIBC_2.34 (libc-start.c:347)
+      n0: 5512 0x123220: (below main) (in /home/brett/Documents/code/c++/Femboy_GP/cmake-build-relwithdebinfo-clean/lilfbtf5_test)
+ n0: 3083 in 55 places, all below massif's threshold (1.00%)
+ n1: 2180 0x4CACD7A: __tzfile_read (tzfile.c:279)
+  n1: 2180 0x4CAC6D3: tzset_internal (tzset.c:405)
+   n1: 2180 0x4CAC8C2: __tz_convert (tzset.c:577)
+    n1: 2180 0x142BFA: operator() (logging.h:399)
+     n1: 2180 0x142BFA: __invoke_impl<std::__cxx11::basic_string<char>, blt::logging::<lambda(const blt::logging::tag_func_param&)>&, const blt::logging::tag_func_param&> (invoke.h:61)
+      n1: 2180 0x142BFA: __invoke_r<std::__cxx11::basic_string<char>, blt::logging::<lambda(const blt::logging::tag_func_param&)>&, const blt::logging::tag_func_param&> (invoke.h:116)
+       n1: 2180 0x142BFA: std::_Function_handler<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > (blt::logging::tag_func_param const&), blt::logging::tagMap::{lambda(blt::logging::tag_func_param const&)#10}>::_M_invoke(std::_Any_data const&, blt::logging::tag_func_param const&) (std_function.h:291)
+        n1: 2180 0x144B8E: operator() (std_function.h:591)
+         n1: 2180 0x144B8E: blt::logging::parseString(blt::logging::string_parser&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int) (logging.h:557)
+          n1: 2180 0x14516A: blt::logging::applyFormatString(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int) (logging.h:571)
+           n1: 2180 0x1452E1: blt::logging::log_internal(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, blt::logging::log_level, char const*, int, __va_list_tag (&) [1]) (logging.h:592)
+            n1: 2180 0x13DE78: void blt::logging::log<unsigned long>(unsigned long, blt::logging::log_level, char const*, int, ...) (logging.h:145)
+             n1: 2180 0x13D750: fb::test4() (tests4.cpp:683)
+              n0: 2180 0x121348: main (main.cpp:53)
+ n1: 2080 0x4C2620E: __new_exitfn (cxa_atexit.c:112)
+  n2: 2080 0x4C26297: __internal_atexit (cxa_atexit.c:44)
+   n1: 1040 0x121F60: __static_initialization_and_destruction_0 (tests4.cpp:247)
+    n1: 1040 0x121F60: _GLOBAL__sub_I__ZN2fb7combineERKSt6vectorINS_6type_tESaIS1_EES5_ (tests4.cpp:690)
+     n1: 1040 0x4C0F7F5: call_init (libc-start.c:145)
+      n1: 1040 0x4C0F7F5: __libc_start_main@@GLIBC_2.34 (libc-start.c:347)
+       n0: 1040 0x123220: (below main) (in /home/brett/Documents/code/c++/Femboy_GP/cmake-build-relwithdebinfo-clean/lilfbtf5_test)
+   n1: 1040 0x140B3A: choice (tests4.cpp:128)
+    n1: 1040 0x140B3A: fb::tree_any::create(unsigned long) (tests4.cpp:488)
+     n1: 1040 0x13CD2C: fb::run_any_t() (tests4.cpp:657)
+      n1: 1040 0x13D76E: fb::test4() (tests4.cpp:686)
+       n0: 1040 0x121348: main (main.cpp:53)
+ n1: 1024 0x4C5B48B: _IO_file_doallocate (filedoalloc.c:101)
+  n1: 1024 0x4C6A0BF: _IO_doallocbuf (genops.c:347)
+   n2: 1024 0x4C6A0BF: _IO_doallocbuf (genops.c:342)
+    n1: 1024 0x4C69157: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:744)
+     n1: 1024 0x4C6829D: _IO_new_file_xsputn (fileops.c:1243)
+      n1: 1024 0x4C6829D: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1196)
+       n1: 1024 0x4C5CA64: fwrite (iofwrite.c:39)
+        n1: 1024 0x49A7DBD: std::ostreambuf_iterator<char, std::char_traits<char> > std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::_M_insert_int<unsigned long>(std::ostreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, char, unsigned long) const (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+         n1: 1024 0x49A7F2E: std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::do_put(std::ostreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, char, void const*) const (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+          n1: 1024 0x49B784C: std::ostream& std::ostream::_M_insert<void const*>(void const*) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33)
+           n1: 1024 0x120F94: operator<< (ostream:293)
+            n0: 1024 0x120F94: main (main.cpp:27)
+    n0: 0 in 1 place, below massif's threshold (1.00%)
+#-----------
+snapshot=39
+#-----------
+time=185393430467
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=40
+#-----------
+time=189039189212
+mem_heap_B=87607
+mem_heap_extra_B=897
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=196027260179
+mem_heap_B=3936487
+mem_heap_extra_B=58489
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=42
+#-----------
+time=201116562817
+mem_heap_B=2532071
+mem_heap_extra_B=37825
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=207902298278
+mem_heap_B=1262823
+mem_heap_extra_B=16713
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=212991603581
+mem_heap_B=2658023
+mem_heap_extra_B=38513
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=219777346982
+mem_heap_B=2990311
+mem_heap_extra_B=43705
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=46
+#-----------
+time=224866651416
+mem_heap_B=980199
+mem_heap_extra_B=14537
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=229955963030
+mem_heap_B=2818791
+mem_heap_extra_B=41025
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=235045277456
+mem_heap_B=1431271
+mem_heap_extra_B=20625
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=49
+#-----------
+time=238438143282
+mem_heap_B=498407
+mem_heap_extra_B=6049
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=241449841291
+mem_heap_B=2262247
+mem_heap_extra_B=33609
+mem_stacks_B=0
+heap_tree=empty
