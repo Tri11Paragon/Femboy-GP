@@ -1343,10 +1343,11 @@ namespace fb
             }
     };
     
+    constexpr auto size = 128;
+    constexpr auto tree_size = 17;
+    
     void run_any_t()
     {
-        constexpr auto size = 512;
-        constexpr auto tree_size = 17;
         engine.reset();
         tree_any love[size];
         BLT_START_INTERVAL("Tree Construction", "any_t tree");
@@ -1362,8 +1363,6 @@ namespace fb
     
     void run_any_t_variant()
     {
-        constexpr auto size = 512;
-        constexpr auto tree_size = 17;
         engine.reset();
         tree_any_variant love[size];
         BLT_START_INTERVAL("Tree Construction", "any_t_variant tree");
@@ -1379,8 +1378,6 @@ namespace fb
     
     void run_any_t_union()
     {
-        constexpr auto size = 512;
-        constexpr auto tree_size = 17;
         engine.reset();
         tree_any_union love[size];
         BLT_START_INTERVAL("Tree Construction", "any_t_union tree");
@@ -1396,8 +1393,6 @@ namespace fb
     
     void run_std_any_t()
     {
-        constexpr auto size = 512;
-        constexpr auto tree_size = 17;
         engine.reset();
         tree_std_any love[size];
         BLT_START_INTERVAL("Tree Construction", "std::any tree");
