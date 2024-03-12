@@ -28,27 +28,32 @@ namespace fb
     class type_engine_t
     {
         private:
+            // type name -> type id
             blt::hashmap_t<std::string, type_id> name_to_id;
             // also used to assign IDs
             std::vector<std::string> id_to_name;
             // TODO: we don't need a hashmap for this.
             // Also a bad idea to store references, however these functions should be declared statically so this isn't as big of an issue.
-            blt::hashmap_t<type_id, std::reference_wrapper<func_t_call_t>> functions;
+            blt::hashmap_t<std::string, std::reference_wrapper<func_t_call_t>> functions;
+            // function names -> type_id
+            blt::hashmap_t<std::string, type_id> function_outputs;
+            // function names -> list of type_id for parameters where index 0 = arg 1
+            blt::hashmap_t<std::string, std::vector<type_id>> function_inputs;
         public:
             type_engine_t() = default;
             
-            type_id register_type(const std::string& type_name)
+            type_id register_type(type_name type_name);
+            
+            inline type_id get_type_id(type_name name)
             {
-                type_id id = id_to_name.size();
-                id_to_name.push_back(type_name);
-                name_to_id[type_name] = id;
-                return id;
+                return name_to_id[name];
             }
             
-            void register_function(const std::string& type_name, func_t_call_t& func)
-            {
+            type_engine_t& register_function(function_name func_name, func_t_call_t& func);
             
-            }
+            type_engine_t& associate_output(function_name func_name, type_name type_name);
+            
+            type_engine_t& associate_input(function_name func_name, type_name)
     };
 }
 

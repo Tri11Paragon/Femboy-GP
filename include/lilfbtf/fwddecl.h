@@ -22,6 +22,7 @@
 #include <blt/std/types.h>
 #include <functional>
 #include "blt/std/ranges.h"
+#include <string>
 
 namespace fb
 {
@@ -38,6 +39,8 @@ namespace fb
     
     using type_id = blt::size_t;
     using func_t_call_t = std::function<void(func_t&, blt::span<detail::node_t*>)>;
+    using function_name = const std::string&;
+    using type_name = const std::string&;
 }
 
 #endif //LILFBTF5_FWDDECL_H
