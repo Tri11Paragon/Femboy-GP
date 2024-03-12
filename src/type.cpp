@@ -1,5 +1,5 @@
-#pragma once
 /*
+ *  <Short Description>
  *  Copyright (C) 2024  Brett Terpstra
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -15,29 +15,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
-#ifndef LILFBTF5_FWDDECL_H
-#define LILFBTF5_FWDDECL_H
-
-#include <blt/std/types.h>
-#include <functional>
-#include "blt/std/ranges.h"
+#include <lilfbtf/type.h>
 
 namespace fb
 {
-    namespace detail
-    {
-        class node_t;
-    }
-    
-    class func_t;
-    class tree_t;
-    
-    class type_engine_t;
-    class gp_system_t;
-    
-    using type_id = blt::size_t;
-    using func_t_call_t = std::function<void(func_t&, blt::span<detail::node_t*>)>;
-}
 
-#endif //LILFBTF5_FWDDECL_H
+}

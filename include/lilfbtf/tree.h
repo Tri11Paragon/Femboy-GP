@@ -27,19 +27,18 @@
 
 namespace fb
 {
-    using func_t_call_t = std::function<void(func_t&, blt::span<detail::node_t*>)>;
     
     class func_t
     {
         private:
             blt::size_t argc_ = 0;
-            std::string type;
+            type_id type;
             const func_t_call_t& func;
         protected:
             blt::unsafe::any_t value;
         public:
-            explicit func_t(blt::size_t argc, const func_t_call_t& func):
-                    argc_(argc), func(func)
+            explicit func_t(blt::size_t argc, const func_t_call_t& func, type_id type):
+                    argc_(argc), type(type), func(func)
             {}
             
             [[nodiscard]] inline blt::size_t argc() const
@@ -56,7 +55,7 @@ namespace fb
                 return *this;
             }
             
-            inline std::string& getType()
+            [[nodiscard]] inline type_id getType() const
             {
                 return type;
             }
