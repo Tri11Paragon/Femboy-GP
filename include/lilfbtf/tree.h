@@ -31,23 +31,20 @@ namespace fb
     class func_t
     {
         private:
-            blt::size_t argc_ = 0;
+            arg_c_t argc_ = 0;
             type_id type;
+            function_id function;
             const func_t_call_t& func;
         protected:
             blt::unsafe::any_t value;
         public:
-            explicit func_t(blt::size_t argc, const func_t_call_t& func, type_id type):
-                    argc_(argc), type(type), func(func)
-            {}
+            explicit func_t(arg_c_t argc, const func_t_call_t& func, type_id output_type, function_id function_type);
             
-            [[nodiscard]] inline blt::size_t argc() const
+            [[nodiscard]] inline arg_c_t argc() const
             { return argc_; }
             
             [[nodiscard]] inline blt::unsafe::any_t getValue() const
-            {
-                return value;
-            }
+            { return value; }
             
             inline func_t& setValue(blt::unsafe::any_t val)
             {
@@ -55,15 +52,20 @@ namespace fb
                 return *this;
             }
             
+            /**
+             * @return the type_id that this function container will output
+             */
             [[nodiscard]] inline type_id getType() const
-            {
-                return type;
-            }
+            { return type; }
+            
+            /**
+             * @return the function id of this function container
+             */
+            [[nodiscard]] inline type_id getFunction() const
+            { return function; }
             
             inline void call(blt::span<detail::node_t*> args)
-            {
-                func(*this, args);
-            };
+            { func(*this, args); };
             
             ~func_t() = default;
     };

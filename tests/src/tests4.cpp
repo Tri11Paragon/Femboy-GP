@@ -32,6 +32,8 @@
 #include "blt/std/allocator.h"
 #include "blt/std/format.h"
 #include "blt/std/system.h"
+#include "lilfbtf/tree.h"
+
 
 namespace fb
 {
@@ -1491,5 +1493,4 @@ namespace fb
         BLT_INFO("Current bytes: %s, blocks: %ld", blt::string::fromBytes(alloc_2.getStats().getAllocatedBytes()).c_str(),
                  alloc_2.getStats().getAllocatedBlocks());
     }
-    
 }

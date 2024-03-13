@@ -29,12 +29,16 @@ namespace fb
     {
         private:
             // type name -> type id
-            blt::hashmap_t<std::string, type_id> name_to_id;
+            blt::hashmap_t<std::string, type_id> name_to_type;
             // also used to assign IDs
-            std::vector<std::string> id_to_name;
+            std::vector<std::string> type_to_name;
+            
+            blt::hashmap_t<std::string, function_id> name_to_function;
+            std::vector<std::string> function_to_name;
+            
             // TODO: we don't need a hashmap for this.
             // Also a bad idea to store references, however these functions should be declared statically so this isn't as big of an issue.
-            blt::hashmap_t<std::string, std::reference_wrapper<func_t_call_t>> functions;
+            blt::hashmap_t<function_id, std::reference_wrapper<func_t_call_t>> functions;
             // function names -> type_id
             blt::hashmap_t<std::string, type_id> function_outputs;
             // function names -> list of type_id for parameters where index 0 = arg 1
@@ -44,16 +48,17 @@ namespace fb
             
             type_id register_type(type_name type_name);
             
-            inline type_id get_type_id(type_name name)
-            {
-                return name_to_id[name];
-            }
+            function_id register_function(function_name func_name, func_t_call_t& func);
             
-            type_engine_t& register_function(function_name func_name, func_t_call_t& func);
+            inline type_id get_type_id(type_name name)
+            { return name_to_type[name]; }
+            
+            inline type_id get_function_id(function_name name)
+            { return name_to_function[name]; }
             
             type_engine_t& associate_output(function_name func_name, type_name type_name);
             
-            type_engine_t& associate_input(function_name func_name, type_name)
+            type_engine_t& associate_input(function_name func_name, type_name);
     };
 }
 

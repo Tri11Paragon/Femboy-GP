@@ -22,21 +22,29 @@ namespace fb
     
     type_id type_engine_t::register_type(type_name type_name)
     {
-        type_id id = id_to_name.size();
-        id_to_name.push_back(type_name);
-        name_to_id[type_name] = id;
+        type_id id = type_to_name.size();
+        type_to_name.push_back(type_name);
+        name_to_type[type_name] = id;
         return id;
     }
     
-    type_engine_t& type_engine_t::register_function(function_name func_name, func_t_call_t& func)
+    function_id type_engine_t::register_function(function_name func_name, func_t_call_t& func)
     {
-        functions.insert({func_name, func});
-        return *this;
+        function_id id = function_to_name.size();
+        name_to_function[func_name] = id;
+        functions.insert({id, func});
+        return id;
     }
     
     type_engine_t& type_engine_t::associate_output(function_name func_name, type_name type_name)
     {
         function_outputs[func_name] = get_type_id(type_name);
+        return *this;
+    }
+    
+    type_engine_t& type_engine_t::associate_input(function_name func_name, type_name)
+    {
+        
         return *this;
     }
 }

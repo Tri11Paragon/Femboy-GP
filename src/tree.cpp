@@ -18,7 +18,9 @@
 
 namespace fb
 {
-
-
+    
+    func_t::func_t(blt::size_t argc, const func_t_call_t& func, type_id output_type, function_id function_type):
+            argc_(argc), type(output_type), function(function_type), func(func)
+    {}
 
 }
