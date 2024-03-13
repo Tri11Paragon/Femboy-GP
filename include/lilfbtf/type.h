@@ -21,10 +21,79 @@
 
 #include <lilfbtf/fwddecl.h>
 #include <blt/std/hashmap.h>
+#include <blt/std/memory_util.h>
 #include <vector>
+#include <cstdlib>
 
 namespace fb
 {
+    template<typename K, typename T, bool init = false>
+    class associative_array
+    {
+        private:
+            K size_;
+            T* data_;
+            
+            void expand()
+            {
+                K new_size = static_cast<K>(size_ == 0 ? 16 : blt::mem::next_byte_allocation(size_));
+                T* new_data = static_cast<T*>(std::malloc(new_size * sizeof(T)));
+                if constexpr (init)
+                {
+                    for (blt::size_t i = size_; i < new_size; i++)
+                        new(&new_size[i]) T();
+                }
+                for (blt::size_t i = 0; i < size_; i++)
+                    new(&new_data[i]) T(std::move(data_[i]));
+                std::free(data_);
+                data_ = new_data;
+                size_ = new_size;
+            }
+        
+        public:
+            associative_array(): size_(0), data_(nullptr)
+            {}
+            
+            T& operator[](K index)
+            {
+                return data_[index];
+            }
+            
+            const T& operator[](K index) const
+            {
+                return data_[index];
+            }
+            
+            void insert(K index, const T& t)
+            {
+                while (index >= size_)
+                    expand();
+                data_[index] = t;
+            }
+            
+            void insert(K index, T&& t)
+            {
+                while (index >= size_)
+                    expand();
+                data_[index] = std::move(t);
+            }
+            
+            [[nodiscard]] inline T* data()
+            {
+                return data_;
+            }
+            
+            [[nodiscard]] inline K size() const
+            {
+                return size_;
+            }
+            
+            ~associative_array()
+            {
+                std::free(data_);
+            }
+    };
+    
     class type_engine_t
     {
         private:
@@ -36,19 +105,22 @@ namespace fb
             blt::hashmap_t<std::string, function_id> name_to_function;
             std::vector<std::string> function_to_name;
             
-            // TODO: we don't need a hashmap for this.
             // Also a bad idea to store references, however these functions should be declared statically so this isn't as big of an issue.
-            blt::hashmap_t<function_id, std::reference_wrapper<func_t_call_t>> functions;
-            // function names -> type_id
-            blt::hashmap_t<std::string, type_id> function_outputs;
-            // function names -> list of type_id for parameters where index 0 = arg 1
-            blt::hashmap_t<std::string, std::vector<type_id>> function_inputs;
+            associative_array<function_id, std::reference_wrapper<func_t_call_t>> functions;
+            // function id -> list of type_id for parameters where index 0 = arg 1
+            associative_array<function_id, std::vector<type_id>> function_inputs;
+            
+            associative_array<function_id, std::reference_wrapper<func_t_init_t>> terminal_initializer;
+            associative_array<type_id, std::vector<function_id>, true> terminals;
+            associative_array<type_id, std::vector<function_id>, true> non_terminals;
         public:
             type_engine_t() = default;
             
             type_id register_type(type_name type_name);
             
-            function_id register_function(function_name func_name, func_t_call_t& func);
+            function_id register_function(function_name func_name, type_id output, func_t_call_t& func);
+            
+            function_id register_terminal_function(function_name func_name, type_id output, func_t_call_t& func, func_t_init_t& initializer);
             
             inline type_id get_type_id(type_name name)
             { return name_to_type[name]; }
@@ -56,9 +128,25 @@ namespace fb
             inline type_id get_function_id(function_name name)
             { return name_to_function[name]; }
             
-            type_engine_t& associate_output(function_name func_name, type_name type_name);
+            type_engine_t& associate_input(function_name func_name, const std::vector<std::string>& types);
             
-            type_engine_t& associate_input(function_name func_name, type_name);
+            inline func_t_call_t& get_function(function_id id)
+            { return functions[id]; }
+            
+            inline func_t_call_t& get_function(function_name name)
+            { return get_function(get_function_id(name)); }
+            
+            inline func_t_init_t& get_function_initializer(function_id id)
+            { return terminal_initializer[id]; }
+            
+            inline func_t_init_t& get_function_initializer(function_name name)
+            { return get_function_initializer(get_function_id(name)); }
+            
+            inline std::vector<function_id>& get_terminals(type_id type)
+            { return terminals[type]; }
+            
+            inline std::vector<function_id>& get_non_terminals(type_id type)
+            { return non_terminals[type]; }
     };
 }
 

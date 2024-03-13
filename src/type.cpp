@@ -28,23 +28,32 @@ namespace fb
         return id;
     }
     
-    function_id type_engine_t::register_function(function_name func_name, func_t_call_t& func)
+    function_id type_engine_t::register_function(function_name func_name, type_id output, func_t_call_t& func)
     {
         function_id id = function_to_name.size();
         name_to_function[func_name] = id;
-        functions.insert({id, func});
+        functions.insert(id, func);
+        non_terminals[output].push_back(id);
         return id;
     }
     
-    type_engine_t& type_engine_t::associate_output(function_name func_name, type_name type_name)
+    type_engine_t& type_engine_t::associate_input(function_name func_name, const std::vector<std::string>& types)
     {
-        function_outputs[func_name] = get_type_id(type_name);
+        auto id = get_function_id(func_name);
+        std::vector<type_id> type_ids;
+        for (const auto& v : types)
+            type_ids.push_back(get_type_id(v));
+        function_inputs[id] = std::move(type_ids);
         return *this;
     }
     
-    type_engine_t& type_engine_t::associate_input(function_name func_name, type_name)
+    function_id type_engine_t::register_terminal_function(function_name func_name, type_id output, func_t_call_t& func, func_t_init_t& initializer)
     {
-        
-        return *this;
+        function_id id = function_to_name.size();
+        name_to_function[func_name] = id;
+        functions.insert(id, func);
+        terminals[output].push_back(id);
+        terminal_initializer.insert(id, initializer);
+        return id;
     }
 }

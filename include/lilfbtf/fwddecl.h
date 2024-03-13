@@ -42,6 +42,7 @@ namespace fb
     using function_id = blt::u32;
     using arg_c_t = blt::size_t;
     using func_t_call_t = std::function<void(func_t&, blt::span<detail::node_t*>)>;
+    using func_t_init_t = std::function<void(func_t&)>;
     using function_name = const std::string&;
     using type_name = const std::string&;
 }

@@ -360,7 +360,7 @@ namespace fb
     using any_t = any_t_base<8>;
     //using any_t = any_t_variant;
     
-    class func_t;
+    class func_t_old;
     
     class func_variant_t;
     
@@ -368,20 +368,20 @@ namespace fb
     
     class func_any_t;
     
-    using func_t_call_t = std::function<void(func_t&, blt::span<any_t>)>;
+    using func_t_call_t_old = std::function<void(func_t_old&, blt::span<any_t>)>;
     using func_variant_t_call_t = std::function<void(func_variant_t&, blt::span<any_t_variant>)>;
     using func_union_t_call_t = std::function<void(func_union_t&, blt::span<any_t_union>)>;
     using func_any_t_call_t = std::function<void(func_any_t&, blt::span<std::any>)>;
     
-    class func_t
+    class func_t_old
     {
         private:
             blt::size_t argc_ = 0;
-            const func_t_call_t& func;
+            const func_t_call_t_old& func;
         protected:
             any_t value;
         public:
-            explicit func_t(blt::size_t argc, const func_t_call_t& func):
+            explicit func_t_old(blt::size_t argc, const func_t_call_t_old& func):
                     argc_(argc), func(func)
             {}
             
@@ -393,7 +393,7 @@ namespace fb
                 return value;
             }
             
-            inline func_t& setValue(any_t val)
+            inline func_t_old& setValue(any_t val)
             {
                 this->value = val;
                 return *this;
@@ -404,7 +404,7 @@ namespace fb
                 func(*this, args);
             };
             
-            ~func_t() = default;
+            ~func_t_old() = default;
     };
     
     class func_variant_t
@@ -509,10 +509,10 @@ namespace fb
             ~func_any_t() = default;
     };
     
-    const func_t_call_t add_f = [](func_t& us, blt::span<any_t> args) { us.setValue(args[0].any_cast<double>() + args[1].any_cast<double>()); };
-    const func_t_call_t sub_f = [](func_t& us, blt::span<any_t> args) { us.setValue(args[0].any_cast<double>() - args[1].any_cast<double>()); };
-    const func_t_call_t mul_f = [](func_t& us, blt::span<any_t> args) { us.setValue(args[0].any_cast<double>() * args[1].any_cast<double>()); };
-    const func_t_call_t div_f = [](func_t& us, blt::span<any_t> args) {
+    const func_t_call_t_old add_f = [](func_t_old& us, blt::span<any_t> args) { us.setValue(args[0].any_cast<double>() + args[1].any_cast<double>()); };
+    const func_t_call_t_old sub_f = [](func_t_old& us, blt::span<any_t> args) { us.setValue(args[0].any_cast<double>() - args[1].any_cast<double>()); };
+    const func_t_call_t_old mul_f = [](func_t_old& us, blt::span<any_t> args) { us.setValue(args[0].any_cast<double>() * args[1].any_cast<double>()); };
+    const func_t_call_t_old div_f = [](func_t_old& us, blt::span<any_t> args) {
         auto dim = args[1].any_cast<double>();
         if (dim == 0)
             us.setValue(0);
@@ -520,20 +520,20 @@ namespace fb
             us.setValue(args[0].any_cast<double>() + dim);
     };
     
-    const func_t_call_t value_f = [](func_t&, blt::span<any_t>) {};
-    const func_t_call_t if_f = [](func_t& us, blt::span<any_t> args) {
+    const func_t_call_t_old value_f = [](func_t_old&, blt::span<any_t>) {};
+    const func_t_call_t_old if_f = [](func_t_old& us, blt::span<any_t> args) {
         if (args[0].any_cast<bool>())
             us.setValue(args[1].any_cast<double>());
         else
             us.setValue(args[2].any_cast<double>());
     };
-    const func_t_call_t equals_b_f = [](func_t& us, blt::span<any_t> args) { us.setValue(args[0].any_cast<bool>() == args[1].any_cast<bool>()); };
-    const func_t_call_t equals_n_f = [](func_t& us, blt::span<any_t> args) { us.setValue(args[0].any_cast<double>() == args[1].any_cast<double>()); };
-    const func_t_call_t less_f = [](func_t& us, blt::span<any_t> args) { us.setValue(args[0].any_cast<double>() < args[1].any_cast<double>()); };
-    const func_t_call_t greater_f = [](func_t& us, blt::span<any_t> args) { us.setValue(args[0].any_cast<double>() > args[1].any_cast<double>()); };
-    const func_t_call_t not_f = [](func_t& us, blt::span<any_t> args) { us.setValue(!args[0].any_cast<bool>()); };
-    const func_t_call_t and_f = [](func_t& us, blt::span<any_t> args) { us.setValue(args[0].any_cast<bool>() && args[1].any_cast<bool>()); };
-    const func_t_call_t or_f = [](func_t& us, blt::span<any_t> args) { us.setValue(args[0].any_cast<bool>() || args[1].any_cast<bool>()); };
+    const func_t_call_t_old equals_b_f = [](func_t_old& us, blt::span<any_t> args) { us.setValue(args[0].any_cast<bool>() == args[1].any_cast<bool>()); };
+    const func_t_call_t_old equals_n_f = [](func_t_old& us, blt::span<any_t> args) { us.setValue(args[0].any_cast<double>() == args[1].any_cast<double>()); };
+    const func_t_call_t_old less_f = [](func_t_old& us, blt::span<any_t> args) { us.setValue(args[0].any_cast<double>() < args[1].any_cast<double>()); };
+    const func_t_call_t_old greater_f = [](func_t_old& us, blt::span<any_t> args) { us.setValue(args[0].any_cast<double>() > args[1].any_cast<double>()); };
+    const func_t_call_t_old not_f = [](func_t_old& us, blt::span<any_t> args) { us.setValue(!args[0].any_cast<bool>()); };
+    const func_t_call_t_old and_f = [](func_t_old& us, blt::span<any_t> args) { us.setValue(args[0].any_cast<bool>() && args[1].any_cast<bool>()); };
+    const func_t_call_t_old or_f = [](func_t_old& us, blt::span<any_t> args) { us.setValue(args[0].any_cast<bool>() || args[1].any_cast<bool>()); };
     
     
     const func_variant_t_call_t add_variant_f = [](func_variant_t& us, blt::span<any_t_variant> args) {
@@ -671,41 +671,41 @@ namespace fb
     };
     
     
-    func_t make_type(type_t type)
+    func_t_old make_type(type_t type)
     {
         switch (type)
         {
             case type_t::ADD:
-                return func_t{2, add_f};
+                return func_t_old{2, add_f};
             case type_t::SUB:
-                return func_t{2, sub_f};
+                return func_t_old{2, sub_f};
             case type_t::MUL:
-                return func_t{2, mul_f};
+                return func_t_old{2, mul_f};
             case type_t::DIV:
-                return func_t{2, div_f};
+                return func_t_old{2, div_f};
             case type_t::IF:
-                return func_t{3, if_f};
+                return func_t_old{3, if_f};
             case type_t::EQUAL_B:
-                return func_t{2, equals_b_f};
+                return func_t_old{2, equals_b_f};
             case type_t::EQUAL_N:
-                return func_t{2, equals_n_f};
+                return func_t_old{2, equals_n_f};
             case type_t::LESS:
-                return func_t{2, less_f};
+                return func_t_old{2, less_f};
             case type_t::GREATER:
-                return func_t{2, greater_f};
+                return func_t_old{2, greater_f};
             case type_t::NOT:
-                return func_t{1, not_f};
+                return func_t_old{1, not_f};
             case type_t::AND:
-                return func_t{2, and_f};
+                return func_t_old{2, and_f};
             case type_t::OR:
-                return func_t{2, or_f};
+                return func_t_old{2, or_f};
             case type_t::VALUE:
-                return func_t{0, value_f}.setValue(random_value());
+                return func_t_old{0, value_f}.setValue(random_value());
             case type_t::END:
                 break;
         }
         BLT_WARN("How did we get here? input %d", static_cast<int>(type));
-        return func_t{0, value_f}.setValue(random_value());
+        return func_t_old{0, value_f}.setValue(random_value());
     }
     
     func_variant_t make_type_variant(type_t type)
@@ -826,7 +826,7 @@ namespace fb
         private:
             struct node_t
             {
-                func_t type;
+                func_t_old type;
                 type_t enum_type;
                 node_t** children = nullptr;
                 

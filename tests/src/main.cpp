@@ -47,6 +47,9 @@ int main(int argc, const char** argv)
     
     auto args = parser.parse_args(argc, argv);
     
+    std::hash<blt::size_t> hash;
+    BLT_TRACE0_STREAM << hash(500) << "\n";
+    
     if (args.contains("--tests"))
     {
         //fb::test2();
