@@ -123,7 +123,9 @@ namespace fb
         public:
             explicit tree_t(type_engine_t& types);
             
-            static tree_t make_tree(type_engine_t& types, random& engine, blt::size_t min_height, blt::size_t max_height);
+            static tree_t make_tree(type_engine_t& types, random& engine, blt::size_t min_height, blt::size_t max_height, std::optional<type_id> starting_type = {});
+            
+            std::pair<blt::unsafe::any_t, type_id> evaluate();
     };
 }
 

@@ -28,18 +28,29 @@ namespace fb
     {}
     
     tree_t tree_t::make_tree(type_engine_t& types, random& engine,
-                             blt::size_t min_height, blt::size_t max_height)
+                             blt::size_t min_height, blt::size_t max_height, std::optional<type_id> starting_type)
     {
         using detail::node_t;
         tree_t tree(types);
         
         {
-            auto& non_terminals = types.get_all_non_terminals();
-            auto selection = non_terminals[engine.random_long(0, non_terminals.size() - 1)];
-            func_t func(types.get_function_argc(selection.second), types.get_function(selection.second), selection.first, selection.second);
-            if (const auto& func_init = types.get_function_initializer(selection.second))
-                func_init.value()(func);
-            tree.root = tree.alloc.template emplace<node_t>(func, tree.alloc);
+            if (starting_type)
+            {
+                auto& non_terminals = types.get_non_terminals(starting_type.value());
+                auto selection = non_terminals[engine.random_long(0, non_terminals.size() - 1)];
+                func_t func(types.get_function_argc(selection), types.get_function(selection), starting_type.value(), selection);
+                if (const auto& func_init = types.get_function_initializer(selection))
+                    func_init.value()(func);
+                tree.root = tree.alloc.template emplace<node_t>(func, tree.alloc);
+            } else
+            {
+                auto& non_terminals = types.get_all_non_terminals();
+                auto selection = non_terminals[engine.random_long(0, non_terminals.size() - 1)];
+                func_t func(types.get_function_argc(selection.second), types.get_function(selection.second), selection.first, selection.second);
+                if (const auto& func_init = types.get_function_initializer(selection.second))
+                    func_init.value()(func);
+                tree.root = tree.alloc.template emplace<node_t>(func, tree.alloc);
+            }
         }
         std::stack<std::pair<node_t*, blt::size_t>> stack;
         stack.emplace(tree.root, 0);
@@ -116,6 +127,32 @@ namespace fb
         }
         
         return tree;
+    }
+    
+    std::pair<blt::unsafe::any_t, type_id> tree_t::evaluate()
+    {
+        using detail::node_t;
+        std::stack<node_t*> nodes;
+        std::stack<node_t*> node_stack;
+        
+        nodes.push(root);
+        
+        while (!nodes.empty())
+        {
+            auto* top = nodes.top();
+            node_stack.push(top);
+            nodes.pop();
+            for (blt::size_t i = 0; i < top->type.argc(); i++)
+                nodes.push(top->children[i]);
+        }
+        
+        while (!node_stack.empty())
+        {
+            node_stack.top()->evaluate();
+            node_stack.pop();
+        }
+        
+        return {root->type.getValue(), root->type.getType()};
     }
     
     
