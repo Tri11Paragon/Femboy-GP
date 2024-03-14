@@ -107,11 +107,12 @@ namespace fb
             std::vector<std::string> function_to_name;
             
             // Also a bad idea to store references, however these functions should be declared statically so this isn't as big of an issue.
-            associative_array<function_id, std::reference_wrapper<func_t_call_t>> functions;
+            associative_array<function_id, std::reference_wrapper<const func_t_call_t>> functions;
             // function id -> list of type_id for parameters where index 0 = arg 1
             associative_array<function_id, std::vector<type_id>> function_inputs;
+            associative_array<function_id, arg_c_t> function_argc;
             
-            associative_array<function_id, std::reference_wrapper<func_t_init_t>> function_initializer;
+            associative_array<function_id, std::reference_wrapper<const func_t_init_t>> function_initializer;
             associative_array<type_id, std::vector<function_id>, true> terminals;
             associative_array<type_id, std::vector<function_id>, true> non_terminals;
             std::vector<std::pair<type_id, function_id>> all_non_terminals;
@@ -120,30 +121,36 @@ namespace fb
             
             type_id register_type(type_name type_name);
             
-            function_id register_function(function_name func_name, type_name output, func_t_call_t& func,
-                                          std::optional<std::reference_wrapper<func_t_init_t>> initializer);
+            function_id register_function(function_name func_name, type_name output, const func_t_call_t& func, arg_c_t argc,
+                                          std::optional<std::reference_wrapper<const func_t_init_t>> initializer = {});
             
-            function_id register_terminal_function(function_name func_name, type_name output, func_t_call_t& func,
-                                                   std::optional<std::reference_wrapper<func_t_init_t>> initializer);
+            function_id register_terminal_function(function_name func_name, type_name output, const func_t_call_t& func,
+                                                   std::optional<std::reference_wrapper<const func_t_init_t>> initializer = {});
             
-            inline type_id get_type_id(type_name name)
-            { return name_to_type[name]; }
+            [[nodiscard]] inline type_id get_type_id(type_name name) const
+            { return name_to_type.at(name); }
             
-            inline type_id get_function_id(function_name name)
-            { return name_to_function[name]; }
+            [[nodiscard]] inline type_id get_function_id(function_name name) const
+            { return name_to_function.at(name); }
+            
+            [[nodiscard]] inline arg_c_t get_function_argc(function_id id) const
+            { return function_argc[id]; }
+            
+            [[nodiscard]] inline arg_c_t get_function_argc(function_name name) const
+            { return get_function_argc(get_function_id(name)); }
             
             type_engine_t& associate_input(function_name func_name, const std::vector<std::string>& types);
             
-            inline func_t_call_t& get_function(function_id id)
+            [[nodiscard]] inline const func_t_call_t& get_function(function_id id) const
             { return functions[id]; }
             
-            inline func_t_call_t& get_function(function_name name)
+            [[nodiscard]] inline const func_t_call_t& get_function(function_name name) const
             { return get_function(get_function_id(name)); }
             
-            inline func_t_init_t& get_function_initializer(function_id id)
+            [[nodiscard]] inline const func_t_init_t& get_function_initializer(function_id id) const
             { return function_initializer[id]; }
             
-            inline func_t_init_t& get_function_initializer(function_name name)
+            [[nodiscard]] inline const func_t_init_t& get_function_initializer(function_name name) const
             { return get_function_initializer(get_function_id(name)); }
             
             inline std::vector<function_id>& get_terminals(type_id type)
