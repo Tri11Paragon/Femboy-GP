@@ -15,6 +15,7 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 #include <lilfbtf/tree.h>
+#include <stack>
 
 namespace fb
 {
@@ -23,15 +24,84 @@ namespace fb
             argc_(argc), type(output_type), function(function_type), func(func)
     {}
     
-    tree_t::tree_t(blt::bump_allocator<blt::BLT_2MB_SIZE, false>& alloc, type_engine_t& types): alloc(alloc), types(types)
+    tree_t::tree_t(type_engine_t& types): alloc(), types(types)
     {}
     
-    tree_t tree_t::make_tree(blt::bump_allocator<blt::BLT_2MB_SIZE, false>& alloc, type_engine_t& types, blt::size_t min_height,
-                             blt::size_t max_height)
+    tree_t tree_t::make_tree(type_engine_t& types, random& engine,
+                             blt::size_t min_height, blt::size_t max_height)
     {
-        tree_t tree(alloc, types);
+        using detail::node_t;
+        tree_t tree(types);
         
-        
+        {
+            auto& non_terminals = types.get_all_non_terminals();
+            auto selection = non_terminals[engine.random_long(0, non_terminals.size() - 1)];
+            func_t func(types.get_function_argc(selection.second), types.get_function(selection.second), selection.first, selection.second);
+            tree.root = tree.alloc.template emplace<node_t>(func, tree.alloc);
+        }
+        std::stack<std::pair<node_t*, blt::size_t>> stack;
+        stack.emplace(tree.root, 0);
+        while (!stack.empty())
+        {
+            auto top = stack.top();
+            auto* node = top.first;
+            auto depth = top.second;
+            stack.pop();
+            
+            const auto& allowed_types = types.get_function_allowed_arguments(node->type.getFunction());
+            // we need to make sure there is at least one non-terminal generation, until we hit the min height
+            bool has_one_non_terminal = false;
+            for (blt::size_t i = 0; i < node->type.argc(); i++)
+            {
+                type_id type_category = allowed_types[i];
+                const auto& terminals = types.get_terminals(type_category);
+                const auto& non_terminals = types.get_non_terminals(type_category);
+                
+                if (depth < max_height)
+                    stack.emplace(node->children[i], depth + 1);
+                
+                if (depth < min_height && !has_one_non_terminal)
+                {
+                    function_id selection = non_terminals[engine.random_long(0, non_terminals.size() - 1)];
+                    func_t func(types.get_function_argc(selection), types.get_function(selection), type_category, selection);
+                    node->children[i] = tree.alloc.template emplace<node_t>(func, tree.alloc);
+                    has_one_non_terminal = true;
+                    continue;
+                }
+                
+                if (depth >= max_height)
+                {
+                    function_id selection = terminals[engine.random_long(0, terminals.size() - 1)];
+                    func_t func(types.get_function_argc(selection), types.get_function(selection), type_category, selection);
+                    node->children[i] = tree.alloc.template emplace<node_t>(func, tree.alloc);
+                    continue;
+                }
+                
+                if (engine.choice())
+                {
+                    // use full() method
+                    function_id selection = non_terminals[engine.random_long(0, non_terminals.size() - 1)];
+                    func_t func(types.get_function_argc(selection), types.get_function(selection), type_category, selection);
+                    node->children[i] = tree.alloc.template emplace<node_t>(func, tree.alloc);
+                } else
+                {
+                    // use grow() method, meaning select choice again
+                    if (engine.choice())
+                    {
+                        // use non-terminals
+                        function_id selection = non_terminals[engine.random_long(0, non_terminals.size() - 1)];
+                        func_t func(types.get_function_argc(selection), types.get_function(selection), type_category, selection);
+                        node->children[i] = tree.alloc.template emplace<node_t>(func, tree.alloc);
+                    } else
+                    {
+                        // use terminals
+                        function_id selection = terminals[engine.random_long(0, terminals.size() - 1)];
+                        func_t func(types.get_function_argc(selection), types.get_function(selection), type_category, selection);
+                        node->children[i] = tree.alloc.template emplace<node_t>(func, tree.alloc);
+                    }
+                }
+            }
+        }
         
         return tree;
     }

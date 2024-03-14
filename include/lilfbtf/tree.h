@@ -25,6 +25,7 @@
 #include "blt/std/allocator.h"
 #include "type.h"
 #include <lilfbtf/fwddecl.h>
+#include <lilfbtf/random.h>
 
 namespace fb
 {
@@ -62,7 +63,7 @@ namespace fb
             /**
              * @return the function id of this function container
              */
-            [[nodiscard]] inline type_id getFunction() const
+            [[nodiscard]] inline function_id getFunction() const
             { return function; }
             
             inline void call(blt::span<detail::node_t*> args)
@@ -113,14 +114,16 @@ namespace fb
     class tree_t
     {
         private:
-            blt::bump_allocator<blt::BLT_2MB_SIZE, false>& alloc;
+            blt::bump_allocator<blt::BLT_2MB_SIZE, false> alloc;
             type_engine_t& types;
-            detail::node_t* root;
-        public:
-            tree_t(blt::bump_allocator<blt::BLT_2MB_SIZE, false>& alloc, type_engine_t& types);
+            detail::node_t* root = nullptr;
             
-            static tree_t make_tree(blt::bump_allocator<blt::BLT_2MB_SIZE, false>& alloc, type_engine_t& types, blt::size_t min_height,
-                                    blt::size_t max_height);
+            inline blt::bump_allocator<blt::BLT_2MB_SIZE, false>& get_allocator()
+            { return alloc; }
+        public:
+            explicit tree_t(type_engine_t& types);
+            
+            static tree_t make_tree(type_engine_t& types, random& engine, blt::size_t min_height, blt::size_t max_height);
     };
 }
 

@@ -153,6 +153,9 @@ namespace fb
             [[nodiscard]] inline arg_c_t get_function_argc(function_name name) const
             { return get_function_argc(get_function_id(name)); }
             
+            [[nodiscard]] inline const std::vector<type_id>& get_function_allowed_arguments(function_id id) const
+            { return function_inputs[id]; }
+            
             type_engine_t& associate_input(function_name func_name, const std::vector<std::string>& types);
             
             [[nodiscard]] inline const func_t_call_t& get_function(function_id id) const
@@ -167,11 +170,15 @@ namespace fb
             [[nodiscard]] inline const func_t_init_t& get_function_initializer(function_name name) const
             { return get_function_initializer(get_function_id(name)); }
             
+            // output type -> list of functions that output that type and take arguments themselves
             inline std::vector<function_id>& get_terminals(type_id type)
             { return terminals[type]; }
             
             inline std::vector<function_id>& get_non_terminals(type_id type)
             { return non_terminals[type]; }
+            
+            [[nodiscard]] inline const std::vector<std::pair<type_id, function_id>>& get_all_non_terminals() const
+            { return all_non_terminals; }
     };
 }
 

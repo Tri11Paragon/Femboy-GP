@@ -58,4 +58,9 @@ namespace fb
         std::uniform_int_distribution<blt::i32> dist(min, max);
         return dist(engine);
     }
+    
+    bool random::chance(double chance)
+    {
+        return random_double() <= chance;
+    }
 }
