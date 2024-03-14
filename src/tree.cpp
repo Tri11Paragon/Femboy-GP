@@ -37,6 +37,8 @@ namespace fb
             auto& non_terminals = types.get_all_non_terminals();
             auto selection = non_terminals[engine.random_long(0, non_terminals.size() - 1)];
             func_t func(types.get_function_argc(selection.second), types.get_function(selection.second), selection.first, selection.second);
+            if (const auto& func_init = types.get_function_initializer(selection.second))
+                func_init.value()(func);
             tree.root = tree.alloc.template emplace<node_t>(func, tree.alloc);
         }
         std::stack<std::pair<node_t*, blt::size_t>> stack;
@@ -64,6 +66,8 @@ namespace fb
                 {
                     function_id selection = non_terminals[engine.random_long(0, non_terminals.size() - 1)];
                     func_t func(types.get_function_argc(selection), types.get_function(selection), type_category, selection);
+                    if (const auto& func_init = types.get_function_initializer(selection))
+                        func_init.value()(func);
                     node->children[i] = tree.alloc.template emplace<node_t>(func, tree.alloc);
                     has_one_non_terminal = true;
                     continue;
@@ -73,6 +77,8 @@ namespace fb
                 {
                     function_id selection = terminals[engine.random_long(0, terminals.size() - 1)];
                     func_t func(types.get_function_argc(selection), types.get_function(selection), type_category, selection);
+                    if (const auto& func_init = types.get_function_initializer(selection))
+                        func_init.value()(func);
                     node->children[i] = tree.alloc.template emplace<node_t>(func, tree.alloc);
                     continue;
                 }
@@ -82,6 +88,8 @@ namespace fb
                     // use full() method
                     function_id selection = non_terminals[engine.random_long(0, non_terminals.size() - 1)];
                     func_t func(types.get_function_argc(selection), types.get_function(selection), type_category, selection);
+                    if (const auto& func_init = types.get_function_initializer(selection))
+                        func_init.value()(func);
                     node->children[i] = tree.alloc.template emplace<node_t>(func, tree.alloc);
                 } else
                 {
@@ -91,12 +99,16 @@ namespace fb
                         // use non-terminals
                         function_id selection = non_terminals[engine.random_long(0, non_terminals.size() - 1)];
                         func_t func(types.get_function_argc(selection), types.get_function(selection), type_category, selection);
+                        if (const auto& func_init = types.get_function_initializer(selection))
+                            func_init.value()(func);
                         node->children[i] = tree.alloc.template emplace<node_t>(func, tree.alloc);
                     } else
                     {
                         // use terminals
                         function_id selection = terminals[engine.random_long(0, terminals.size() - 1)];
                         func_t func(types.get_function_argc(selection), types.get_function(selection), type_category, selection);
+                        if (const auto& func_init = types.get_function_initializer(selection))
+                            func_init.value()(func);
                         node->children[i] = tree.alloc.template emplace<node_t>(func, tree.alloc);
                     }
                 }

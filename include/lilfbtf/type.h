@@ -126,7 +126,7 @@ namespace fb
             associative_array<function_id, std::vector<type_id>, true> function_inputs;
             associative_array<function_id, arg_c_t> function_argc;
             
-            associative_array<function_id, std::reference_wrapper<const func_t_init_t>> function_initializer;
+            blt::hashmap_t<function_id, std::reference_wrapper<const func_t_init_t>> function_initializer;
             associative_array<type_id, std::vector<function_id>, true> terminals;
             associative_array<type_id, std::vector<function_id>, true> non_terminals;
             std::vector<std::pair<type_id, function_id>> all_non_terminals;
@@ -164,10 +164,14 @@ namespace fb
             [[nodiscard]] inline const func_t_call_t& get_function(function_name name) const
             { return get_function(get_function_id(name)); }
             
-            [[nodiscard]] inline const func_t_init_t& get_function_initializer(function_id id) const
-            { return function_initializer[id]; }
+            [[nodiscard]] inline std::optional<std::reference_wrapper<const func_t_init_t>> get_function_initializer(function_id id) const
+            {
+                if (!function_initializer.contains(id))
+                    return {};
+                return function_initializer.at(id);
+            }
             
-            [[nodiscard]] inline const func_t_init_t& get_function_initializer(function_name name) const
+            [[nodiscard]] inline std::optional<std::reference_wrapper<const func_t_init_t>> get_function_initializer(function_name name) const
             { return get_function_initializer(get_function_id(name)); }
             
             // output type -> list of functions that output that type and take arguments themselves
