@@ -42,7 +42,7 @@ namespace fb
                 if constexpr (init)
                 {
                     for (blt::size_t i = size_; i < new_size; i++)
-                        new(&new_size[i]) T();
+                        new(&new_data[i]) T();
                 }
                 for (blt::size_t i = 0; i < size_; i++)
                     new(&new_data[i]) T(std::move(data_[i]));
@@ -54,6 +54,20 @@ namespace fb
         public:
             associative_array(): size_(0), data_(nullptr)
             {}
+            
+            [[nodiscard]] const T& at(K index) const
+            {
+                while (index >= size_)
+                    expand();
+                return data_[index];
+            }
+            
+            T& at(K index)
+            {
+                while (index >= size_)
+                    expand();
+                return data_[index];
+            }
             
             T& operator[](K index)
             {
@@ -109,7 +123,7 @@ namespace fb
             // Also a bad idea to store references, however these functions should be declared statically so this isn't as big of an issue.
             associative_array<function_id, std::reference_wrapper<const func_t_call_t>> functions;
             // function id -> list of type_id for parameters where index 0 = arg 1
-            associative_array<function_id, std::vector<type_id>> function_inputs;
+            associative_array<function_id, std::vector<type_id>, true> function_inputs;
             associative_array<function_id, arg_c_t> function_argc;
             
             associative_array<function_id, std::reference_wrapper<const func_t_init_t>> function_initializer;

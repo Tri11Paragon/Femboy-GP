@@ -35,7 +35,13 @@ const fb::func_t_call_t div_f = [](fb::func_t& us, blt::span<fb::detail::node_t*
         us.setValue(args[0]->value().any_cast<blt::u8>() + dim);
 };
 
-const fb::func_t_call_t value_f = [](fb::func_t&, blt::span<fb::detail::node_t*>) {};
+const fb::func_t_call_t empty_f = [](fb::func_t&, blt::span<fb::detail::node_t*>) {};
+const fb::func_t_init_t value_init_f = [](fb::func_t& us){
+    us.setValue(fb::random_value());
+};
+const fb::func_t_init_t bool_init_f = [](fb::func_t& us){
+    us.setValue(fb::choice());
+};
 const fb::func_t_call_t if_f = [](fb::func_t& us, blt::span<fb::detail::node_t*> args) {
     if (args[0]->value().any_cast<bool>())
         us.setValue(args[1]->value().any_cast<blt::u8>());
@@ -130,6 +136,9 @@ int main(int argc, const char** argv)
         typeEngine.register_function("and_n", "u8", and_n_f, 2);
         typeEngine.register_function("or_b", "bool", or_b_f, 2);
         typeEngine.register_function("or_n", "u8", or_n_f, 2);
+        
+        typeEngine.register_terminal_function("value", "u8", empty_f, value_init_f);
+        typeEngine.register_terminal_function("bool_value", "bool", empty_f, bool_init_f);
         
         typeEngine.associate_input("add", {"u8", "u8"});
         typeEngine.associate_input("sub", {"u8", "u8"});

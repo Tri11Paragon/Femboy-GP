@@ -35,7 +35,7 @@ namespace fb
         type_id tid = get_type_id(output);
         name_to_function[func_name] = id;
         functions.insert(id, func);
-        non_terminals[tid].push_back(id);
+        non_terminals.at(tid).push_back(id);
         all_non_terminals.emplace_back(tid, id);
         function_argc.insert(id, argc);
         if (auto& init = initializer)
@@ -49,7 +49,7 @@ namespace fb
         std::vector<type_id> type_ids;
         for (const auto& v : types)
             type_ids.push_back(get_type_id(v));
-        function_inputs[id] = std::move(type_ids);
+        function_inputs.at(id) = std::move(type_ids);
         return *this;
     }
     
@@ -60,7 +60,7 @@ namespace fb
         type_id tid = get_type_id(output);
         name_to_function[func_name] = id;
         functions.insert(id, func);
-        terminals[tid].push_back(id);
+        terminals.at(tid).push_back(id);
         function_argc.insert(id, 0);
         if (auto& init = initializer)
             function_initializer.insert(id, init.value());
