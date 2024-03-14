@@ -23,6 +23,7 @@
 #include <functional>
 #include "blt/std/ranges.h"
 #include "blt/std/allocator.h"
+#include "type.h"
 #include <lilfbtf/fwddecl.h>
 
 namespace fb
@@ -104,13 +105,15 @@ namespace fb
         };
     }
     
-    
     class tree_t
     {
         private:
             blt::bump_allocator<blt::BLT_2MB_SIZE, false>& alloc;
+            type_engine_t& types;
         public:
-        
+            tree_t(blt::bump_allocator<blt::BLT_2MB_SIZE, false>& alloc, type_engine_t& types);
+            
+            
     };
 }
 

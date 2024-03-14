@@ -24,6 +24,7 @@
 #include <blt/std/memory_util.h>
 #include <vector>
 #include <cstdlib>
+#include <optional>
 
 namespace fb
 {
@@ -110,7 +111,7 @@ namespace fb
             // function id -> list of type_id for parameters where index 0 = arg 1
             associative_array<function_id, std::vector<type_id>> function_inputs;
             
-            associative_array<function_id, std::reference_wrapper<func_t_init_t>> terminal_initializer;
+            associative_array<function_id, std::reference_wrapper<func_t_init_t>> function_initializer;
             associative_array<type_id, std::vector<function_id>, true> terminals;
             associative_array<type_id, std::vector<function_id>, true> non_terminals;
         public:
@@ -118,9 +119,11 @@ namespace fb
             
             type_id register_type(type_name type_name);
             
-            function_id register_function(function_name func_name, type_id output, func_t_call_t& func);
+            function_id register_function(function_name func_name, type_id output, func_t_call_t& func,
+                                          std::optional<std::reference_wrapper<func_t_init_t>> initializer);
             
-            function_id register_terminal_function(function_name func_name, type_id output, func_t_call_t& func, func_t_init_t& initializer);
+            function_id register_terminal_function(function_name func_name, type_id output, func_t_call_t& func,
+                                                   std::optional<std::reference_wrapper<func_t_init_t>> initializer);
             
             inline type_id get_type_id(type_name name)
             { return name_to_type[name]; }
@@ -137,7 +140,7 @@ namespace fb
             { return get_function(get_function_id(name)); }
             
             inline func_t_init_t& get_function_initializer(function_id id)
-            { return terminal_initializer[id]; }
+            { return function_initializer[id]; }
             
             inline func_t_init_t& get_function_initializer(function_name name)
             { return get_function_initializer(get_function_id(name)); }
