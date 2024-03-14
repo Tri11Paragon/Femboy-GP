@@ -28,13 +28,15 @@ namespace fb
         return id;
     }
     
-    function_id type_engine_t::register_function(function_name func_name, type_id output, func_t_call_t& func,
+    function_id type_engine_t::register_function(function_name func_name, type_name output, func_t_call_t& func,
                                                  std::optional<std::reference_wrapper<func_t_init_t>> initializer)
     {
         function_id id = function_to_name.size();
+        type_id tid = get_type_id(output);
         name_to_function[func_name] = id;
         functions.insert(id, func);
-        non_terminals[output].push_back(id);
+        non_terminals[tid].push_back(id);
+        all_non_terminals.emplace_back(tid, id);
         if (auto& init = initializer)
             function_initializer.insert(id, init.value());
         return id;
@@ -50,13 +52,14 @@ namespace fb
         return *this;
     }
     
-    function_id type_engine_t::register_terminal_function(function_name func_name, type_id output, func_t_call_t& func,
+    function_id type_engine_t::register_terminal_function(function_name func_name, type_name output, func_t_call_t& func,
                                                           std::optional<std::reference_wrapper<func_t_init_t>> initializer)
     {
         function_id id = function_to_name.size();
+        type_id tid = get_type_id(output);
         name_to_function[func_name] = id;
         functions.insert(id, func);
-        terminals[output].push_back(id);
+        terminals[tid].push_back(id);
         if (auto& init = initializer)
             function_initializer.insert(id, init.value());
         return id;

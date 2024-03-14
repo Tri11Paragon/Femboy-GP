@@ -26,5 +26,15 @@ namespace fb
     tree_t::tree_t(blt::bump_allocator<blt::BLT_2MB_SIZE, false>& alloc, type_engine_t& types): alloc(alloc), types(types)
     {}
     
+    tree_t tree_t::make_tree(blt::bump_allocator<blt::BLT_2MB_SIZE, false>& alloc, type_engine_t& types, blt::size_t min_height,
+                             blt::size_t max_height)
+    {
+        tree_t tree(alloc, types);
+        
+        
+        
+        return tree;
+    }
+    
     
 }

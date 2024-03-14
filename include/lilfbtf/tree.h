@@ -93,6 +93,11 @@ namespace fb
                     type.call(blt::span<node_t*>{children, type.argc()});
                 }
                 
+                inline blt::unsafe::any_t value()
+                {
+                    return type.getValue();
+                }
+                
                 ~node_t()
                 {
                     for (blt::size_t i = 0; i < type.argc(); i++)
@@ -110,10 +115,12 @@ namespace fb
         private:
             blt::bump_allocator<blt::BLT_2MB_SIZE, false>& alloc;
             type_engine_t& types;
+            detail::node_t* root;
         public:
             tree_t(blt::bump_allocator<blt::BLT_2MB_SIZE, false>& alloc, type_engine_t& types);
             
-            
+            static tree_t make_tree(blt::bump_allocator<blt::BLT_2MB_SIZE, false>& alloc, type_engine_t& types, blt::size_t min_height,
+                                    blt::size_t max_height);
     };
 }
 

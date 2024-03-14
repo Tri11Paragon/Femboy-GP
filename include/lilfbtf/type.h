@@ -114,15 +114,16 @@ namespace fb
             associative_array<function_id, std::reference_wrapper<func_t_init_t>> function_initializer;
             associative_array<type_id, std::vector<function_id>, true> terminals;
             associative_array<type_id, std::vector<function_id>, true> non_terminals;
+            std::vector<std::pair<type_id, function_id>> all_non_terminals;
         public:
             type_engine_t() = default;
             
             type_id register_type(type_name type_name);
             
-            function_id register_function(function_name func_name, type_id output, func_t_call_t& func,
+            function_id register_function(function_name func_name, type_name output, func_t_call_t& func,
                                           std::optional<std::reference_wrapper<func_t_init_t>> initializer);
             
-            function_id register_terminal_function(function_name func_name, type_id output, func_t_call_t& func,
+            function_id register_terminal_function(function_name func_name, type_name output, func_t_call_t& func,
                                                    std::optional<std::reference_wrapper<func_t_init_t>> initializer);
             
             inline type_id get_type_id(type_name name)
