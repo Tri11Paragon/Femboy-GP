@@ -23,7 +23,12 @@
 
 namespace fb
 {
-
+    
+    class gp_system_t
+    {
+    
+    };
+    
 }
 
 #endif //LILFBTF5_SYSTEM_H

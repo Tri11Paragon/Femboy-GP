@@ -39,7 +39,7 @@ namespace fb
         all_non_terminals.emplace_back(tid, id);
         function_argc.insert(id, argc);
         if (auto& init = initializer)
-            function_initializer.insert(id, init.value());
+            function_initializer.insert({id, init.value()});
         return id;
     }
     
@@ -63,7 +63,7 @@ namespace fb
         terminals.at(tid).push_back(id);
         function_argc.insert(id, 0);
         if (auto& init = initializer)
-            function_initializer.insert(id, init.value());
+            function_initializer.insert({id, init.value()});
         return id;
     }
 }

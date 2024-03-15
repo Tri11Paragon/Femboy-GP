@@ -70,33 +70,26 @@ namespace fb
                 const auto& terminals = types.get_terminals(type_category);
                 const auto& non_terminals = types.get_non_terminals(type_category);
                 
-                if (depth < max_height)
-                    stack.emplace(node->children[i], depth + 1);
-                
                 if (depth < min_height && !has_one_non_terminal)
                 {
+                    // make sure we have at least min height possible by using at least one non terminal
                     function_id selection = non_terminals[engine.random_long(0, non_terminals.size() - 1)];
                     func_t func(types.get_function_argc(selection), types.get_function(selection), type_category, selection);
                     if (const auto& func_init = types.get_function_initializer(selection))
                         func_init.value()(func);
                     node->children[i] = tree.alloc.template emplace<node_t>(func, tree.alloc);
                     has_one_non_terminal = true;
-                    continue;
-                }
-                
-                if (depth >= max_height)
+                } else if (depth >= max_height)
                 {
+                    // if we are above the max_height select only terminals
                     function_id selection = terminals[engine.random_long(0, terminals.size() - 1)];
                     func_t func(types.get_function_argc(selection), types.get_function(selection), type_category, selection);
                     if (const auto& func_init = types.get_function_initializer(selection))
                         func_init.value()(func);
                     node->children[i] = tree.alloc.template emplace<node_t>(func, tree.alloc);
-                    continue;
-                }
-                
-                if (engine.choice())
+                } else if (engine.choice())
                 {
-                    // use full() method
+                    // otherwise select between use full() method
                     function_id selection = non_terminals[engine.random_long(0, non_terminals.size() - 1)];
                     func_t func(types.get_function_argc(selection), types.get_function(selection), type_category, selection);
                     if (const auto& func_init = types.get_function_initializer(selection))
@@ -104,10 +97,10 @@ namespace fb
                     node->children[i] = tree.alloc.template emplace<node_t>(func, tree.alloc);
                 } else
                 {
-                    // use grow() method, meaning select choice again
+                    // and use grow() method, meaning select choice again
                     if (engine.choice())
                     {
-                        // use non-terminals
+                        // to use non-terminals
                         function_id selection = non_terminals[engine.random_long(0, non_terminals.size() - 1)];
                         func_t func(types.get_function_argc(selection), types.get_function(selection), type_category, selection);
                         if (const auto& func_init = types.get_function_initializer(selection))
@@ -115,7 +108,7 @@ namespace fb
                         node->children[i] = tree.alloc.template emplace<node_t>(func, tree.alloc);
                     } else
                     {
-                        // use terminals
+                        // or use terminals
                         function_id selection = terminals[engine.random_long(0, terminals.size() - 1)];
                         func_t func(types.get_function_argc(selection), types.get_function(selection), type_category, selection);
                         if (const auto& func_init = types.get_function_initializer(selection))
@@ -123,6 +116,9 @@ namespace fb
                         node->children[i] = tree.alloc.template emplace<node_t>(func, tree.alloc);
                     }
                 }
+                // node has children that need populated
+                if (node->children[i]->type.argc() != 0)
+                    stack.emplace(node->children[i], depth + 1);
             }
         }
         
@@ -153,6 +149,46 @@ namespace fb
         }
         
         return {root->type.getValue(), root->type.getType()};
+    }
+    
+    detail::node_t* tree_t::allocate_non_terminal(detail::node_helper_t details, type_id type)
+    {
+        const auto& non_terminals = details.types.get_non_terminals(type);
+        function_id selection = non_terminals[details.engine.random_long(0, non_terminals.size() - 1)];
+        func_t func(details.types.get_function_argc(selection), details.types.get_function(selection), type, selection);
+        if (const auto& func_init = details.types.get_function_initializer(selection))
+            func_init.value()(func);
+        return details.alloc.template emplace<detail::node_t>(func, details.alloc);
+    }
+    
+    detail::node_t* tree_t::allocate_terminal(detail::node_helper_t details, type_id type)
+    {
+        const auto& terminals = details.types.get_terminals(type);
+        
+        // if we cannot allocate a terminal, we need to allocate a non-terminal in hopes of finding a closing path
+        // for example bools might not have an ending terminal, it doesn't make sense to.
+        if (terminals.empty())
+            return allocate_non_terminal_restricted(details, type);
+        
+        function_id selection = terminals[details.engine.random_long(0, terminals.size() - 1)];
+        func_t func(details.types.get_function_argc(selection), details.types.get_function(selection), type, selection);
+        if (const auto& func_init = details.types.get_function_initializer(selection))
+            func_init.value()(func);
+        return details.alloc.template emplace<detail::node_t>(func, details.alloc);
+    }
+    
+    detail::node_t* tree_t::allocate_non_terminal_restricted(detail::node_helper_t details, type_id type)
+    {
+        const auto& non_terminals = details.types.get_non_terminals(type);
+        function_id selection = 0;
+        
+        
+        
+        
+        func_t func(details.types.get_function_argc(selection), details.types.get_function(selection), type, selection);
+        if (const auto& func_init = details.types.get_function_initializer(selection))
+            func_init.value()(func);
+        return details.alloc.template emplace<detail::node_t>(func, details.alloc);
     }
     
     

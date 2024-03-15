@@ -109,6 +109,13 @@ namespace fb
                     alloc.deallocate(children, type.argc());
                 }
         };
+        
+        struct node_helper_t
+        {
+            blt::bump_allocator<blt::BLT_2MB_SIZE, false>& alloc;
+            random& engine;
+            type_engine_t& types;
+        };
     }
     
     class tree_t
@@ -120,10 +127,17 @@ namespace fb
             
             inline blt::bump_allocator<blt::BLT_2MB_SIZE, false>& get_allocator()
             { return alloc; }
+            
+            static detail::node_t* allocate_non_terminal(detail::node_helper_t details, type_id type);
+            static detail::node_t* allocate_non_terminal_restricted(detail::node_helper_t details, type_id type);
+            
+            static detail::node_t* allocate_terminal(detail::node_helper_t details, type_id type);
+        
         public:
             explicit tree_t(type_engine_t& types);
             
-            static tree_t make_tree(type_engine_t& types, random& engine, blt::size_t min_height, blt::size_t max_height, std::optional<type_id> starting_type = {});
+            static tree_t make_tree(type_engine_t& types, random& engine, blt::size_t min_height, blt::size_t max_height,
+                                    std::optional<type_id> starting_type = {});
             
             std::pair<blt::unsafe::any_t, type_id> evaluate();
     };
