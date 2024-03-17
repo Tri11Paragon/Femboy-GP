@@ -124,6 +124,7 @@ namespace fb
             associative_array<function_id, std::reference_wrapper<const func_t_call_t>> functions;
             // function id -> list of type_id for parameters where index 0 = arg 1
             associative_array<function_id, std::vector<type_id>, true> function_inputs;
+            associative_array<function_id, type_id> function_outputs;
             associative_array<function_id, arg_c_t> function_argc;
             
             blt::hashmap_t<function_id, std::reference_wrapper<const func_t_init_t>> function_initializer;

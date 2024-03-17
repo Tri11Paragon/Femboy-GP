@@ -179,11 +179,15 @@ namespace fb
     
     detail::node_t* tree_t::allocate_non_terminal_restricted(detail::node_helper_t details, type_id type)
     {
-        const auto& non_terminals = details.types.get_non_terminals(type);
         function_id selection = 0;
-        
-        
-        
+        do {
+            const auto& non_terminals = details.types.get_non_terminals(type);
+            selection = details.engine.random_long(0, non_terminals.size() - 1);
+            auto& sel_v = details.types.get_function_allowed_arguments(selection);
+            // if it does not accept the type we are
+            if (std::find(sel_v.begin(), sel_v.end(), type) == sel_v.end())
+                break;
+        } while(true);
         
         func_t func(details.types.get_function_argc(selection), details.types.get_function(selection), type, selection);
         if (const auto& func_init = details.types.get_function_initializer(selection))
