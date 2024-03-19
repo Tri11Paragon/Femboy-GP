@@ -52,12 +52,11 @@ namespace fb
             case tree_init_t::GROW:
                 grow({tree, tree_info}, min_depth, max_depth);
                 break;
+            case tree_init_t::BRETT_GROW:
+                brett_grow({tree, tree_info}, min_depth, max_depth);
+                break;
             case tree_init_t::FULL:
                 full({tree, tree_info}, tree_info.engine.random_long(min_depth, max_depth));
-                break;
-            case tree_init_t::RAMPED_HALF_HALF:
-                break;
-            case tree_init_t::BRETT_HALF_HALF:
                 break;
         }
         
@@ -136,7 +135,7 @@ namespace fb
         return info.tree.alloc.template emplace<detail::node_t>(func, info.tree.alloc);
     }
     
-    void tree_t::grow(detail::node_construction_info_t info, blt::size_t min_depth, blt::size_t max_depth)
+    void tree_t::brett_grow(detail::node_construction_info_t info, blt::size_t min_depth, blt::size_t max_depth)
     {
         using namespace detail;
         std::stack<std::pair<node_t*, blt::size_t>> stack;
@@ -201,6 +200,56 @@ namespace fb
                 {
                     // otherwise only non-terminals can be used
                     node->children[i] = allocate_non_terminal(info, type_category);
+                }
+                // node has children that need populated
+                if (node->children[i]->type.argc() != 0)
+                    stack.emplace(node->children[i], depth + 1);
+            }
+        }
+    }
+    
+    void tree_t::grow(detail::node_construction_info_t info, blt::size_t min_depth, blt::size_t max_depth)
+    {
+        using namespace detail;
+        std::stack<std::pair<node_t*, blt::size_t>> stack;
+        stack.emplace(info.tree.root, 0);
+        while (!stack.empty())
+        {
+            auto top = stack.top();
+            auto* node = top.first;
+            auto depth = top.second;
+            stack.pop();
+            
+            const auto& allowed_types = info.types.get_function_allowed_arguments(node->type.getFunction());
+            // we need to make sure there is at least one non-terminal generation, until we hit the min height
+            bool has_one_non_terminal = false;
+            for (blt::size_t i = 0; i < node->type.argc(); i++)
+            {
+                type_id type_category = allowed_types[i];
+                
+                if (depth < min_depth && !has_one_non_terminal)
+                {
+                    // make sure we have at least min depth possible by using at least one non terminal
+                    node->children[i] = allocate_non_terminal(info, type_category);
+                    has_one_non_terminal = true;
+                } else if (depth >= max_depth)
+                {
+                    // if we are above the max_height select only terminals
+                    node->children[i] = allocate_terminal(info, type_category);
+                } else
+                {
+                    const auto& non_terminals = info.types.get_non_terminals(type_category);
+                    const auto& terminals = info.types.get_terminals(type_category);
+                    auto index = info.engine.random_long(0, terminals.size() + non_terminals.size());
+                    function_id selection;
+                    if (index >= non_terminals.size())
+                        selection = terminals[index - non_terminals.size()];
+                    else
+                        selection = non_terminals[index];
+                    func_t func(info.types.get_function_argc(selection), info.types.get_function(selection), type_category, selection);
+                    if (const auto& func_init = info.types.get_function_initializer(selection))
+                        func_init.value()(func);
+                    node->children[i] = info.tree.alloc.template emplace<detail::node_t>(func, info.tree.alloc);
                 }
                 // node has children that need populated
                 if (node->children[i]->type.argc() != 0)

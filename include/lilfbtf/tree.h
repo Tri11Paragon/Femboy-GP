@@ -74,14 +74,12 @@ namespace fb
     
     enum class tree_init_t
     {
-        // standard grow method
+        // standard koza grow method
         GROW,
+        
+        BRETT_GROW,
         // standard full method
-        FULL,
-        // standard ramped half-and-half method
-        RAMPED_HALF_HALF,
-        // variant of grow/full method where at each level a choice is made between using only non-terminals or terminals
-        BRETT_HALF_HALF
+        FULL
     };
     
     namespace detail
@@ -160,6 +158,7 @@ namespace fb
             static detail::node_t* allocate_terminal(detail::node_construction_info_t info, type_id type);
             
             static void grow(detail::node_construction_info_t info, blt::size_t min_depth, blt::size_t max_depth);
+            static void brett_grow(detail::node_construction_info_t info, blt::size_t min_depth, blt::size_t max_depth);
             
             static void full(detail::node_construction_info_t info, blt::size_t depth);
         
