@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
-project(lilfbtf5 VERSION 0.1.33)
+project(lilfbtf5 VERSION 0.1.34)
 
 option(ENABLE_ADDRSAN "Enable the address sanitizer" OFF)
 option(ENABLE_UBSAN "Enable the ub sanitizer" OFF)

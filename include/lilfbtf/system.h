@@ -20,13 +20,27 @@
 #define LILFBTF5_SYSTEM_H
 
 #include <lilfbtf/fwddecl.h>
+#include <lilfbtf/tree.h>
+#include <vector>
 
 namespace fb
 {
     
-    class gp_system_t
+    class gp_population_t
     {
     
+    };
+    
+    class gp_system_t
+    {
+        private:
+        
+        public:
+            gp_system_t(type_engine_t& types): types(types)
+            {}
+        
+        private:
+            type_engine_t& types;
     };
     
 }

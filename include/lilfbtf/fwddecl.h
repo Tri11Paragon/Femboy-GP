@@ -36,6 +36,7 @@ namespace fb
     
     class type_engine_t;
     class gp_system_t;
+    class gp_population_t;
     
     // no way we are going to have more than 4billion types or functions.
     using type_id = blt::u32;
