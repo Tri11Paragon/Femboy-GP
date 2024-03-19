@@ -63,7 +63,7 @@ namespace fb
         return tree;
     }
     
-    std::pair<blt::unsafe::any_t, type_id> tree_t::evaluate()
+    detail::tree_eval_t tree_t::evaluate()
     {
         using detail::node_t;
         std::stack<node_t*> nodes;
@@ -256,6 +256,38 @@ namespace fb
                     stack.emplace(node->children[i], depth + 1);
             }
         }
+    }
+    
+    blt::size_t tree_t::depth()
+    {
+        if (cache.dirty)
+            recalculate_cache();
+        return cache.depth;
+    }
+    
+    void tree_t::recalculate_cache()
+    {
+        using detail::node_t;
+        blt::size_t depth = 0;
+        blt::size_t node_count = 0;
+        std::stack<std::pair<node_t*, std::size_t>> nodes;
+        
+        nodes.emplace(root, 1);
+        
+        while (!nodes.empty())
+        {
+            auto top = nodes.top();
+            auto* node = top.first;
+            auto d = top.second;
+            node_count++;
+            depth = std::max(d, depth);
+            nodes.pop();
+            for (blt::size_t i = 0; i < node->type.argc(); i++)
+                nodes.emplace(node->children[i], d + 1);
+        }
+        cache.dirty = false;
+        cache.depth = depth;
+        cache.node_count = node_count;
     }
     
     

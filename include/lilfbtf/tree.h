@@ -139,17 +139,21 @@ namespace fb
                     tree(tree), engine(info.engine), types(info.types), terminal_chance(info.terminal_chance)
             {}
         };
+        
+        struct tree_eval_t
+        {
+            blt::unsafe::any_t value;
+            type_id contained_type;
+        };
     }
     
     class tree_t
     {
         private:
-            blt::bump_allocator<blt::BLT_2MB_SIZE, false> alloc;
-            type_engine_t& types;
-            detail::node_t* root = nullptr;
-            
             inline blt::bump_allocator<blt::BLT_2MB_SIZE, false>& get_allocator()
             { return alloc; }
+            
+            void recalculate_cache();
             
             static detail::node_t* allocate_non_terminal(detail::node_construction_info_t info, type_id type);
             
@@ -158,6 +162,7 @@ namespace fb
             static detail::node_t* allocate_terminal(detail::node_construction_info_t info, type_id type);
             
             static void grow(detail::node_construction_info_t info, blt::size_t min_depth, blt::size_t max_depth);
+            
             static void brett_grow(detail::node_construction_info_t info, blt::size_t min_depth, blt::size_t max_depth);
             
             static void full(detail::node_construction_info_t info, blt::size_t depth);
@@ -168,7 +173,26 @@ namespace fb
             static tree_t make_tree(detail::tree_construction_info_t tree_info, blt::size_t min_depth, blt::size_t max_depth,
                                     std::optional<type_id> starting_type = {});
             
-            std::pair<blt::unsafe::any_t, type_id> evaluate();
+            detail::tree_eval_t evaluate();
+            
+            blt::size_t depth();
+            
+            // invalidates the internal cache, as the result of tree modification
+            inline void invalidate()
+            {
+                cache.dirty = true;
+            }
+        
+        private:
+            blt::bump_allocator<blt::BLT_2MB_SIZE, false> alloc;
+            type_engine_t& types;
+            detail::node_t* root = nullptr;
+            struct cache_t
+            {
+                blt::size_t depth = 0;
+                blt::size_t node_count = 0;
+                bool dirty = true;
+            } cache;
     };
 }
 
