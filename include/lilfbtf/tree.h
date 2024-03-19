@@ -122,18 +122,24 @@ namespace fb
                 }
         };
         
-        struct node_construction_info_t
-        {
-            blt::bump_allocator<blt::BLT_2MB_SIZE, false>& alloc;
-            random& engine;
-            type_engine_t& types;
-        };
-        
         struct tree_construction_info_t
         {
             tree_init_t tree_type;
             random& engine;
             type_engine_t& types;
+            double terminal_chance = 0.5;
+        };
+        
+        struct node_construction_info_t
+        {
+            tree_t& tree;
+            random& engine;
+            type_engine_t& types;
+            double terminal_chance;
+            
+            node_construction_info_t(tree_t& tree, const tree_construction_info_t& info):
+                    tree(tree), engine(info.engine), types(info.types), terminal_chance(info.terminal_chance)
+            {}
         };
     }
     
@@ -153,7 +159,9 @@ namespace fb
             
             static detail::node_t* allocate_terminal(detail::node_construction_info_t info, type_id type);
             
+            static void grow(detail::node_construction_info_t info, blt::size_t min_depth, blt::size_t max_depth);
             
+            static void full(detail::node_construction_info_t info, blt::size_t depth);
         
         public:
             explicit tree_t(type_engine_t& types);

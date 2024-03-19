@@ -63,4 +63,10 @@ namespace fb
     {
         return random_double() <= chance;
     }
+    
+    bool random::choice(double d)
+    {
+        std::uniform_real_distribution<double> dist(0, 1);\
+        return dist(engine) < d;
+    }
 }

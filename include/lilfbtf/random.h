@@ -34,6 +34,7 @@ namespace fb
             
             void reset();
             bool choice();
+            bool choice(double d);
             bool chance(double chance = 0.5);
             
             float random_float(float min = 0, float max = 1);
