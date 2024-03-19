@@ -72,6 +72,18 @@ namespace fb
             ~func_t() = default;
     };
     
+    enum class tree_init_t
+    {
+        // standard grow method
+        GROW,
+        // standard full method
+        FULL,
+        // standard ramped half-and-half method
+        RAMPED_HALF_HALF,
+        // variant of grow/full method where at each level a choice is made between using only non-terminals or terminals
+        BRETT_HALF_HALF
+    };
+    
     namespace detail
     {
         class node_t
@@ -110,9 +122,16 @@ namespace fb
                 }
         };
         
-        struct node_helper_t
+        struct node_construction_info_t
         {
             blt::bump_allocator<blt::BLT_2MB_SIZE, false>& alloc;
+            random& engine;
+            type_engine_t& types;
+        };
+        
+        struct tree_construction_info_t
+        {
+            tree_init_t tree_type;
             random& engine;
             type_engine_t& types;
         };
@@ -128,15 +147,18 @@ namespace fb
             inline blt::bump_allocator<blt::BLT_2MB_SIZE, false>& get_allocator()
             { return alloc; }
             
-            static detail::node_t* allocate_non_terminal(detail::node_helper_t details, type_id type);
-            static detail::node_t* allocate_non_terminal_restricted(detail::node_helper_t details, type_id type);
+            static detail::node_t* allocate_non_terminal(detail::node_construction_info_t info, type_id type);
             
-            static detail::node_t* allocate_terminal(detail::node_helper_t details, type_id type);
+            static detail::node_t* allocate_non_terminal_restricted(detail::node_construction_info_t info, type_id type);
+            
+            static detail::node_t* allocate_terminal(detail::node_construction_info_t info, type_id type);
+            
+            
         
         public:
             explicit tree_t(type_engine_t& types);
             
-            static tree_t make_tree(type_engine_t& types, random& engine, blt::size_t min_height, blt::size_t max_height,
+            static tree_t make_tree(detail::tree_construction_info_t tree_info, blt::size_t min_depth, blt::size_t max_depth,
                                     std::optional<type_id> starting_type = {});
             
             std::pair<blt::unsafe::any_t, type_id> evaluate();
