@@ -173,7 +173,7 @@ namespace fb
             static tree_t make_tree(detail::tree_construction_info_t tree_info, blt::size_t min_depth, blt::size_t max_depth,
                                     std::optional<type_id> starting_type = {});
             
-            detail::tree_eval_t evaluate();
+            detail::tree_eval_t evaluate(const fitness_eval_func_t& fitnessEvalFunc);
             
             blt::size_t depth();
             
@@ -191,6 +191,7 @@ namespace fb
             {
                 blt::size_t depth = 0;
                 blt::size_t node_count = 0;
+                detail::fitness_results fitness;
                 bool dirty = true;
             } cache;
     };

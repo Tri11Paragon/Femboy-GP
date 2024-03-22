@@ -19,5 +19,28 @@
 
 namespace fb
 {
-
+    void fb::gp_population_t::crossover()
+    {
+    
+    }
+    
+    void fb::gp_population_t::mutate()
+    {
+    
+    }
+    
+    void fb::gp_population_t::init_pop()
+    {
+    
+    }
+    
+    void fb::gp_population_t::execute(const fitness_eval_func_t& fitnessEvalFunc)
+    {
+    
+    }
+    
+    void fb::gp_population_t::breed_new_pop()
+    {
+    
+    }
 }

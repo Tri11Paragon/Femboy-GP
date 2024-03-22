@@ -63,7 +63,7 @@ namespace fb
         return tree;
     }
     
-    detail::tree_eval_t tree_t::evaluate()
+    detail::tree_eval_t tree_t::evaluate(const fitness_eval_func_t& fitnessEvalFunc)
     {
         using detail::node_t;
         std::stack<node_t*> nodes;
@@ -86,6 +86,8 @@ namespace fb
             node_stack.top()->evaluate();
             node_stack.pop();
         }
+        
+        cache.fitness = fitnessEvalFunc(root);
         
         return {root->type.getValue(), root->type.getType()};
     }

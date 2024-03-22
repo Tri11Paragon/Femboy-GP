@@ -29,13 +29,22 @@ namespace fb
     namespace detail
     {
         class node_t;
+        
+        struct fitness_results
+        {
+            double fitness;
+            blt::size_t hits;
+        };
     }
     
     class func_t;
+    
     class tree_t;
     
     class type_engine_t;
+    
     class gp_system_t;
+    
     class gp_population_t;
     
     // no way we are going to have more than 4billion types or functions.
@@ -44,7 +53,7 @@ namespace fb
     using arg_c_t = blt::size_t;
     using func_t_call_t = std::function<void(func_t&, blt::span<detail::node_t*>)>;
     using func_t_init_t = std::function<void(func_t&)>;
-    using fitness_eval_func_t = std::function<void(detail::node_t*)>;
+    using fitness_eval_func_t = std::function<detail::fitness_results(detail::node_t*)>;
     using function_name = const std::string&;
     using type_name = const std::string&;
 }

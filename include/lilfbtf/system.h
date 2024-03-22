@@ -21,6 +21,7 @@
 
 #include <lilfbtf/fwddecl.h>
 #include <lilfbtf/tree.h>
+#include <blt/std/thread.h>
 #include <vector>
 
 namespace fb
@@ -28,7 +29,22 @@ namespace fb
     
     class gp_population_t
     {
-    
+        private:
+            blt::thread_pool<true>& pool;
+            std::vector<tree_t> population;
+            
+            void crossover();
+            
+            void mutate();
+        public:
+            explicit gp_population_t(blt::thread_pool<true>& pool): pool(pool)
+            {}
+            
+            void init_pop();
+            
+            void execute(const fitness_eval_func_t& fitnessEvalFunc);
+            
+            void breed_new_pop();
     };
     
     class gp_system_t
@@ -36,7 +52,7 @@ namespace fb
         private:
         
         public:
-            gp_system_t(type_engine_t& types): types(types)
+            explicit gp_system_t(type_engine_t& types): types(types)
             {}
         
         private:
