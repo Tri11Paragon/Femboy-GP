@@ -63,7 +63,7 @@ namespace fb
         return tree;
     }
     
-    detail::tree_eval_t tree_t::evaluate(const fitness_eval_func_t& fitnessEvalFunc)
+    detail::tree_eval_t tree_t::evaluate(blt::unsafe::buffer_any_t extra_args, const fitness_eval_func_t& fitnessEvalFunc)
     {
         using detail::node_t;
         std::stack<node_t*> nodes;
@@ -83,7 +83,7 @@ namespace fb
         
         while (!node_stack.empty())
         {
-            node_stack.top()->evaluate();
+            node_stack.top()->evaluate(extra_args);
             node_stack.pop();
         }
         

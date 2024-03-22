@@ -66,8 +66,8 @@ namespace fb
             [[nodiscard]] inline function_id getFunction() const
             { return function; }
             
-            inline void call(blt::span<detail::node_t*> args)
-            { func(*this, args); };
+            inline void call(blt::span<detail::node_t*> args, blt::unsafe::buffer_any_t extra_args)
+            { func({*this, args, extra_args}); };
             
             ~func_t() = default;
     };
@@ -99,9 +99,9 @@ namespace fb
                         children[i] = nullptr;
                 }
                 
-                inline void evaluate()
+                inline void evaluate(blt::unsafe::buffer_any_t extra_args)
                 {
-                    type.call(blt::span<node_t*>{children, type.argc()});
+                    type.call(blt::span<node_t*>{children, type.argc()}, extra_args);
                 }
                 
                 inline blt::unsafe::any_t value()
@@ -173,7 +173,7 @@ namespace fb
             static tree_t make_tree(detail::tree_construction_info_t tree_info, blt::size_t min_depth, blt::size_t max_depth,
                                     std::optional<type_id> starting_type = {});
             
-            detail::tree_eval_t evaluate(const fitness_eval_func_t& fitnessEvalFunc);
+            detail::tree_eval_t evaluate(blt::unsafe::buffer_any_t extra_args, const fitness_eval_func_t& fitnessEvalFunc);
             
             blt::size_t depth();
             

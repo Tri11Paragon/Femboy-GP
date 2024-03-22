@@ -25,36 +25,6 @@ struct pixel
 
 const blt::size_t image_width = 128, image_height = 128;
 
-struct pixelator_t
-{
-    private:
-        blt::size_t width, height;
-        blt::size_t x = 0, y = 0;
-    public:
-        pixelator_t(blt::size_t width, blt::size_t height): width(width), height(height)
-        {}
-        
-        pixel next()
-        {
-            if (x > width)
-            {
-                x = 0;
-                y++;
-            }
-            return {x++, y};
-        }
-        
-        [[nodiscard]] inline blt::size_t curX() const
-        {
-            return x;
-        }
-        
-        [[nodiscard]] inline blt::size_t curY() const
-        {
-            return y;
-        }
-} pixelator{image_width, image_height};
-
 const fb::func_t_call_t add_f = [](const fb::detail::func_t_arguments& args) {
     args.self.setValue(args.arguments[0]->value().any_cast<blt::u8>() + args.arguments[1]->value().any_cast<blt::u8>());
 };
@@ -73,6 +43,12 @@ const fb::func_t_call_t div_f = [](const fb::detail::func_t_arguments& args) {
 };
 
 const fb::func_t_call_t empty_f = [](const fb::detail::func_t_arguments&) {};
+const fb::func_t_call_t coord_x_f = [](const fb::detail::func_t_arguments& args) {
+    args.self.setValue(args.extra_args.any_cast<pixel>().x);
+};
+const fb::func_t_call_t coord_y_f = [](const fb::detail::func_t_arguments& args) {
+    args.self.setValue(args.extra_args.any_cast<pixel>().y);
+};
 const fb::func_t_init_t value_init_f = [](fb::func_t& self) {
     self.setValue(fb::random_value());
 };
