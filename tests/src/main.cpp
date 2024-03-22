@@ -18,61 +18,98 @@ struct data
     char c;
 };
 
-const fb::func_t_call_t add_f = [](fb::func_t& us, blt::span<fb::detail::node_t*> args) {
-    us.setValue(args[0]->value().any_cast<blt::u8>() + args[1]->value().any_cast<blt::u8>());
+struct pixel
+{
+    blt::size_t x, y;
 };
-const fb::func_t_call_t sub_f = [](fb::func_t& us, blt::span<fb::detail::node_t*> args) {
-    us.setValue(args[0]->value().any_cast<blt::u8>() - args[1]->value().any_cast<blt::u8>());
+
+const blt::size_t image_width = 128, image_height = 128;
+
+struct pixelator_t
+{
+    private:
+        blt::size_t width, height;
+        blt::size_t x = 0, y = 0;
+    public:
+        pixelator_t(blt::size_t width, blt::size_t height): width(width), height(height)
+        {}
+        
+        pixel next()
+        {
+            if (x > width)
+            {
+                x = 0;
+                y++;
+            }
+            return {x++, y};
+        }
+        
+        [[nodiscard]] inline blt::size_t curX() const
+        {
+            return x;
+        }
+        
+        [[nodiscard]] inline blt::size_t curY() const
+        {
+            return y;
+        }
+} pixelator{image_width, image_height};
+
+const fb::func_t_call_t add_f = [](const fb::detail::func_t_arguments& args) {
+    args.self.setValue(args.arguments[0]->value().any_cast<blt::u8>() + args.arguments[1]->value().any_cast<blt::u8>());
 };
-const fb::func_t_call_t mul_f = [](fb::func_t& us, blt::span<fb::detail::node_t*> args) {
-    us.setValue(args[0]->value().any_cast<blt::u8>() * args[1]->value().any_cast<blt::u8>());
+const fb::func_t_call_t sub_f = [](const fb::detail::func_t_arguments& args) {
+    args.self.setValue(args.arguments[0]->value().any_cast<blt::u8>() - args.arguments[1]->value().any_cast<blt::u8>());
 };
-const fb::func_t_call_t div_f = [](fb::func_t& us, blt::span<fb::detail::node_t*> args) {
-    auto dim = args[1]->value().any_cast<blt::u8>();
+const fb::func_t_call_t mul_f = [](const fb::detail::func_t_arguments& args) {
+    args.self.setValue(args.arguments[0]->value().any_cast<blt::u8>() * args.arguments[1]->value().any_cast<blt::u8>());
+};
+const fb::func_t_call_t div_f = [](const fb::detail::func_t_arguments& args) {
+    auto dim = args.arguments[1]->value().any_cast<blt::u8>();
     if (dim == 0)
-        us.setValue(0);
+        args.self.setValue(0);
     else
-        us.setValue(args[0]->value().any_cast<blt::u8>() + dim);
+        args.self.setValue(args.arguments[0]->value().any_cast<blt::u8>() + dim);
 };
 
-const fb::func_t_call_t empty_f = [](fb::func_t&, blt::span<fb::detail::node_t*>) {};
-const fb::func_t_init_t value_init_f = [](fb::func_t& us){
-    us.setValue(fb::random_value());
+const fb::func_t_call_t empty_f = [](const fb::detail::func_t_arguments&) {};
+const fb::func_t_init_t value_init_f = [](fb::func_t& self) {
+    self.setValue(fb::random_value());
 };
-const fb::func_t_init_t bool_init_f = [](fb::func_t& us){
-    us.setValue(fb::choice());
+const fb::func_t_init_t bool_init_f = [](fb::func_t& self) {
+    self.setValue(fb::choice());
 };
-const fb::func_t_call_t if_f = [](fb::func_t& us, blt::span<fb::detail::node_t*> args) {
-    if (args[0]->value().any_cast<bool>())
-        us.setValue(args[1]->value().any_cast<blt::u8>());
+const fb::func_t_call_t if_f = [](const fb::detail::func_t_arguments& args) {
+    if (args.arguments[0]->value().any_cast<bool>())
+        args.self.setValue(args.arguments[1]->value().any_cast<blt::u8>());
     else
-        us.setValue(args[2]->value().any_cast<blt::u8>());
+        args.self.setValue(args.arguments[2]->value().any_cast<blt::u8>());
 };
-const fb::func_t_call_t equals_b_f = [](fb::func_t& us, blt::span<fb::detail::node_t*> args) {
-    us.setValue(args[0]->value().any_cast<bool>() == args[1]->value().any_cast<bool>());
+const fb::func_t_call_t equals_b_f = [](const fb::detail::func_t_arguments& args) {
+    args.self.setValue(args.arguments[0]->value().any_cast<bool>() == args.arguments[1]->value().any_cast<bool>());
 };
-const fb::func_t_call_t equals_n_f = [](fb::func_t& us, blt::span<fb::detail::node_t*> args) {
-    us.setValue(args[0]->value().any_cast<blt::u8>() == args[1]->value().any_cast<blt::u8>());
+const fb::func_t_call_t equals_n_f = [](const fb::detail::func_t_arguments& args) {
+    args.self.setValue(args.arguments[0]->value().any_cast<blt::u8>() == args.arguments[1]->value().any_cast<blt::u8>());
 };
-const fb::func_t_call_t less_f = [](fb::func_t& us, blt::span<fb::detail::node_t*> args) {
-    us.setValue(args[0]->value().any_cast<blt::u8>() < args[1]->value().any_cast<blt::u8>());
+const fb::func_t_call_t less_f = [](const fb::detail::func_t_arguments& args) {
+    args.self.setValue(args.arguments[0]->value().any_cast<blt::u8>() < args.arguments[1]->value().any_cast<blt::u8>());
 };
-const fb::func_t_call_t greater_f = [](fb::func_t& us, blt::span<fb::detail::node_t*> args) {
-    us.setValue(args[0]->value().any_cast<blt::u8>() > args[1]->value().any_cast<blt::u8>());
+const fb::func_t_call_t greater_f = [](const fb::detail::func_t_arguments& args) {
+    args.self.setValue(args.arguments[0]->value().any_cast<blt::u8>() > args.arguments[1]->value().any_cast<blt::u8>());
 };
-const fb::func_t_call_t not_f = [](fb::func_t& us, blt::span<fb::detail::node_t*> args) { us.setValue(!args[0]->value().any_cast<bool>()); };
-const fb::func_t_call_t and_b_f = [](fb::func_t& us, blt::span<fb::detail::node_t*> args) {
-    us.setValue(args[0]->value().any_cast<bool>() && args[1]->value().any_cast<bool>());
+const fb::func_t_call_t not_f = [](const fb::detail::func_t_arguments& args) { args.self.setValue(!args.arguments[0]->value().any_cast<bool>()); };
+const fb::func_t_call_t and_b_f = [](const fb::detail::func_t_arguments& args) {
+    args.self.setValue(args.arguments[0]->value().any_cast<bool>() && args.arguments[1]->value().any_cast<bool>());
 };
-const fb::func_t_call_t or_b_f = [](fb::func_t& us, blt::span<fb::detail::node_t*> args) {
-    us.setValue(args[0]->value().any_cast<bool>() || args[1]->value().any_cast<bool>());
+const fb::func_t_call_t or_b_f = [](const fb::detail::func_t_arguments& args) {
+    args.self.setValue(args.arguments[0]->value().any_cast<bool>() || args.arguments[1]->value().any_cast<bool>());
 };
 
-const fb::func_t_call_t and_n_f = [](fb::func_t& us, blt::span<fb::detail::node_t*> args) {
-    us.setValue(args[0]->value().any_cast<blt::u8>() & args[1]->value().any_cast<blt::u8>());
+const fb::func_t_call_t and_n_f = [](const fb::detail::func_t_arguments& args) {
+    args.self.setValue(args.arguments[0]->value().any_cast<blt::u8>() & args.arguments[1]->value().any_cast<blt::u8>());
 };
-const fb::func_t_call_t or_n_f = [](fb::func_t& us, blt::span<fb::detail::node_t*> args) {
-    us.setValue(args[0]->value().any_cast<blt::u8>() | args[1]->value().any_cast<blt::u8>());
+const fb::func_t_call_t or_n_f = [](const fb::detail::func_t_arguments& args) {
+    args.self.setValue(args.arguments[0]->value().any_cast<blt::u8>() | args.arguments[1]->value().any_cast<blt::u8>());
 };
 
 int main(int argc, const char** argv)
