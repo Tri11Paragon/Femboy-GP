@@ -10,6 +10,12 @@
 #include "lilfbtf/test5.h"
 #include <lilfbtf/tree.h>
 #include <lilfbtf/type.h>
+#include <lilfbtf/image.h>
+
+#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <lilfbtf/stb_image.h>
+#include <lilfbtf/stb_image_write.h>
 
 struct data
 {
