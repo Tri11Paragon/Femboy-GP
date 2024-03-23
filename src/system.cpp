@@ -19,17 +19,17 @@
 
 namespace fb
 {
-    void fb::gp_population_t::crossover()
+    std::pair<tree_t, tree_t> gp_population_t::crossover(tree_t& p1, tree_t& p2)
     {
     
     }
     
-    void fb::gp_population_t::mutate()
+    tree_t gp_population_t::mutate(tree_t& p)
     {
     
     }
     
-    void fb::gp_population_t::init_pop(const population_init_t init_type, blt::size_t pop_size, blt::size_t min_depth, blt::size_t max_depth,
+    void gp_population_t::init_pop(const population_init_t init_type, blt::size_t pop_size, blt::size_t min_depth, blt::size_t max_depth,
                                        std::optional<type_id> starting_type, double terminal_chance)
     {
         for (blt::size_t i = 0; i < pop_size; i++)
@@ -81,7 +81,7 @@ namespace fb
         }
     }
     
-    void fb::gp_population_t::execute(const individual_eval_func_t& individualEvalFunc, const fitness_eval_func_t& fitnessEvalFunc)
+    void gp_population_t::execute(const individual_eval_func_t& individualEvalFunc, const fitness_eval_func_t& fitnessEvalFunc)
     {
         for (auto& individual : population)
         {
@@ -90,7 +90,7 @@ namespace fb
         }
     }
     
-    void fb::gp_population_t::breed_new_pop()
+    void gp_population_t::breed_new_pop()
     {
     
     }

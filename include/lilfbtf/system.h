@@ -40,9 +40,9 @@ namespace fb
             fb::random& engine;
             type_engine_t& types;
             
-            void crossover();
+            std::pair<tree_t, tree_t> crossover(tree_t& p1, tree_t& p2);
             
-            void mutate();
+            tree_t mutate(tree_t& p);
         
         public:
             explicit gp_population_t(blt::thread_pool<true>& pool, type_engine_t& types, fb::random& engine): pool(pool), engine(engine), types(types)
