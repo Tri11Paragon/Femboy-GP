@@ -149,6 +149,7 @@ namespace fb
     
     class tree_t
     {
+            friend gp_population_t;
         private:
             inline blt::bump_allocator<blt::BLT_2MB_SIZE, false>& get_allocator()
             { return alloc; }
@@ -166,9 +167,9 @@ namespace fb
             static void brett_grow(detail::node_construction_info_t info, blt::size_t min_depth, blt::size_t max_depth);
             
             static void full(detail::node_construction_info_t info, blt::size_t depth);
-        
-        public:
+            
             explicit tree_t(type_engine_t& types);
+        public:
             
             static tree_t make_tree(detail::tree_construction_info_t tree_info, blt::size_t min_depth, blt::size_t max_depth,
                                     std::optional<type_id> starting_type = {});
@@ -182,11 +183,18 @@ namespace fb
             {
                 cache.dirty = true;
             }
+            
+            inline blt::unsafe::any_t& data()
+            {
+                return extra_data;
+            }
         
         private:
             blt::bump_allocator<blt::BLT_2MB_SIZE, false> alloc;
             type_engine_t& types;
             detail::node_t* root = nullptr;
+            // any extra data associated with this tree / individual
+            blt::unsafe::any_t extra_data;
             struct cache_t
             {
                 blt::size_t depth = 0;

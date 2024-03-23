@@ -27,22 +27,31 @@
 namespace fb
 {
     
+    enum class population_init_t
+    {
+        GROW, FULL, BRETT_GROW, RAMPED_HALF_HALF, RAMPED_TRI_HALF
+    };
+    
     class gp_population_t
     {
         private:
             blt::thread_pool<true>& pool;
             std::vector<tree_t> population;
+            fb::random& engine;
+            type_engine_t& types;
             
             void crossover();
             
             void mutate();
+        
         public:
-            explicit gp_population_t(blt::thread_pool<true>& pool): pool(pool)
+            explicit gp_population_t(blt::thread_pool<true>& pool, type_engine_t& types, fb::random& engine): pool(pool), engine(engine), types(types)
             {}
             
-            void init_pop();
+            void init_pop(population_init_t init_type, blt::size_t pop_size, blt::size_t min_depth, blt::size_t max_depth,
+                          std::optional<type_id> starting_type = {}, double terminal_chance = 0.5);
             
-            void execute(const fitness_eval_func_t& fitnessEvalFunc);
+            void execute(const individual_eval_func_t& individualEvalFunc, const fitness_eval_func_t& fitnessEvalFunc);
             
             void breed_new_pop();
     };

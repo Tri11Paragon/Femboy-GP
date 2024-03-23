@@ -65,6 +65,7 @@ namespace fb
     using func_t_call_t = std::function<void(const detail::func_t_arguments&)>;
     using func_t_init_t = std::function<void(func_t&)>;
     using fitness_eval_func_t = std::function<detail::fitness_results(detail::node_t*)>;
+    using individual_eval_func_t = std::function<void(tree_t&)>;
     using function_name = const std::string&;
     using type_name = const std::string&;
 }

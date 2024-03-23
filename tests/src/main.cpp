@@ -88,6 +88,16 @@ const fb::func_t_call_t or_n_f = [](const fb::detail::func_t_arguments& args) {
     args.self.setValue(args.arguments[0]->value().any_cast<blt::u8>() | args.arguments[1]->value().any_cast<blt::u8>());
 };
 
+const fb::individual_eval_func_t image_gp_eval = [](fb::tree_t& tree) {
+    for (blt::size_t i = 0; i < image_width; i++)
+    {
+        for (blt::size_t j = 0; j < image_width; j++)
+        {
+        
+        }
+    }
+};
+
 int main(int argc, const char** argv)
 {
     size_t size = 32;

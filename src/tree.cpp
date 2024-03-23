@@ -25,7 +25,9 @@ namespace fb
     {}
     
     tree_t::tree_t(type_engine_t& types): alloc(), types(types)
-    {}
+    {
+        extra_data = nullptr;
+    }
     
     tree_t tree_t::make_tree(detail::tree_construction_info_t tree_info,
                              blt::size_t min_depth, blt::size_t max_depth, std::optional<type_id> starting_type)
